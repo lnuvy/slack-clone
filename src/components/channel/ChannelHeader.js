@@ -6,7 +6,7 @@ const ChannelHeader = () => {
   return (
     <>
       <ChannelHeaderWrap>
-        <ChatHeaderTextbox># 홍길동</ChatHeaderTextbox>
+        <ChatHeaderTextbox># 홍길동2</ChatHeaderTextbox>
         <Wrap>
           <ModalBtn width="50px" height=""></ModalBtn>
         </Wrap>

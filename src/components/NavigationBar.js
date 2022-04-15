@@ -4,6 +4,7 @@ import { IoTimeOutline } from "react-icons/io5";
 import styled from "styled-components";
 import { Input, Image } from "../elements";
 
+// 내비게이션 바
 const NavigationBar = () => {
   return (
     <>

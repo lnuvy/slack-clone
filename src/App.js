@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "./shared/token";
 import { userActions } from "./redux/modules/user";
 
+// 안녕하세요
 function App() {
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.user.isLogin);

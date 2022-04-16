@@ -21,7 +21,7 @@ const NavigationBar = () => {
             color="white"
             bg="rgb(207,195,207)"
           />
-          <Image shape="ProfileImg" size="26" />
+          <Image shape="ProfileImg" size="26" opacity="0.9" />
         </NavigationBarWarp>
       </div>
     </>
@@ -32,15 +32,11 @@ const NavigationBarWarp = styled.header`
   height: 44px;
   background: #350d36;
   color: #ffffff;
-  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  // box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-
-  // z-index 가 설정돼있으면 모달이 켜졌을때 상단 내비가 우선적으로 표시됩니다
-  // 모달에 z-index를 줘봤는데 잘 안되네요ㅜㅠ
-  // 오후 4시쯤 추가: 모달의 background 에 z-index를 주니 해결됐습니다!
+  // position: relative;
   z-index: 203;
   text-align: center;
 `;

@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { history } from "../../redux/configureStore";
+import { BsPlus } from "react-icons/bs";
 
 import { Image } from "../../elements/index";
 
@@ -8,10 +9,7 @@ const MassageList = () => {
   return (
     <>
       <ListWrap>
-        <GridMenu>
-          {/* <button></button> */}
-          <span>다이렉트 메시지</span>
-        </GridMenu>
+        <GridMenu>다이렉트 메시지</GridMenu>
         <UserWarp
           onClick={() => {
             history.replace("/main/dm");
@@ -20,44 +18,67 @@ const MassageList = () => {
           <Image shape="ProfileImg" size="20" />
           <span style={{ margin: "4px" }}>홍길동</span>
         </UserWarp>
+        <UserWarp
+          onClick={() => {
+            history.replace("/main/dm");
+          }}
+        >
+          <Image shape="ProfileImg" size="20" />
+          <span style={{ margin: "4px" }}>이름</span>
+        </UserWarp>
+        <UserAdd onClick={() => {}}>
+          <BsPlus
+            style={{
+              color: "white",
+              background: "rgb(80 37 80)",
+              fontSize: "20px",
+              borderRadius: "5px",
+              display: "flex",
+              alignItems: "center",
+              margin: "1px 7px 0px 4px",
+            }}
+          />
+          팀원 추가
+        </UserAdd>
       </ListWrap>
     </>
   );
 };
 
-// export const CollapseButton = styled.button`
-//   background: transparent;
-//   border: none;
-//   width: 28px;
-//   height: 28px;
-//   display: inline-flex;
-//   justify-content: center;
-//   align-items: center;
-//   color: white;
-//   margin-left: 10px;
-//   cursor: pointer;
-// `;
-
 const ListWrap = styled.div`
-  margin: 15px 5px;
+  // margin: 15px 5px;
+  text-align: left;
 `;
 
 const GridMenu = styled.div`
-  display: flex;
-  align-items: center;
   height: 26px;
-  padding: 0 12px 0 15px;
+  padding: 5px 12px 5px 15px;
   width: 100%;
-  margin-bottom: 5px;
+  margin: 10px 0px;
 `;
 
 const UserWarp = styled.div`
   cursor: pointer;
   display: flex;
-  align-items: center;
   height: 26px;
-  padding: 0 12px 0 15px;
   width: 100%;
+  padding: 15px 12px 15px 15px;
+  // margin: 5px -4px;
+  align-items: center;
+  &:hover {
+    background: #340c35;
+  }
+`;
+
+const UserAdd = styled.div`
+  width: 100%;
+  padding: 1px 12px 3px 15px;
+  cursor: pointer;
+  &:hover {
+    background: #340c35;
+  }
+  display: flex;
+  align-items: center;
 `;
 
 export default MassageList;

@@ -5,6 +5,7 @@ import { ModalPortal, Modal } from "../../shared/modal/portals";
 const ChannelHeader = () => {
   const [modalOn, setModalOn] = useState(false);
 
+  // 토글
   const handleModal = () => {
     setModalOn(!modalOn);
   };
@@ -22,21 +23,16 @@ const ChannelHeader = () => {
 
       <ChannelHeaderWrap>
         <ChatHeaderTextbox onClick={handleModal}># 홍길동2</ChatHeaderTextbox>
-        <Wrap>
-          <ModalBtn width="50px" height=""></ModalBtn>
-        </Wrap>
+
+        <ModalBtn width="50px" height=""></ModalBtn>
       </ChannelHeaderWrap>
     </>
   );
 };
 
 const ChannelHeaderWrap = styled.div`
-  // z-index: 202;
   height: 49px;
   display: flex;
-  // box-shadow: 0 1px 0 0 var(--saf-0);
-  // flex-shrink: 0;
-  // box-sizing: inherit;
   padding: 10px 16px 10px 20px;
   border-bottom: 1px solid rgba(var(--sk_foreground_low, 29, 28, 29), 0.13);
   cursor: pointer;
@@ -45,31 +41,35 @@ const ChannelHeaderWrap = styled.div`
 const ChatHeaderTextbox = styled.div`
   display: flex;
   flex: 1 1 0;
-  // align-items: baseline;
   font-size: 16px;
-  // line-height: 2.5;
   font-weight: 700;
   align-items: center;
 `;
 
-const Wrap = styled.div`
-  // display: flex;
-  // flex: 0 0 1;
-  // margin-left: auto
-  // align-items: center;
-  // z-index: 0;
+const ChannelName = styled.div`
+  &:hover {
+    background: rgba(221, 221, 221, 0.3);
+  }
+  border-radius: 4px;
+  padding: 5px 10px;
 `;
 
 const ModalBtn = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background: none;
   border: 0;
   height: 30px;
-  width: 44px;
+  width: 30px;
   cursor: pointer;
   --saf-0: rgba(var(--sk_foreground_max, 29, 28, 29), 0.13);
   box-shadow: 0 0 0 1px var(--saf-0);
   border-radius: 4px;
   color: rgba(var(--sk_foreground_max, 29, 28, 29), 7);
+  &:hover {
+    background: rgba(221, 221, 221, 0.3);
+  }
 `;
 
 //

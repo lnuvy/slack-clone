@@ -4,6 +4,7 @@ import { createBrowserHistory } from "history";
 import { connectRouter } from "connected-react-router";
 
 import User from "./modules/user";
+import Channel from "./modules/channel";
 import Content from "./modules/content";
 import Image from "./modules/image";
 import Comment from "./modules/comment";
@@ -13,6 +14,7 @@ export const history = createBrowserHistory();
 // 리듀서 router 안에 history 넣기
 const rootReducer = combineReducers({
   user: User,
+  channel: Channel,
   // content: Content,
   // image: Image,
   // comment: Comment,

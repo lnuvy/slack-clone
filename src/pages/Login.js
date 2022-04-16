@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import LoginHeader from "../components/login/LoginHeader";
 import LoginFooter from "../components/login/LoginFooter";
-import { Button, Input, Text } from "../elements";
+import { LoginButton, Input, Text } from "../elements";
 import { userActions } from "../redux/modules/user";
 
 const Login = () => {
@@ -28,49 +28,51 @@ const Login = () => {
 
   return (
     <>
-      <LoginHeader />
-      <LoginWrap className="flex-column">
-        <InfoDiv>
-          <H1Tag>이메일로 로그인해 보세요</H1Tag>
-          <Text>
-            <strong>직장에서 사용하는 이메일 주소</strong>로 로그인하는걸
-            추천드려요.
-          </Text>
-        </InfoDiv>
-        <InnerWrap className="flex-column">
-          <Button borderColor="#4285f4" color="#4285f4">
-            구글 계정으로 로그인
-          </Button>
-          <Button borderColor="#1d1c1d" margin="16px">
-            깃허브 계정으로 로그인
-          </Button>
-          <div className="flex-row" style={{ margin: "24px 0" }}>
-            <HrTag />
-            <div style={{ fontSize: "15px", padding: "0 20px" }}>
-              <Text size="15px">또는</Text>
+      <div className="flex-column">
+        <LoginHeader />
+        <LoginWrap className="flex-column">
+          <InfoDiv>
+            <H1Tag>이메일로 로그인해 보세요</H1Tag>
+            <Text>
+              <strong>직장에서 사용하는 이메일 주소</strong>로 로그인하는걸
+              추천드려요.
+            </Text>
+          </InfoDiv>
+          <InnerWrap className="flex-column">
+            <LoginButton borderColor="#4285f4" color="#4285f4">
+              구글 계정으로 로그인
+            </LoginButton>
+            <LoginButton borderColor="#1d1c1d" margin="16px">
+              깃허브 계정으로 로그인
+            </LoginButton>
+            <div className="flex-row" style={{ margin: "24px 0" }}>
+              <HrTag />
+              <div style={{ fontSize: "15px", padding: "0 20px" }}>
+                <Text size="15px">또는</Text>
+              </div>
+              <HrTag />
             </div>
-            <HrTag />
-          </div>
-          <Input
-            id="email"
-            onChange={handleChange}
-            padding="11px 12px 13px"
-            margin="0 0 20px"
-            placeholder="name@work-email.com"
-          />
-          <Input
-            id="password"
-            type="password"
-            onChange={handleChange}
-            padding="11px 12px 13px"
-            margin="0 0 20px"
-            placeholder="Please enter your password"
-            // &ordm;
-          />
-          <Button onClick={handleSubmit}>이메일로 로그인</Button>
-        </InnerWrap>
-      </LoginWrap>
-      <LoginFooter />
+            <Input
+              id="email"
+              onChange={handleChange}
+              padding="11px 12px 13px"
+              margin="0 0 20px"
+              placeholder="name@work-email.com"
+            />
+            <Input
+              id="password"
+              type="password"
+              onChange={handleChange}
+              padding="11px 12px 13px"
+              margin="0 0 20px"
+              placeholder="Please enter your password"
+              // &ordm;
+            />
+            <LoginButton onClick={handleSubmit}>이메일로 로그인</LoginButton>
+          </InnerWrap>
+        </LoginWrap>
+        <LoginFooter />
+      </div>
     </>
   );
 };

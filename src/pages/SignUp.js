@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import LoginFooter from "../components/login/LoginFooter";
 import LoginHeader from "../components/login/LoginHeader";
-import { Button, Input, Text } from "../elements";
+import { LoginButton, Input, Text } from "../elements";
 
 const SignUp = () => {
   const [inputs, setInputs] = useState({});
@@ -24,50 +25,53 @@ const SignUp = () => {
 
   return (
     <>
-      <LoginHeader signUpNow />
-      <SignUpWrap className="flex-column">
-        <InfoDiv>
-          <H1Tag>먼저 이메일부터 입력해 보세요</H1Tag>
-          <Text>
-            <strong>직장에서 사용하는 이메일 주소</strong>로 로그인하는걸
-            추천드려요.
-          </Text>
-        </InfoDiv>
-        <InnerWrap className="flex-column">
-          <Input
-            id="email"
-            padding="11px 12px 13px"
-            margin="0 0 20px"
-            placeholder="name@work-email.com"
-            onClick={handleChange}
-          />
+      <div className="flex-column">
+        <LoginHeader signUpNow />
+        <SignUpWrap className="flex-column">
+          <InfoDiv>
+            <H1Tag>먼저 이메일부터 입력해 보세요</H1Tag>
+            <Text>
+              <strong>직장에서 사용하는 이메일 주소</strong>로 로그인하는걸
+              추천드려요.
+            </Text>
+          </InfoDiv>
+          <InnerWrap className="flex-column">
+            <Input
+              id="email"
+              padding="11px 12px 13px"
+              margin="0 0 20px"
+              placeholder="name@work-email.com"
+              onClick={handleChange}
+            />
 
-          <Input
-            id="nickname"
-            padding="11px 12px 13px"
-            margin="0 0 20px"
-            placeholder="Nickname"
-            onClick={handleChange}
-          />
-          <Input
-            id="password"
-            type="password"
-            padding="11px 12px 13px"
-            margin="0 0 20px"
-            placeholder="Please enter your password"
-            onClick={handleChange}
-          />
-          <Input
-            id="passwordCheck"
-            type="password"
-            padding="11px 12px 13px"
-            margin="0 0 20px"
-            placeholder="Please enter your password"
-            onClick={handleChange}
-          />
-          <Button onClick={handleSubmit}>회원가입</Button>
-        </InnerWrap>
-      </SignUpWrap>
+            <Input
+              id="nickname"
+              padding="11px 12px 13px"
+              margin="0 0 20px"
+              placeholder="Nickname"
+              onClick={handleChange}
+            />
+            <Input
+              id="password"
+              type="password"
+              padding="11px 12px 13px"
+              margin="0 0 20px"
+              placeholder="Please enter your password"
+              onClick={handleChange}
+            />
+            <Input
+              id="passwordCheck"
+              type="password"
+              padding="11px 12px 13px"
+              margin="0 0 20px"
+              placeholder="Please enter your password"
+              onClick={handleChange}
+            />
+            <LoginButton onClick={handleSubmit}>회원가입</LoginButton>
+          </InnerWrap>
+        </SignUpWrap>
+        <LoginFooter />
+      </div>
     </>
   );
 };

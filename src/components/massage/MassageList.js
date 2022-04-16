@@ -9,9 +9,7 @@ const MassageList = () => {
   return (
     <>
       <ListWrap>
-        <GridMenu>
-          <span>다이렉트 메시지</span>
-        </GridMenu>
+        <GridMenu>다이렉트 메시지</GridMenu>
         <UserWarp
           onClick={() => {
             history.replace("/main/dm");

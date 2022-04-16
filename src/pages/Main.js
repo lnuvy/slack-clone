@@ -7,7 +7,7 @@ import NavigationBar from "../components/NavigationBar";
 import ChannelList from "../components/channel/ChannelList";
 // import ChannelList from "../components/channel/ChannelList";
 import MassageList from "../components/massage/MassageList";
-import Channel from "./Channel";
+import ChannelPage from "./ChannelPage";
 import MessagePage from "./MessagePage";
 import { BrowserRouter } from "react-router-dom";
 import { MdOutlineLayers } from "react-icons/md";
@@ -33,7 +33,7 @@ const Main = () => {
                     margin: "0px 4px 0px 0px",
                   }}
                 />
-                <spen>Slack Connect</spen>
+                <span>Slack Connect</span>
               </SlackConnect>
               <ChannelList />
               <MassageList />
@@ -42,7 +42,7 @@ const Main = () => {
         </ChannelsWrap>
         <ChatsWrap>
           <Switch>
-            <Route path="/main/channel" exact component={Channel} />
+            <Route path="/main/channel" exact component={ChannelPage} />
             <Route path="/main/dm" exact component={MessagePage} />
           </Switch>
         </ChatsWrap>

@@ -2,29 +2,43 @@ import React from "react";
 import styled from "styled-components";
 import { history } from "../../redux/configureStore";
 import { BsPlus } from "react-icons/bs";
+import { useDispatch, useSelector } from "react-redux";
+import { chaccelActions } from "../../redux/modules/channel";
+// import Channel from "./Channel";
 
-const ChannelList = () => {
+const ChannelList = (props) => {
+  const dispatch = useDispatch();
+  const channel = useSelector((state) => state.channel.channel_list);
+  console.log(channel);
+  const channel_list = Object.keys(channel);
+  console.log(channel_list);
+
+  React.useEffect(() => {
+    dispatch(chaccelActions.getChannelDB());
+  }, []);
+
   return (
     <>
       <ListWrap>
-        <GridMenu>
-          <span>채널</span>
-        </GridMenu>
+        <GridMenu>채널</GridMenu>
         <ChannelWarp>
-          <Channnal
-            onClick={() => {
-              history.push("/main/channel");
-            }}
-          >
-            <p style={{ margin: "0px 5px" }}># 채널 1</p>
-          </Channnal>
-          <Channnal
-            onClick={() => {
-              history.push("/main/channel");
-            }}
-          >
-            <p style={{ margin: "0px 5px" }}># 채널 2</p>
-          </Channnal>
+          {channel.map((channel, i) => {
+            console.log(channel);
+            console.log(Object.keys(channel));
+            return (
+              <Channnal
+                key={i}
+                {...channel}
+                onClick={() => {
+                  history.push("/main/channel");
+                }}
+              >
+                <span style={{ margin: "0px 5px" }}>
+                  # {Object.keys(channel)}
+                </span>
+              </Channnal>
+            );
+          })}
           <ChannnalAdd onClick={() => {}}>
             <BsPlus
               style={{
@@ -37,7 +51,7 @@ const ChannelList = () => {
                 margin: "1px 7px 0px 4px",
               }}
             />
-            <p>채널 추가</p>
+            채널 추가
           </ChannnalAdd>
         </ChannelWarp>
       </ListWrap>
@@ -64,15 +78,6 @@ const ChannelWarp = styled.div`
   width: 100%;
 `;
 
-const Channnal = styled.span`
-  width: 100%;
-  padding: 4px 12px 4px 15px;
-  cursor: pointer;
-  &:hover {
-    background-color: #340c35;
-  }
-`;
-
 const ChannnalAdd = styled.p`
   width: 100%;
   padding: 4px 12px 4px 15px;
@@ -82,6 +87,15 @@ const ChannnalAdd = styled.p`
   }
   display: flex;
   align-items: center;
+`;
+
+const Channnal = styled.span`
+  width: 100%;
+  padding: 4px 12px 4px 15px;
+  cursor: pointer;
+  &:hover {
+    background-color: #340c35;
+  }
 `;
 
 export default ChannelList;

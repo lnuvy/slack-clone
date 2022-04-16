@@ -5,7 +5,7 @@ import ChannelHeader from "../components/channel/ChannelHeader";
 import ChannelMsgBox from "../components/channel/ChannelMsgBox";
 import ChannelMsg from "../components/channel/ChannelMsg";
 
-const Channel = () => {
+const ChannelPage = () => {
   return (
     <>
       <ChannelsWrap>
@@ -24,4 +24,4 @@ const ChannelsWrap = styled.div`
   flex-direction: column;
 `;
 
-export default Channel;
+export default ChannelPage;

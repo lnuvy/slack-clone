@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Image } from "../../elements/index";
 
-const ChannelHeader = () => {
+const ChannelHeader = (props) => {
   return (
     <>
       <ChannelHeaderWrap>

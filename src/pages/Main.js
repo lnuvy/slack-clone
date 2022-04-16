@@ -10,6 +10,7 @@ import MassageList from "../components/massage/MassageList";
 import Channel from "./Channel";
 import MessagePage from "./MessagePage";
 import { BrowserRouter } from "react-router-dom";
+import { MdOutlineLayers } from "react-icons/md";
 
 // 처음 로그인 했을때, 주된 컨텐츠가 되는 부분 (슬랙에서 Slack Connect 부분)
 const Main = () => {
@@ -20,8 +21,23 @@ const Main = () => {
         <ChannelsWrap>
           <Title>Slack</Title>
           <MenuScroll>
-            <ChannelList />
-            <MassageList />
+            <div>
+              <SlackConnect>
+                <MdOutlineLayers
+                  style={{
+                    transform: "rotate(90deg)",
+                    width: "20px",
+                    height: "20px",
+                    display: "flex",
+                    alignItems: "center",
+                    margin: "0px 4px 0px 0px",
+                  }}
+                />
+                <spen>Slack Connect</spen>
+              </SlackConnect>
+              <ChannelList />
+              <MassageList />
+            </div>
           </MenuScroll>
         </ChannelsWrap>
         <ChatsWrap>
@@ -37,7 +53,7 @@ const Main = () => {
 
 const MainWrap = styled.div`
   display: flex;
-  // flex: 1;
+  flex: 1;
 `;
 
 const ChannelsWrap = styled.nav`
@@ -59,7 +75,6 @@ const Title = styled.button`
   font-weight: 500;
   font-size: 18px;
   background: transparent;
-  // text-overflow: ellipsis;
   overflow: hidden;
   padding: 0 54px 0 16px;
   margin: 0;
@@ -67,9 +82,21 @@ const Title = styled.button`
   cursor: pointer;
 `;
 
+const SlackConnect = styled.div`
+  display: flex;
+  align-items: center;
+  text-align: left;
+  width: 100%;
+  margin-top: 10px;
+  padding: 5px 15px;
+  &:hover {
+    background: #340c35;
+  }
+`;
+
 const MenuScroll = styled.div`
   height: calc(100vh - 38px);
-  // overflow-y: auto;
+  overflow-y: auto;
 `;
 
 const ChatsWrap = styled.div`

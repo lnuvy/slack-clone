@@ -3,14 +3,14 @@ import styled from "styled-components";
 
 import ChannelHeader from "../components/channel/ChannelHeader";
 import ChannelMsgBox from "../components/channel/ChannelMsgBox";
-import ChannelChat from "../components/channel/ChannelChat";
+import ChannelMsg from "../components/channel/ChannelMsg";
 
 const Channel = () => {
   return (
     <>
       <ChannelsWrap>
         <ChannelHeader />
-        <ChannelChat />
+        <ChannelMsg />
         <ChannelMsgBox />
       </ChannelsWrap>
     </>
@@ -19,7 +19,7 @@ const Channel = () => {
 
 const ChannelsWrap = styled.div`
   width: 100%;
-  height: calc(100vh - 38px);
+  height: calc(100vh - 10px);
   display: flex;
   flex-direction: column;
 `;

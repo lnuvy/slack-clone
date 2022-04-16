@@ -21,7 +21,7 @@ const NavigationBar = () => {
             color="white"
             bg="rgb(207,195,207)"
           />
-          <Image shape="ProfileImg" size="26" />
+          <Image shape="ProfileImg" size="26" opacity="0.9" />
         </NavigationBarWarp>
       </div>
     </>
@@ -32,11 +32,11 @@ const NavigationBarWarp = styled.header`
   height: 44px;
   background: #350d36;
   color: #ffffff;
-  box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  // box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
+  // position: relative;
   z-index: 203;
   text-align: center;
 `;

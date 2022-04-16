@@ -1,14 +1,26 @@
 import React from "react";
+import styled from "styled-components";
+import Massage from "../components/massage/Massage";
+import MassageBox from "../components/massage/MassageBox";
+import MassageHeader from "../components/massage/MassageHeader";
 
 const MessagePage = () => {
   return (
     <>
-      <h1>MessagePage!</h1>
-      <p>
-        유저가 로그인한 뒤, 사이드바에서 다이렉트 메세지를 클릭하면 해당
-        아이디를 받아 여기에 보여줍니다
-      </p>
+      <MessagePageWrap>
+        <MassageHeader />
+        <Massage />
+        <MassageBox />
+      </MessagePageWrap>
     </>
   );
 };
+
+const MessagePageWrap = styled.div`
+  width: 100%;
+  height: calc(100vh - 10px);
+  display: flex;
+  flex-direction: column;
+`;
+
 export default MessagePage;

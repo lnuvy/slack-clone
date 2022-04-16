@@ -2,11 +2,12 @@ import React from "react";
 import styled from "styled-components";
 
 const Image = (props) => {
-  const { shape, src, size } = props;
+  const { shape, src, size, opacity } = props;
 
   const styles = {
     src: src,
     size: size,
+    opacity: opacity,
   };
 
   if (shape === "ProfileImg") {
@@ -14,9 +15,9 @@ const Image = (props) => {
   }
 
   return (
-    <React.Fragment>
+    <>
       <ImageDefault {...styles} />
-    </React.Fragment>
+    </>
   );
 };
 
@@ -43,6 +44,9 @@ const ProfileImg = styled.div`
   background-size: cover;
   margin: 4px;
   cursor: pointer;
+  &:hover {
+    opacity: ${(props) => props.opacity};
+  }
 `;
 
 export default Image;

@@ -10,6 +10,8 @@ const Text = (props) => {
 const TagP = styled.p`
   ${({ size }) => (size ? `font-size: ${size};` : `font-size: 18px;`)};
   ${({ color }) => (color ? `color: ${color};` : `color: #485460;`)}
+  ${({ fontWeight }) =>
+    fontWeight ? `font-weight: ${fontWeight};` : `font-weight: false;`}
 `;
 
 export default Text;

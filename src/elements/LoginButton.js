@@ -23,7 +23,8 @@ const LoginBtn = styled.button`
     opacity: 0.9;
   }
 
-  width: ${({ width }) => (width ? `${width};` : "100%;")};
+  max-width: ${({ width }) => (width ? `${width};` : `400px;`)};
+  width: 100%;
   height: ${({ height }) => (height ? `${height};` : "44px;")};
   ${({ borderColor }) =>
     borderColor ? `border: 2px solid ${borderColor};` : "border: none;"};

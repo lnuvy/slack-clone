@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { ModalPortal, Modal } from "../../shared/modal/portals";
 
-const ChannelHeader = () => {
+const ChannelHeader = ({ title }) => {
   const [modalOn, setModalOn] = useState(false);
 
   // 토글
@@ -22,7 +22,7 @@ const ChannelHeader = () => {
       </ModalPortal>
 
       <ChannelHeaderWrap>
-        <ChatHeaderTextbox onClick={handleModal}># 홍길동2</ChatHeaderTextbox>
+        <ChatHeaderTextbox onClick={handleModal}># {title}</ChatHeaderTextbox>
 
         <ModalBtn width="50px" height=""></ModalBtn>
       </ChannelHeaderWrap>

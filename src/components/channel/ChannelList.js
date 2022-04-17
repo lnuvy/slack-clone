@@ -98,8 +98,8 @@ const ChannelList = (props) => {
                 key={`${c.channelName}_${i}`}
                 {...c}
                 onClick={() => {
-                  // history.push(`/main/channel/${c.channelName}`);
-                  history.push("/main/channel");
+                  // 여기에서 해당 채널에 대한 뷰를 변경해줍니다
+                  history.push(`/main/channel/${c.channelName}`);
                 }}
               >
                 <span style={{ margin: "0px 5px" }}># {c.channelName}</span>

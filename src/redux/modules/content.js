@@ -34,19 +34,11 @@ const deleteContent = createAction(DELETE_CONTENT, (contentId) => ({
 }));
 
 const getContentList = (channelName) => {
-  return async function (dispatch, getState, { history }) {
-    // //form타입
-    // await axios.get(`${BASE_URL}/user/signup`)
-    //   .then((doc) => {
-    //     const content = doc.data.board;
-    //   })
-    //   .catch((error) => {
-    //     console.log("에러남", error);
-    //   });
-
+  return function (dispatch, getState, { history }) {
     const contentList = getState().channel.channelList.find(
       (l) => l.channelName === channelName
     );
+    console.log(contentList);
 
     dispatch(getContent(contentList));
   };

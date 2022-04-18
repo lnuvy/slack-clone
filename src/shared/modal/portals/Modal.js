@@ -11,29 +11,30 @@ import InfoModal from "../component/InfoModal";
 import { useDispatch, useSelector } from "react-redux";
 import { channelActions } from "../../../redux/modules/channel";
 
-// onClose= 모달을 닫는 함수, title= 모달 최상단의 타이틀, children= 모달의 내용(각각 커스텀)
-const Modal = ({ onClose, title, children }) => {
+// onClose= 모달을 닫는 함수, channelName= 모달 최상단의 타이틀, children= 모달의 내용(각각 커스텀)
+const Modal = ({ onClose, data, children }) => {
   const dispatch = useDispatch();
   const channel = useSelector((state) => state.channel.channelList);
 
+  const { channelId, channelName, createdAt, channelHost } = data;
+
   // 채널 이름 변경 input
-  const [channelName, setChannelName] = useState(title);
+  const [changeName, setChangeName] = useState(channelName);
 
   const handleChange = (e) => {
     const { value } = e.target;
-    setChannelName(value);
+    setChangeName(value);
   };
 
   // 변경사항 저장 버튼 누를때 실행되는 함수
   const handleSubmit = () => {
-    // 채널명 중복인지 검사
-    const validCheck = channel.find((l) => l.channelName === channelName);
-    console.log(validCheck);
+    // 채널명 중복인지 검사 (백 연결되면 필요없을거같음) (지울때 17번라인도 지우면 좋을거같습니다)
+    const validCheck = channel.find((l) => l.channelName === changeName);
     if (validCheck) {
       alert("이미 존재하는 채널명입니다!");
       return;
     }
-    dispatch(channelActions.editChannelNameDB(title, channelName));
+    dispatch(channelActions.editChannelNameDB(channelName, channelId));
   };
 
   const [modalOn, setModalOn] = useState(false);
@@ -75,7 +76,7 @@ const Modal = ({ onClose, title, children }) => {
                       lineHeight: "1.36365",
                     }}
                   >
-                    {`# ${title}`}
+                    {`# ${channelName}`}
                   </h1>
                 </div>
                 <CancelBtn
@@ -151,24 +152,24 @@ const Modal = ({ onClose, title, children }) => {
         {modalOn && (
           <TwobtnModal
             onClose={handleModal}
-            title={"이 채널 이름 변경"}
+            title="이 채널 이름 변경"
             btnText="변경사항 저장"
             onSubmit={handleSubmit}
           >
             <div style={{ textAlign: "start" }}>
-              <label htmlFor="channelName">이름</label>
+              <label htmlFor="changeName">이름</label>
 
               <div style={{ margin: "8px 0 20px" }}>
                 <div>
                   {/* 여기에 # 이 placeholder에 포함되지않은채로 들어가는데 어떻게하는건지 잘모르겠네요ㅠㅠ */}
                   <Input
-                    id="channelName"
+                    id="changeName"
                     placeholder="예: 플랜 예산"
                     size="18px"
                     padding="0 36px 0 38px"
                     margin="0 0 20px"
                     onChange={handleChange}
-                    value={channelName}
+                    value={changeName}
                   />
                 </div>
               </div>

@@ -4,7 +4,9 @@ import { ModalPortal, Modal } from "../../shared/modal/portals";
 import { Text } from "../../elements";
 import Tooltip from "../../shared/Tooltip";
 
-const ChannelHeader = ({ title }) => {
+const ChannelHeader = ({ nowChannel }) => {
+  const { channelName, channelId } = nowChannel;
+
   const [modalOn, setModalOn] = useState(false);
 
   // 토글
@@ -17,7 +19,7 @@ const ChannelHeader = ({ title }) => {
       {/* 채널 헤더의 타이틀을 눌렀을때 나오는 모달창 */}
       <ModalPortal>
         {modalOn && (
-          <Modal title={title} onClose={handleModal}>
+          <Modal data={nowChannel} onClose={handleModal}>
             <ChannelInfo>
               <div
                 className="flex-row"
@@ -28,7 +30,7 @@ const ChannelHeader = ({ title }) => {
                 </Text>
                 <TagP>편집</TagP>
               </div>
-              <Text size="15px"># {title}</Text>
+              <Text size="15px"># {channelName}</Text>
             </ChannelInfo>
           </Modal>
         )}
@@ -37,7 +39,7 @@ const ChannelHeader = ({ title }) => {
       <ChannelHeaderWrap>
         <ChatHeaderTextbox onClick={handleModal}>
           <Tooltip message="채널 세부정보 받기">
-            <ChannelName># {title}</ChannelName>
+            <ChannelName># {channelName}</ChannelName>
           </Tooltip>
         </ChatHeaderTextbox>
         <ModalBtn width="50px" height=""></ModalBtn>

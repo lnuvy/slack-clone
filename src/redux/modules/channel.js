@@ -32,8 +32,8 @@ const addChannel = createAction(ADD_CHANNEL, (channel) => ({
 const editChannelName = createAction(EDIT_CHANNEL_NAME, (channelName) => ({
   channelName,
 }));
-const deleteChannel = createAction(DELETE_CHANNEL, (channelName) => ({
-  channelName,
+const deleteChannel = createAction(DELETE_CHANNEL, (channelId) => ({
+  channelId,
 }));
 
 // 컨텐츠 추가부분

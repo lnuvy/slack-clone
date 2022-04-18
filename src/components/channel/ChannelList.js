@@ -13,7 +13,7 @@ const ChannelList = (props) => {
   const dispatch = useDispatch();
   // 리덕스에 넣은 더미데이터 형식으로 뿌렸습니다
   const channel = useSelector((state) => state.channel.channelList);
-  // console.log(channel);
+  console.log(channel);
 
   // 저는 React.~~~ 보다는 생략해서 쓰는걸 선호해서 1번라인에 useEffect, useState를 임포트해서 사용했습니다
   useEffect(() => {

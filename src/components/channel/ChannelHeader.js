@@ -1,17 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import { Image } from "../../elements/index";
+import { ModalPortal, Modal } from "../../shared/modal/portals";
 
-const ChannelHeader = (props) => {
+const ChannelHeader = () => {
+  const [modalOn, setModalOn] = useState(false);
+
+  const handleModal = () => {
+    setModalOn(!modalOn);
+  };
+
   return (
     <>
+      {/* 채널 헤더의 타이틀을 눌렀을때 나오는 모달창 */}
+      <ModalPortal>
+        {modalOn && (
+          <Modal onClose={handleModal}>
+            <ChannelInfo>안녕하세요</ChannelInfo>
+          </Modal>
+        )}
+      </ModalPortal>
+
       <ChannelHeaderWrap>
-        <ChatHeaderTextbox>
-          <ChannelName># 채널 1</ChannelName>
-        </ChatHeaderTextbox>
-        <ModalBtn width="50px">
-          <Image size="22" />
-        </ModalBtn>
+        <ChatHeaderTextbox onClick={handleModal}># 홍길동22</ChatHeaderTextbox>
+        <ModalBtn width="50px" height=""></ModalBtn>
       </ChannelHeaderWrap>
     </>
   );
@@ -57,6 +68,16 @@ const ModalBtn = styled.button`
   &:hover {
     background: rgba(221, 221, 221, 0.3);
   }
+`;
+
+//
+// 아래부터 한울 작업
+const ChannelInfo = styled.div`
+  display: flex;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 1);
+  padding: 16px 20px;
+  margin: 16px 28px;
 `;
 
 export default ChannelHeader;

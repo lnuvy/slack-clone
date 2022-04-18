@@ -12,6 +12,7 @@ const TagP = styled.p`
   ${({ color }) => (color ? `color: ${color};` : `color: #485460;`)}
   ${({ fontWeight }) =>
     fontWeight ? `font-weight: ${fontWeight};` : `font-weight: false;`}
+  ${({ margin }) => (margin ? `margin: ${margin};` : "margin: 0;")}
 `;
 
 export default Text;

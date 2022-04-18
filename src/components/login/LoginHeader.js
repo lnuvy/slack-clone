@@ -19,7 +19,7 @@ const LoginHeader = (props) => {
           <div className="res-none">
             <p>Slack을 처음 이용하시나요?</p>
             <Link to="/user/signup">
-              <p style={{ fontWeight: "600", textAlign: "end" }}>계정 생성</p>
+              <TagP>계정 생성</TagP>
             </Link>
           </div>
         </SignupDiv>
@@ -41,6 +41,16 @@ const SignupDiv = styled.div`
   align-items: flex-end;
   padding-right: 40px;
   font-size: 13px;
+`;
+
+const TagP = styled.p`
+  font-weight: 600;
+  text-align: end;
+  color: #1264a3;
+  &:hover {
+    text-decoration: underline;
+    color: #0b4c8c;
+  }
 `;
 
 export default LoginHeader;

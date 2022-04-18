@@ -144,7 +144,6 @@ const OneChat = (props) => {
 
           <button
             onClick={() => {
-              console.log("삭제");
               dispatch(contentActions.deleteContentDB(channelId, contentId));
             }}
           >

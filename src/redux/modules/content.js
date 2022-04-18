@@ -163,7 +163,16 @@ export default handleActions(
         );
         draft.oneChannel.contentList = newArr;
       }),
-    [DELETE_CONTENT]: (state, action) => produce(state, (draft) => {}),
+    [DELETE_CONTENT]: (state, action) =>
+      produce(state, (draft) => {
+        const { contentId } = action.payload;
+
+        let newArr = draft.oneChannel.contentList.filter(
+          (c) => c.contentId !== contentId
+        );
+
+        draft.oneChannel.contentList = newArr;
+      }),
   },
   initialState
 );

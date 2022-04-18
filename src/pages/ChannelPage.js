@@ -6,6 +6,8 @@ import ChannelMsgBox from "../components/channel/ChannelMsgBox";
 import ChannelMsg from "../components/channel/ChannelMsg";
 import { useDispatch, useSelector } from "react-redux";
 import { contentActions } from "../redux/modules/content";
+import ChannelComment from "../components/channel/comment/ChannelComment";
+import { channelActions } from "../redux/modules/channel";
 
 const ChannelPage = (props) => {
   const dispatch = useDispatch();

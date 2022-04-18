@@ -112,7 +112,7 @@ const OneChat = (props) => {
           <CommentBox
             onClick={() => {
               // 여기에서 해당 채널에 대한 뷰를 변경해줍니다
-              history.push(`/main/channel/${channelName}/${contentId}`);
+              history.push(`/channel/${channelName}/${contentId}`);
             }}
             // onMouseEnter={() => setHoverComment(false)}
             // onMouseLeave={() => setHoverComment(true)}

@@ -25,6 +25,10 @@ const ADD_CONTENTS = "ADD_CONTENTS";
 const EDIT_CONTENTS = "EDIT_CONTENTS";
 const DELETE_CONTENTS = "DELETE_CONTENTS";
 
+// 코멘트 추가 액션
+const ADD_COMMENTS = "ADD_COMMENTS";
+const DELETE_COMMENTS = "DELETE_COMMENTS";
+
 // 액션 생성함수
 const getChannel = createAction(GET_CHANNEL, (channelList) => ({
   channelList,
@@ -49,6 +53,24 @@ const editContent = createAction(
   (channelName, contentId, content) => ({ channelName, contentId, content })
 );
 // const deleteContent = createAction();
+
+// 코멘트 추가부분
+const addComment = createAction(
+  ADD_COMMENTS,
+  (channelName, contentId, comment) => ({
+    channelName,
+    contentId,
+    comment,
+  })
+);
+const deleteComment = createAction(
+  ADD_COMMENTS,
+  (channelName, contentId, commentId) => ({
+    channelName,
+    contentId,
+    commentId,
+  })
+);
 
 // api 응답 받는 미들웨어
 const getChannelDB = (userId) => {
@@ -200,6 +222,27 @@ export default handleActions(
         //     let newArr = l.contentList.filter((c) => c.contentId !== contentId);
         //     draft.channelList.l.contentList = [...newArr, content];
       }),
+
+    // 코멘트 리듀서
+    [ADD_COMMENTS]: (state, action) =>
+      produce(state, (draft) => {
+        const { channelName, contentId, comment } = action.payload;
+        draft.channelList
+          .filter((c) => c.channelName === channelName)[0]
+          .contentList.forEach((l) => {
+            if (l.contentId === contentId) l.commentList.push(comment);
+          });
+      }),
+
+    // [DELETE_COMMENTS]: (state, action) =>
+    //   produce(state, (draft) => {
+    //     const { channelName, contentId, commentId } = action.payload;
+    //     draft.channelList
+    //       .filter((c) => c.channelName === channelName)[0]
+    //       .contentList.forEach((l) => {
+    //         if (l.contentId === contentId) l.commentList.push(commentId);
+    //       });
+    //   }),
   },
   initialState
 );
@@ -216,4 +259,6 @@ export const channelActions = {
   addContent,
   editContent,
   // deleteContent,
+  addComment,
+  deleteComment,
 };

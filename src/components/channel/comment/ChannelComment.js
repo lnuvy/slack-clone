@@ -2,23 +2,17 @@ import React, { useEffect } from "react";
 import { BsXLg } from "react-icons/bs";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import ChannelList from "./ChannelList";
-import ChannelPage from "../../pages/ChannelPage";
-import { channelActions } from "../../redux/modules/channel";
 import { useParams } from "react-router-dom";
-import { Image, Text } from "../../elements/index";
+import { Image, Text } from "../../../elements";
 import moment from "moment";
-import { history } from "../../redux/configureStore";
+import { history } from "../../../redux/configureStore";
+import CommentBox from "./CommentBox";
+import { channelActions } from "../../../redux/modules/channel";
+import { conmmentActions } from "../../../redux/modules/comment";
+// import {CommentBox}
 
 const ChannelComment = (props) => {
-  //   const dispatch = useDispatch();
-
-  //   useEffect(() => {
-  //     dispatch(channelActions.getChannelDB());
-  //   }, []);
-
-  const { contentList2 } = props;
-  console.log(contentList2);
+  const dispatch = useDispatch();
 
   const { channelName } = props.match?.params;
   console.log(channelName);
@@ -26,29 +20,32 @@ const ChannelComment = (props) => {
   const contentId = useParams().contentId;
   console.log(contentId);
 
-  const channel = useSelector((state) => state.channel.channelList);
-  console.log(channel);
-
-  // 여기서 데이터를 정리해서 props로 주는게 더 깔끔할거같아서 일단 이렇게 했습니다
-  const channelList = useSelector((state) => state.channel.channelList);
+  const channelList = useSelector((state) => state?.channel.channelList || []);
   console.log(channelList);
-  // filter 로 똑같은 채널이름을 검사했을때 무조건 하나만 나오므로 뒤에 [0]을 붙였습니다
-  const nowChannel =
-    channelList.filter((c) => c.channelName === channelName)[0] || [];
-  console.log(nowChannel);
 
-  const contentList = nowChannel.contentList;
-  console.log(contentList);
+  useEffect(() => {
+    dispatch(channelActions.getChannelDB());
+  }, [contentId]);
 
+  // 클릭한 Content 입니다.
   const nowContent =
-    contentList.filter((c) => c.contentId === contentId)[0] || [];
+    channelList
+      .filter((c) => c.channelName === channelName)[0]
+      .contentList.filter((c) => c.contentId === contentId)[0] || [];
   console.log(nowContent);
 
-  const commentList = nowContent.commentList;
+  // 클릭한 Content의 Comment List입니다.
+  const commentList = channelList
+    .filter((c) => c.channelName === channelName)[0]
+    .contentList.filter((c) => c.contentId === contentId)[0].commentList;
   console.log(commentList);
 
   const time = moment(nowContent.createdAt).format("M월 DD일, HH:MM");
   console.log(time);
+
+  const commentId = commentList.forEach((c) => c.commentId);
+
+  console.log(commentId);
 
   return (
     <>
@@ -61,7 +58,7 @@ const ChannelComment = (props) => {
           <BsXLg
             style={{ color: "gray", fontSize: "15px" }}
             onClick={() => {
-              history.push(`/main/channel/${nowContent.channelName}`);
+              history.push(`/channel/${nowContent.channelName}`);
             }}
           />
         </CommentHeaderWrap>
@@ -114,6 +111,23 @@ const ChannelComment = (props) => {
                       </NicknameBox>
                       <div>{c.comment}</div>
                     </ChatListUserInfo>
+                    <BsXLg
+                      style={{
+                        color: "gray",
+                        fontSize: "15px",
+                        display: "flex",
+                        float: "right",
+                      }}
+                      onClick={() => {
+                        dispatch(
+                          conmmentActions.deleteCommentDB(
+                            channelName,
+                            contentId,
+                            c.commentId
+                          )
+                        );
+                      }}
+                    />
                   </ChatListBoxInfo>
                 );
               })
@@ -121,17 +135,27 @@ const ChannelComment = (props) => {
               // 여긴 덕행님이 작성해두신 기본 뷰입니다
               <ChatListBoxInfo>
                 <ChatListUserImageWrap>
-                  <Image shape="ProfileImg" />
+                  <Image
+                    shape="ProfileImg"
+                    src={
+                      "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
+                    }
+                    margin="4px"
+                  />
                 </ChatListUserImageWrap>
                 <ChatListUserInfo>
-                  <Text fontWeight="700" color="black">
-                    홍길동
-                  </Text>
-                  <span>12:00</span>
-                  <div>내용</div>
+                  <NicknameBox>
+                    <p>홍길동</p>
+                    <span>{time}</span>
+                  </NicknameBox>
+                  <div>댓글 입니다.</div>
                 </ChatListUserInfo>
               </ChatListBoxInfo>
             )}
+            <CommentBox
+              channelName={nowContent.channelName}
+              contentId={nowContent.contentId}
+            />
           </ChatListBox>
         </ChatListWrap>
       </CommentWrap>
@@ -141,7 +165,7 @@ const ChannelComment = (props) => {
 
 const CommentWrap = styled.div`
   width: 100%;
-  height: calc(100vh - 10px);
+  height: calc(100vh - 50px);
   display: flex;
   flex-direction: column;
 `;

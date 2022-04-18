@@ -10,7 +10,7 @@ import MassageList from "../components/massage/MassageList";
 import ChannelPage from "./ChannelPage";
 import MessagePage from "./MessagePage";
 import MainIndex from "./MainIndex";
-import ChannelComment from "../components/channel/ChannelComment";
+import ChannelComment from "../components/channel/comment/ChannelComment";
 
 import { MdOutlineLayers } from "react-icons/md";
 import { history } from "../redux/configureStore";
@@ -48,22 +48,19 @@ const Main = () => {
               </SlackConnect>
               <ChannelList />
               <MassageList />
+              {/* <ChannelComment /> */}
             </div>
           </MenuScroll>
         </ChannelsWrap>
         <ChatsWrap>
           <Switch>
             {/* 한울: Slack Connect 를 보여줄 라우터가 필요해보여서 page 추가했습니다 */}
-            <Route path={["/main", "/"]} exact component={MainIndex} />
+            <Route path={"/"} exact component={MainIndex} />
             {/* 해당 채널을 특정하기위해 파라미터를 넘겨줍니다 */}
+            <Route path="/channel/:channelName" exact component={ChannelPage} />
+            <Route path="/dm/:dmName" exact component={MessagePage} />
             <Route
-              path="/main/channel/:channelName"
-              exact
-              component={ChannelPage}
-            />
-            <Route path="/main/dm" exact component={MessagePage} />
-            <Route
-              path="/main/channel/:channelName/:contentId"
+              path="/channel/:channelName/:contentId"
               exact
               component={ChannelComment}
             />

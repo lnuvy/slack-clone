@@ -12,7 +12,7 @@ const MassageList = () => {
         <GridMenu>다이렉트 메시지</GridMenu>
         <UserWarp
           onClick={() => {
-            history.replace("/main/dm");
+            history.replace("/dm/dmName");
           }}
         >
           <Image shape="ProfileImg" size="20" />
@@ -20,7 +20,7 @@ const MassageList = () => {
         </UserWarp>
         <UserWarp
           onClick={() => {
-            history.replace("/main/dm");
+            history.replace("/dm/dmName");
           }}
         >
           <Image shape="ProfileImg" size="20" />

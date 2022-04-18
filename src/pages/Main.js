@@ -10,7 +10,7 @@ import MassageList from "../components/massage/MassageList";
 import ChannelPage from "./ChannelPage";
 import MessagePage from "./MessagePage";
 import MainIndex from "./MainIndex";
-import ChannelComment from "../components/channel/ChannelComment";
+import ChannelComment from "../components/channel/comment/ChannelComment";
 
 import { MdOutlineLayers } from "react-icons/md";
 import { history } from "../redux/configureStore";
@@ -48,6 +48,7 @@ const Main = () => {
               </SlackConnect>
               <ChannelList />
               <MassageList />
+              {/* <ChannelComment /> */}
             </div>
           </MenuScroll>
         </ChannelsWrap>

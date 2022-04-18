@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import moment from "moment";
 import { Button, Image, Text } from "../../elements";
 import { useDispatch } from "react-redux";
 import { contentActions } from "../../redux/modules/content";
+import { history } from "../../redux/configureStore";
 
 const OneChat = (props) => {
   const dispatch = useDispatch();
@@ -16,16 +17,22 @@ const OneChat = (props) => {
     createdAt,
     content,
     channelName,
+    commentList,
   } = props;
-  const time = moment(createdAt).format("HH:mm");
+
+  useEffect(() => {}, [commentList]);
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [editText, setEditText] = useState(content);
+
+  const [hoverComment, setHoverComment] = useState(true);
 
   const editChat = () => {
     dispatch(contentActions.editContentDB(channelName, contentId, editText));
     setIsEditMode(false);
   };
+
+  const time = moment(createdAt).format("HH:mm");
 
   if (isEditMode) {
     return (
@@ -102,6 +109,35 @@ const OneChat = (props) => {
               {isEdit && "(편집됨)"}
             </Text>
           </ContentWrap>
+          <CommentBox
+            onClick={() => {
+              // 여기에서 해당 채널에 대한 뷰를 변경해줍니다
+              history.push(`/main/channel/${channelName}/${contentId}`);
+            }}
+            // onMouseEnter={() => setHoverComment(false)}
+            // onMouseLeave={() => setHoverComment(true)}
+          >
+            {commentList?.length && (
+              <>
+                <Image
+                  shape="ProfileImg"
+                  src={
+                    profileImg ||
+                    "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
+                  }
+                  size="24"
+                  margin="0px 4px 0px 0px"
+                />
+                {hoverComment ? (
+                  <p>{commentList?.length}개의 답글</p>
+                ) : (
+                  <p>
+                    {commentList?.length}개의 답글 <span>스레드 보기</span>
+                  </p>
+                )}
+              </>
+            )}
+          </CommentBox>
 
           <button
             onClick={() => {
@@ -135,8 +171,15 @@ const ChatListBoxInfo = styled.div`
 
 const ChatListUserImageWrap = styled.div`
   display: flex;
-  align-items: center;
+  // align-items: center;
+  & > Image {
+    shape: ProfileImg;
+    src: {
+      profileImg ||
+      "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
+    }
 `;
+
 const ChatListUserInfo = styled.div`
   margin-left: 10px;
 
@@ -153,6 +196,34 @@ const ChatListUserInfo = styled.div`
 const ContentWrap = styled.div`
   display: flex;
   font-size: 15px;
+`;
+
+const CommentBox = styled.div`
+  display: flex;
+  align-items: center;
+  width: 50vw;
+  margin: 6px 0px 0px;
+  padding: 5px 5px 5px 5px;
+  border-radius: 4px;
+  &:hover {
+    background: #fff;
+    border: 1px solid rgba(29, 28, 29, 0.3);
+  }
+  & > p {
+    font-size: 14px;
+    display: inline;
+    float: left;
+    font-weight: 600;
+    color: #1264a3;
+  }
+
+  & > p > span {
+    font-size: 14px;
+    color: gray;
+    font-weight: 500;
+    margin-left: 4px;
+  }
+  cursor: pointer;
 `;
 
 // 편집모드

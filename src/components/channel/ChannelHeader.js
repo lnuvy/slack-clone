@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { ModalPortal, Modal } from "../../shared/modal/portals";
+import Tooltip from "../../shared/Tooltip";
 
 const ChannelHeader = ({ title }) => {
   const [modalOn, setModalOn] = useState(false);
@@ -22,7 +23,11 @@ const ChannelHeader = ({ title }) => {
       </ModalPortal>
 
       <ChannelHeaderWrap>
-        <ChatHeaderTextbox onClick={handleModal}># {title}</ChatHeaderTextbox>
+        <ChatHeaderTextbox onClick={handleModal}>
+          <Tooltip message="채널 세부정보 받기">
+            <ChannelName># {title}</ChannelName>
+          </Tooltip>
+        </ChatHeaderTextbox>
 
         <ModalBtn width="50px" height=""></ModalBtn>
       </ChannelHeaderWrap>

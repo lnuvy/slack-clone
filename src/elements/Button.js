@@ -3,10 +3,10 @@ import styled from "styled-components";
 
 const Button = (props) => {
   // styles 에 오는것들 : width, height, bold, borderColor, bg, color, weight, padding, margin
-  const { children, onClick, ...styles } = props;
+  const { children, onClick, disabled = false, ...styles } = props;
 
   return (
-    <DefaultBtn onClick={onClick} {...styles}>
+    <DefaultBtn onClick={onClick} disabled={disabled} {...styles}>
       {children}
     </DefaultBtn>
   );

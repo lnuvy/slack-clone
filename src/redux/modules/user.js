@@ -95,7 +95,8 @@ const getUserInfo = (token) => {
     let fakeResposeUser = {
       email: "asdf@gmail.com",
       nickname: "닉네임~",
-      profileImg: "",
+      profileImg:
+        "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png",
     };
 
     if (getToken()) {

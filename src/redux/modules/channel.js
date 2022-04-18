@@ -2,14 +2,11 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 // import axios from "axios";
 
-// 한울: 명세당시에 데이터형식을 너무 대충작성한거같네요 ㅠㅠ
-// 석일님과 협의 후 데이터 형식 정리했습니다! 임시로 더미데이터 넣어놨어요~
 import { Dummy } from "../../shared/DummyData";
 import moment from "moment";
 
 const BASE_URL = "BASE_URL";
 
-// 한울: 언더바나 - 대쉬 보다는 카멜케이스를 선호해서 바꿨습니다!
 const initialState = {
   channelList: [],
 };
@@ -40,15 +37,20 @@ const deleteChannel = createAction(DELETE_CHANNEL, (channelName) => ({
 }));
 
 // 컨텐츠 추가부분
-const addContent = createAction(ADD_CONTENTS, (channelName, content) => ({
-  channelName,
+// channelName 대신 channelId 로 로직 다 수정
+const addContent = createAction(ADD_CONTENTS, (channelId, content) => ({
+  channelId,
   content,
 }));
 const editContent = createAction(
   EDIT_CONTENTS,
-  (channelName, contentId, content) => ({ channelName, contentId, content })
+  (channelId, contentId, content) => ({ channelId, contentId, content })
 );
-// const deleteContent = createAction();
+
+const deleteContent = createAction(DELETE_CONTENTS, (channelId, contentId) => ({
+  channelId,
+  contentId,
+}));
 
 // api 응답 받는 미들웨어
 const getChannelDB = (userId) => {
@@ -92,6 +94,7 @@ const addChannelDB = (channelData) => {
     const { nickname } = getState().user.user;
 
     const fakeResponseData = {
+      channelId: new Date().getTime() + "",
       channelName: channelData.channelName,
       createdAt: moment().format("YYYY-MM-DD HH:mm"),
       channelHost: nickname,
@@ -101,7 +104,7 @@ const addChannelDB = (channelData) => {
   };
 };
 
-const editChannelNameDB = (channelName, id) => {
+const editChannelNameDB = (channelId, changeName) => {
   return async function (dispatch, getState, { history }) {
     // await axios.post(`${BASE_URL}/channel/channel${id}`, channeldata)
     //   axios({
@@ -161,22 +164,21 @@ export default handleActions(
     // 컨텐츠 리듀서
     [ADD_CONTENTS]: (state, action) =>
       produce(state, (draft) => {
-        const { channelName, content } = action.payload;
+        const { channelId, content } = action.payload;
         draft.channelList.forEach((l) => {
-          if (l.channelName === channelName) l.contentList.push(content);
+          if (l.channelId === channelId) l.contentList.push(content);
         });
-        console.log(state.channelList);
       }),
     [EDIT_CONTENTS]: (state, action) =>
       produce(state, (draft) => {
-        const { channelName, contentId, content } = action.payload;
+        const { channelId, contentId, content } = action.payload;
         let nowChannel = draft.channelList.find(
-          (l) => l.channelName === channelName
+          (l) => l.channelId === channelId
         );
 
         // 현재채널 인덱스 찾기
         let index = draft.channelList.findIndex(
-          (l) => l.channelName === channelName
+          (l) => l.channelId === channelId
         );
         console.log(index);
 
@@ -185,20 +187,40 @@ export default handleActions(
           (c) => c.contentId !== contentId
         );
 
-        // 수정한 컨텐츠 합치기
-        contentList = [...contentList, content];
+        // 수정한 컨텐츠 합치기 , 시간 순으로 재정렬
+        let newArr = [...contentList, content].sort(
+          (a, b) =>
+            new moment(a.createdAt).format("YYYYMMDDHHmm") -
+            new moment(b.createdAt).format("YYYYMMDDHHmm")
+        );
+
+        console.log(newArr);
+
+        // 현재채널정보 갱신
+        nowChannel = { ...nowChannel, contentList: newArr };
+
+        draft.channelList[index] = nowChannel;
+      }),
+    [DELETE_CONTENTS]: (state, action) =>
+      produce(state, (draft) => {
+        const { channelId, contentId } = action.payload;
+
+        // 현재채널 인덱스 찾기
+        let index = draft.channelList.findIndex(
+          (l) => l.channelId === channelId
+        );
+
+        let nowChannel = draft.channelList[index];
+
+        // 삭제할 게시글을 제외하고 나머지를 반환
+        let contentList = nowChannel.contentList.filter(
+          (c) => c.contentId !== contentId
+        );
 
         // 현재채널정보 갱신
         nowChannel = { ...nowChannel, contentList };
 
         draft.channelList[index] = nowChannel;
-
-        console.log(nowChannel);
-
-        // draft.channelList.forEach((l) => {
-        //   if (l.channelName === channelName) {
-        //     let newArr = l.contentList.filter((c) => c.contentId !== contentId);
-        //     draft.channelList.l.contentList = [...newArr, content];
       }),
   },
   initialState
@@ -215,5 +237,5 @@ export const channelActions = {
   deleteChannelDB,
   addContent,
   editContent,
-  // deleteContent,
+  deleteContent,
 };

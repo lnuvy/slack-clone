@@ -1,15 +1,18 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import LoginFooter from "../components/login/LoginFooter";
 import LoginHeader from "../components/login/LoginHeader";
 import { LoginButton, Input, Text } from "../elements";
+import { userActions } from "../redux/modules/user";
 
 const SignUp = () => {
+  const dispatch = useDispatch();
   const [inputs, setInputs] = useState({});
 
   const handleChange = (e) => {
-    const id = e.target.id;
-    const value = e.target.value;
+    const { id } = e.target;
+    const { value } = e.target;
     setInputs((values) => ({ ...values, [id]: value }));
   };
 
@@ -20,8 +23,10 @@ const SignUp = () => {
       return;
     }
     console.log(inputs);
-    // dispatch
+    dispatch(userActions.signUpDB(inputs));
   };
+
+  console.log(inputs);
 
   return (
     <>
@@ -41,7 +46,8 @@ const SignUp = () => {
               padding="11px 12px 13px"
               margin="0 0 20px"
               placeholder="name@work-email.com"
-              onClick={handleChange}
+              onChange={handleChange}
+              value={inputs.email}
             />
 
             <Input
@@ -49,7 +55,8 @@ const SignUp = () => {
               padding="11px 12px 13px"
               margin="0 0 20px"
               placeholder="Nickname"
-              onClick={handleChange}
+              onChange={handleChange}
+              value={inputs.nickname}
             />
             <Input
               id="password"
@@ -57,7 +64,8 @@ const SignUp = () => {
               padding="11px 12px 13px"
               margin="0 0 20px"
               placeholder="Please enter your password"
-              onClick={handleChange}
+              onChange={handleChange}
+              value={inputs.password}
             />
             <Input
               id="passwordCheck"
@@ -65,7 +73,16 @@ const SignUp = () => {
               padding="11px 12px 13px"
               margin="0 0 20px"
               placeholder="Please enter your password"
-              onClick={handleChange}
+              onChange={handleChange}
+              value={inputs.passwordCheck}
+            />
+            <Input
+              id="profileImg"
+              padding="11px 12px 13px"
+              margin="0 0 20px"
+              placeholder="Please Enter your Profile Img URL (Options)"
+              onChange={handleChange}
+              value={inputs.profileImg}
             />
             <LoginButton onClick={handleSubmit}>회원가입</LoginButton>
           </InnerWrap>

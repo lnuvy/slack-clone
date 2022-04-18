@@ -18,9 +18,10 @@ const OneChat = (props) => {
     content,
     channelName,
     commentList,
+    channelId,
   } = props;
 
-  useEffect(() => {}, [commentList]);
+  // useEffect(() => {}, [commentList]);
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [editText, setEditText] = useState(content);
@@ -28,7 +29,9 @@ const OneChat = (props) => {
   const [hoverComment, setHoverComment] = useState(true);
 
   const editChat = () => {
-    dispatch(contentActions.editContentDB(channelName, contentId, editText));
+    dispatch(
+      contentActions.editContentDB(channelId, channelName, contentId, editText)
+    );
     setIsEditMode(false);
   };
 
@@ -52,9 +55,9 @@ const OneChat = (props) => {
               const { value } = e.target;
               setEditText(value);
             }}
-            // onKeyPress={(e) => {
-            //   if (e.key === "Enter") editChat();
-            // }}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") editChat();
+            }}
             value={editText}
             placeholder="메시지 편집"
           />
@@ -109,16 +112,16 @@ const OneChat = (props) => {
               {isEdit && "(편집됨)"}
             </Text>
           </ContentWrap>
-          <CommentBox
-            onClick={() => {
-              // 여기에서 해당 채널에 대한 뷰를 변경해줍니다
-              history.push(`/main/channel/${channelName}/${contentId}`);
-            }}
-            // onMouseEnter={() => setHoverComment(false)}
-            // onMouseLeave={() => setHoverComment(true)}
-          >
-            {commentList?.length && (
-              <>
+          {commentList?.length && (
+            <>
+              <CommentBox
+                onClick={() => {
+                  // 여기에서 해당 채널에 대한 뷰를 변경해줍니다
+                  history.push(`/channel/${channelName}/${contentId}`);
+                }}
+                onMouseEnter={() => setHoverComment(false)}
+                onMouseLeave={() => setHoverComment(true)}
+              >
                 <Image
                   shape="ProfileImg"
                   src={
@@ -135,13 +138,14 @@ const OneChat = (props) => {
                     {commentList?.length}개의 답글 <span>스레드 보기</span>
                   </p>
                 )}
-              </>
-            )}
-          </CommentBox>
+              </CommentBox>
+            </>
+          )}
 
           <button
             onClick={() => {
               console.log("삭제");
+              dispatch(contentActions.deleteContentDB(channelId, contentId));
             }}
           >
             삭제
@@ -172,12 +176,6 @@ const ChatListBoxInfo = styled.div`
 const ChatListUserImageWrap = styled.div`
   display: flex;
   // align-items: center;
-  & > Image {
-    shape: ProfileImg;
-    src: {
-      profileImg ||
-      "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
-    }
 `;
 
 const ChatListUserInfo = styled.div`
@@ -205,6 +203,7 @@ const CommentBox = styled.div`
   margin: 6px 0px 0px;
   padding: 5px 5px 5px 5px;
   border-radius: 4px;
+  border: 1px solid transparent;
   &:hover {
     background: #fff;
     border: 1px solid rgba(29, 28, 29, 0.3);

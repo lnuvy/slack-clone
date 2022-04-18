@@ -12,7 +12,6 @@ const OnebtnModal = ({ children, onClose, title, btnText, onSubmit }) => {
         className="flex-row"
         onClick={(e) => {
           e.stopPropagation();
-          console.log("배경눌러도 닫혀라!");
           onClose();
         }}
       >
@@ -28,7 +27,6 @@ const OnebtnModal = ({ children, onClose, title, btnText, onSubmit }) => {
           <CancelBtn
             className="flex-row"
             onClick={() => {
-              console.log("닫아!");
               onClose();
             }}
           >
@@ -107,7 +105,7 @@ const Background = styled.div`
 const Content = styled.div`
   justify-content: start;
   z-index: 205;
-  height: 518px;
+  height: 50vh;
   max-width: 520px;
   width: 100%;
   border-radius: 8px;

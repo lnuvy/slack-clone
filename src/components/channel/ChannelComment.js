@@ -17,14 +17,9 @@ const ChannelComment = (props) => {
   //     dispatch(channelActions.getChannelDB());
   //   }, []);
 
-  const { contentList2 } = props;
-  console.log(contentList2);
-
   const { channelName } = props.match?.params;
-  console.log(channelName);
 
   const contentId = useParams().contentId;
-  console.log(contentId);
 
   const channel = useSelector((state) => state.channel.channelList);
   console.log(channel);
@@ -61,7 +56,7 @@ const ChannelComment = (props) => {
           <BsXLg
             style={{ color: "gray", fontSize: "15px" }}
             onClick={() => {
-              history.push(`/main/channel/${nowContent.channelName}`);
+              history.push(`/channel/${nowContent.channelName}`);
             }}
           />
         </CommentHeaderWrap>
@@ -91,7 +86,6 @@ const ChannelComment = (props) => {
               <hr />
             </CommentCount>
 
-            {/* 새로고침 시에 에러나지 않게 막아놨습니다 */}
             {commentList ? (
               commentList.map((c, i) => {
                 const time = moment(c.createdAt).format("HH:mm");
@@ -141,7 +135,8 @@ const ChannelComment = (props) => {
 
 const CommentWrap = styled.div`
   width: 100%;
-  height: calc(100vh - 10px);
+  // 여기 고치니까 아래쪽 괜찮아지네요
+  height: calc(100vh - 44px);
   display: flex;
   flex-direction: column;
 `;
@@ -194,12 +189,12 @@ const ChatListBoxInfo = styled.div`
 const ChatListUserImageWrap = styled.div`
   display: flex;
   // align-items: center;
-  & > Image {
+  /* & > Image {
     shape: ProfileImg;
     src: {
-      c.profileImg ||
+      profileImg ||
       "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
-    }
+    } */
 `;
 
 const ChatListUserInfo = styled.div`

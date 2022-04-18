@@ -12,12 +12,6 @@ const ChannelMsg = (props) => {
   const { contentList } = props?.nowChannel || [];
   console.log(contentList);
 
-  const [hoverComment, setHoverComment] = useState(true);
-
-  // const handleComment = () => {
-  //   setHoverComment(true);
-  // };
-
   return (
     <>
       <ChatListWrap>
@@ -26,58 +20,6 @@ const ChannelMsg = (props) => {
           {contentList ? (
             contentList.map((c, i) => {
               return <OneChat key={c.contentId} {...c} />;
-              //   return (
-              //     <ChatListBoxInfo key={c.contentId}>
-              //       <ChatListUserImageWrap>
-              //         <Image
-              //           shape="ProfileImg"
-              //           src={
-              //             c.profileImg ||
-              //             "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
-              //           }
-              //           margin="4px"
-              //         />
-              //       </ChatListUserImageWrap>
-              //       <ChatListUserInfo>
-              //         <NicknameBox>
-              //           <p>{c.nickname}</p>
-              //           <span>{time}</span>
-              //         </NicknameBox>
-              //         <div>{c.content}</div>
-              //         <CommentBox
-              //           onClick={() => {
-              //             // 여기에서 해당 채널에 대한 뷰를 변경해줍니다
-              //             history.push(
-              //               `/main/channel/${c.channelName}/${c.contentId}`
-              //             );
-              //           }}
-              //           onMouseEnter={() => setHoverComment(false)}
-              //           onMouseLeave={() => setHoverComment(true)}
-              //         >
-              //           <Image
-              //             shape="ProfileImg"
-              //             src={
-              //               c.profileImg ||
-              //               "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
-              //             }
-              //             size="24"
-              //             margin="0px 4px 0px 0px"
-              //           />
-
-              //           {hoverComment ? (
-              //             <p>{c.commentList.length}개의 답글</p>
-              //           ) : (
-              //             <p>
-              //               {c.commentList.length}개의 답글{" "}
-              //               <span>스레드 보기</span>
-              //             </p>
-              //           )}
-              //         </CommentBox>
-              //       </ChatListUserInfo>
-              //     </ChatListBoxInfo>
-              //   );
-              // })
-              // )
             })
           ) : (
             // 여긴 덕행님이 작성해두신 기본 뷰입니다
@@ -101,7 +43,8 @@ const ChannelMsg = (props) => {
 };
 
 const ChatListWrap = styled.div`
-  height: 76vh;
+  // 여기 높이를 좀 줄이니까 메인 스크롤바가 안생기네요
+  height: 73vh;
   padding: 8px 0px;
   flex-direction: rows;
   overflow-y: scroll;
@@ -121,13 +64,6 @@ const ChatListBoxInfo = styled.div`
 `;
 const ChatListUserImageWrap = styled.div`
   display: flex;
-  // align-items: center;
-  & > Image {
-    shape: ProfileImg;
-    src: {
-      c.profileImg ||
-      "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
-    }
 `;
 
 const ChatListUserInfo = styled.div`

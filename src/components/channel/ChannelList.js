@@ -13,9 +13,7 @@ const ChannelList = (props) => {
   const dispatch = useDispatch();
   // 리덕스에 넣은 더미데이터 형식으로 뿌렸습니다
   const channel = useSelector((state) => state.channel.channelList);
-  console.log(channel);
 
-  // 저는 React.~~~ 보다는 생략해서 쓰는걸 선호해서 1번라인에 useEffect, useState를 임포트해서 사용했습니다
   useEffect(() => {
     dispatch(channelActions.getChannelDB());
   }, []);
@@ -99,7 +97,7 @@ const ChannelList = (props) => {
                 {...c}
                 onClick={() => {
                   // 여기에서 해당 채널에 대한 뷰를 변경해줍니다
-                  history.push(`/main/channel/${c.channelName}`);
+                  history.push(`/channel/${c.channelName}`);
                 }}
               >
                 <span style={{ margin: "0px 5px" }}># {c.channelName}</span>

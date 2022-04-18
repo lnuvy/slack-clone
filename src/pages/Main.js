@@ -40,7 +40,7 @@ const Main = () => {
                 <span
                   style={{ cursor: "pointer" }}
                   onClick={() => {
-                    history.push("/main");
+                    history.push("/");
                   }}
                 >
                   Slack Connect
@@ -53,17 +53,11 @@ const Main = () => {
         </ChannelsWrap>
         <ChatsWrap>
           <Switch>
-            {/* 한울: Slack Connect 를 보여줄 라우터가 필요해보여서 page 추가했습니다 */}
-            <Route path={["/main", "/"]} exact component={MainIndex} />
-            {/* 해당 채널을 특정하기위해 파라미터를 넘겨줍니다 */}
+            <Route path="/" exact component={MainIndex} />
+            <Route path="/channel/:channelName" exact component={ChannelPage} />
+            <Route path="/dm/:dmName" exact component={MessagePage} />
             <Route
-              path="/main/channel/:channelName"
-              exact
-              component={ChannelPage}
-            />
-            <Route path="/main/dm" exact component={MessagePage} />
-            <Route
-              path="/main/channel/:channelName/:contentId"
+              path="/channel/:channelName/:contentId"
               exact
               component={ChannelComment}
             />

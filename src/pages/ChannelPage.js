@@ -24,7 +24,8 @@ const ChannelPage = (props) => {
       <ChannelsWrap>
         <ChannelHeader title={channelName} />
         <ChannelMsg nowChannel={oneChannel} />
-        <ChannelMsgBox title={channelName} />
+        {/* 한울: 여기서 옵셔널체이닝을 안주면 채널 생성후 그 채널로 들어갔을때 터지네요! 참고하시면 좋을듯합니다 */}
+        <ChannelMsgBox channelId={oneChannel?.channelId} title={channelName} />
       </ChannelsWrap>
     </>
   );

@@ -15,7 +15,7 @@ export const history = createBrowserHistory();
 const rootReducer = combineReducers({
   user: User,
   channel: Channel,
-  // content: Content,
+  content: Content,
   // image: Image,
   // comment: Comment,
   router: connectRouter(history),

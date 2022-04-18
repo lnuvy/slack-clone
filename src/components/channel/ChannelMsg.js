@@ -5,6 +5,7 @@ import Dropdown from "../Dropdown";
 import { history } from "../../redux/configureStore";
 
 import { Image, Text } from "../../elements/index";
+import OneChat from "./OneChat";
 
 const ChannelMsg = (props) => {
   // ChannelPage 에서 받은 채널 정보의 contentList
@@ -75,6 +76,7 @@ const ChannelMsg = (props) => {
                   </ChatListUserInfo>
                 </ChatListBoxInfo>
               );
+              return <OneChat key={c.contentId} {...c} />;
             })
           ) : (
             // 여긴 덕행님이 작성해두신 기본 뷰입니다
@@ -98,7 +100,7 @@ const ChannelMsg = (props) => {
 };
 
 const ChatListWrap = styled.div`
-  height: 100vh;
+  height: 76vh;
   padding: 8px 0px;
   flex-direction: rows;
   overflow-y: scroll;

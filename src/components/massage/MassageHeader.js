@@ -9,7 +9,7 @@ const MassageHeader = () => {
         <MsgHeaderTextbox>
           <ChatUser>
             <Image size="22" />
-            <ChannelName>홍길동</ChannelName>
+            <ChannelName>홍홍</ChannelName>
           </ChatUser>
         </MsgHeaderTextbox>
       </MsgHeaderWrap>

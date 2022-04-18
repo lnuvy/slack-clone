@@ -20,6 +20,7 @@ const MainIndex = () => {
               <strong>Slack Connect의 작동 방법을 확인해보세요</strong>
             </RadiusBtn>
           </LeftInfo>
+          <RightImg></RightImg>
         </InfoWrap>
       </BuildingDiv>
     </>
@@ -68,6 +69,18 @@ const RadiusBtn = styled.button`
       color: yellow;
     }
   }
+`;
+
+const RightImg = styled.div`
+  display: flex;
+  width: 300px;
+  height: 300px;
+  flex: 0 1 auto;
+  // 여기 왜 사진이 안되지 ?
+  background-image: url("../shared/images/main_img.png");
+  background-repeat: no-repeat;
+  /* background-position: 50%; */
+  background-size: contain;
 `;
 
 export default MainIndex;

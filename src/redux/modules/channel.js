@@ -20,14 +20,15 @@ const ADD_CHANNEL = "ADD_CHANNEL";
 const EDIT_CHANNEL_NAME = "EDIT_CHANNEL_NAME";
 const DELETE_CHANNEL = "DELETE_CHANNEL";
 
-// 액션 생성함수
+// 컨턴츠 추가 액션
+const ADD_CONTENTS = "ADD_CONTENTS";
+const EDIT_CONTENTS = "EDIT_CONTENTS";
+const DELETE_CONTENTS = "DELETE_CONTENTS";
 
-// 한울: channelData 보다 initialState 에 선언하신 channelList 로 통일하는게 좋을거같아서 바꿨습니다
-// 채널은 석일님이랑 얘기해서 channelName 자체를 고유한 아이디처럼 사용하기로 해서 나머지도 모두 변수명을 바꿨습니다
+// 액션 생성함수
 const getChannel = createAction(GET_CHANNEL, (channelList) => ({
   channelList,
 }));
-// 여기는 channelName 만 받지말고 Response 로 받은 채널 데이터 딕셔너리를 넘겼습니다
 const addChannel = createAction(ADD_CHANNEL, (channel) => ({
   channel,
 }));
@@ -37,6 +38,17 @@ const editChannelName = createAction(EDIT_CHANNEL_NAME, (channelName) => ({
 const deleteChannel = createAction(DELETE_CHANNEL, (channelName) => ({
   channelName,
 }));
+
+// 컨텐츠 추가부분
+const addContent = createAction(ADD_CONTENTS, (channelName, content) => ({
+  channelName,
+  content,
+}));
+const editContent = createAction(
+  EDIT_CONTENTS,
+  (channelName, contentId, content) => ({ channelName, contentId, content })
+);
+// const deleteContent = createAction();
 
 // api 응답 받는 미들웨어
 const getChannelDB = (userId) => {
@@ -143,16 +155,50 @@ export default handleActions(
       produce(state, (draft) => {
         draft.channelList.push(action.payload.channel);
       }),
-    [EDIT_CHANNEL_NAME]: (state, action) =>
+    [EDIT_CHANNEL_NAME]: (state, action) => produce(state, (draft) => {}),
+    [DELETE_CHANNEL]: (state, action) => produce(state, (draft) => {}),
+
+    // 컨텐츠 리듀서
+    [ADD_CONTENTS]: (state, action) =>
       produce(state, (draft) => {
-        let idx = draft.list.findIndex(
-          (channel) => channel.channelTitle === action.payload.channelTitle
-        ); //인덱스 반환 => 딱 위치만 찾는 함수
-        console.log(action);
-        draft.list[idx] = {
-          ...draft.list[idx],
-          ...action.payload.channelTitle,
-        };
+        const { channelName, content } = action.payload;
+        draft.channelList.forEach((l) => {
+          if (l.channelName === channelName) l.contentList.push(content);
+        });
+        console.log(state.channelList);
+      }),
+    [EDIT_CONTENTS]: (state, action) =>
+      produce(state, (draft) => {
+        const { channelName, contentId, content } = action.payload;
+        let nowChannel = draft.channelList.find(
+          (l) => l.channelName === channelName
+        );
+
+        // 현재채널 인덱스 찾기
+        let index = draft.channelList.findIndex(
+          (l) => l.channelName === channelName
+        );
+        console.log(index);
+
+        // 수정된 게시글을 제외한 나머지를 배열로 반환
+        let contentList = nowChannel.contentList.filter(
+          (c) => c.contentId !== contentId
+        );
+
+        // 수정한 컨텐츠 합치기
+        contentList = [...contentList, content];
+
+        // 현재채널정보 갱신
+        nowChannel = { ...nowChannel, contentList };
+
+        draft.channelList[index] = nowChannel;
+
+        console.log(nowChannel);
+
+        // draft.channelList.forEach((l) => {
+        //   if (l.channelName === channelName) {
+        //     let newArr = l.contentList.filter((c) => c.contentId !== contentId);
+        //     draft.channelList.l.contentList = [...newArr, content];
       }),
   },
   initialState
@@ -167,4 +213,7 @@ export const channelActions = {
   addChannelDB,
   editChannelNameDB,
   deleteChannelDB,
+  addContent,
+  editContent,
+  // deleteContent,
 };

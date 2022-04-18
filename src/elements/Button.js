@@ -20,7 +20,10 @@ const DefaultBtn = styled.button`
   border: 1px solid rgba(29, 28, 29, 0.3);
 
   &:hover {
-    background: rgba(248, 248, 248, 0.2);
+    ${({ bg }) =>
+      bg
+        ? `box-shadow: 0 1px 4px rgb(0 0 0 / 30%);`
+        : "background: rgba(248, 248, 248, 0.2);"}
   }
 
   width: ${({ width }) => (width ? `${width};` : "100%;")};
@@ -30,6 +33,7 @@ const DefaultBtn = styled.button`
   ${({ weight }) => (weight ? `font-weight: ${weight};` : "font-weight: 400;")}
   padding: ${({ padding }) => (padding ? `${padding};` : "0;")};
   margin: ${({ margin }) => (margin ? `${margin};` : "0;")};
+  ${({ fontSize }) => (fontSize ? `font-size: ${fontSize};` : null)};
 `;
 
 export default Button;

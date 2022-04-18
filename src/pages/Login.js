@@ -90,10 +90,11 @@ const InfoDiv = styled.div`
 const H1Tag = styled.h1`
   font-size: 48px;
   font-weight: 700;
+  line-height: 1.2143;
 `;
 
 const InnerWrap = styled.div`
-  width: 400px;
+  max-width: 400px;
 `;
 
 const HrTag = styled.hr`

@@ -94,29 +94,6 @@ const Modal = ({ onClose, title, children }) => {
   );
 };
 
-const Background = styled.div`
-  z-index: 205;
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  text-align: center;
-  background-color: rgba(0, 0, 0, 0.5);
-`;
-
-const Content = styled.div`
-  z-index: 204;
-  height: min(85vh, 820px);
-  max-width: 580px;
-  width: 80%;
-  border-radius: 8px;
-  background-color: #fff;
-
-  position: relative;
-  overflow: scroll;
-`;
-
 const TopDiv = styled.div`
   height: 104px;
 `;
@@ -148,6 +125,30 @@ const ButtonDiv = styled.div`
 const MiddleContent = styled.div`
   height: calc(100% - 104px);
   background: rgba(29, 28, 29, 0.13);
+`;
+
+// 한울: 백그라운드랑 컨텐츠는 앞으로 모달에서 공통속성이라 가독성을 위해 가장 아래로 내렸습니다
+const Background = styled.div`
+  z-index: 205;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.5);
+`;
+
+const Content = styled.div`
+  z-index: 204;
+  height: min(85vh, 820px);
+  max-width: 580px;
+  width: 80%;
+  border-radius: 8px;
+  background-color: #fff;
+
+  position: relative;
+  overflow: scroll;
 `;
 
 export default Modal;

@@ -36,11 +36,7 @@ const NavigationBarWarp = styled.header`
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-
-  // z-index 가 설정돼있으면 모달이 켜졌을때 상단 내비가 우선적으로 표시됩니다
-  // 모달에 z-index를 줘봤는데 잘 안되네요ㅜㅠ
-  // 오후 4시쯤 추가: 모달의 background 에 z-index를 주니 해결됐습니다!
+  // position: relative;
   z-index: 203;
   text-align: center;
 `;

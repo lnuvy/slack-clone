@@ -1,49 +1,51 @@
+import moment from "moment";
 import React from "react";
 import styled from "styled-components";
 
 import { Image, Text } from "../../elements/index";
 
-const ChannelMsg = () => {
+const ChannelMsg = (props) => {
+  // ChannelPage 에서 받은 채널 정보의 contentList
+  const { contentList } = props?.nowChannel || [];
+
   return (
     <>
       <ChatListWrap>
         <ChatListBox>
-          <ChatListBoxInfo>
-            <ChatListUserImageWrap>
-              <Image shape="ProfileImg" />
-            </ChatListUserImageWrap>
-            <ChatListUserInfo>
-              <Text fontWeight="700" color="black">
-                홍길동
-              </Text>
-              <span>12:00</span>
-              <div>내용</div>
-            </ChatListUserInfo>
-          </ChatListBoxInfo>
-          <ChatListBoxInfo>
-            <ChatListUserImageWrap>
-              <Image shape="ProfileImg" />
-            </ChatListUserImageWrap>
-            <ChatListUserInfo>
-              <Text fontWeight="700" color="black">
-                홍길동
-              </Text>
-              <span>12:00</span>
-              <div>내용</div>
-            </ChatListUserInfo>
-          </ChatListBoxInfo>
-          <ChatListBoxInfo>
-            <ChatListUserImageWrap>
-              <Image shape="ProfileImg" />
-            </ChatListUserImageWrap>
-            <ChatListUserInfo>
-              <Text fontWeight="700" color="black">
-                홍길동
-              </Text>
-              <span>12:00</span>
-              <div>내용</div>
-            </ChatListUserInfo>
-          </ChatListBoxInfo>
+          {/* 새로고침 시에 에러나지 않게 막아놨습니다 */}
+          {contentList ? (
+            contentList.map((c, i) => {
+              const time = moment(c.createdAt).format("HH:mm");
+              return (
+                <ChatListBoxInfo key={c.contentId}>
+                  <ChatListUserImageWrap>
+                    <Image shape="ProfileImg" src={c.profileImg || null} />
+                  </ChatListUserImageWrap>
+                  <ChatListUserInfo>
+                    <Text fontWeight="700" color="black">
+                      {c.nickname}
+                    </Text>
+                    <span>{time}</span>
+                    <div>{c.content}</div>
+                  </ChatListUserInfo>
+                </ChatListBoxInfo>
+              );
+            })
+          ) : (
+            // 여긴 덕행님이 작성해두신 기본 뷰입니다
+            <ChatListBoxInfo>
+              <ChatListUserImageWrap>
+                <Image shape="ProfileImg" />
+              </ChatListUserImageWrap>
+              <ChatListUserInfo>
+                <Text fontWeight="700" color="black">
+                  홍길동
+                </Text>
+                <span>12:00</span>
+                <div>내용</div>
+              </ChatListUserInfo>
+            </ChatListBoxInfo>
+          )}
         </ChatListBox>
       </ChatListWrap>
     </>

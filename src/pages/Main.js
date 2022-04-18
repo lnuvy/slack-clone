@@ -10,6 +10,7 @@ import MassageList from "../components/massage/MassageList";
 import ChannelPage from "./ChannelPage";
 import MessagePage from "./MessagePage";
 import MainIndex from "./MainIndex";
+import ChannelComment from "../components/channel/ChannelComment";
 
 import { MdOutlineLayers } from "react-icons/md";
 import { history } from "../redux/configureStore";
@@ -61,6 +62,11 @@ const Main = () => {
               component={ChannelPage}
             />
             <Route path="/main/dm" exact component={MessagePage} />
+            <Route
+              path="/main/channel/:channelName/:contentId"
+              exact
+              component={ChannelComment}
+            />
           </Switch>
         </ChatsWrap>
       </MainWrap>

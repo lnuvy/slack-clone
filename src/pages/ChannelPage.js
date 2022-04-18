@@ -5,6 +5,7 @@ import ChannelHeader from "../components/channel/ChannelHeader";
 import ChannelMsgBox from "../components/channel/ChannelMsgBox";
 import ChannelMsg from "../components/channel/ChannelMsg";
 import { useSelector } from "react-redux";
+import ChannelComment from "../components/channel/ChannelComment";
 
 const ChannelPage = (props) => {
   // 주소창에서 파라미터값을 받아오기

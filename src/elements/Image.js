@@ -2,12 +2,13 @@ import React from "react";
 import styled from "styled-components";
 
 const Image = (props) => {
-  const { shape, src, size, opacity } = props;
+  const { shape, src, size, opacity, margin } = props;
 
   const styles = {
     src: src,
     size: size,
     opacity: opacity,
+    margin: margin,
   };
 
   if (shape === "ProfileImg") {
@@ -42,7 +43,7 @@ const ProfileImg = styled.div`
   border-radius: 5px;
   background-image: url("${(props) => props.src}");
   background-size: cover;
-  margin: 4px;
+  margin: ${(props) => props.margin};
   cursor: pointer;
   &:hover {
     opacity: ${(props) => props.opacity};

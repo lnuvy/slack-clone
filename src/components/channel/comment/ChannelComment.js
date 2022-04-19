@@ -37,14 +37,18 @@ const ChannelComment = (props) => {
       .contentList.find((c) => c.contentId === contentId) || [];
   console.log(nowContent);
 
+  const commentList2 = nowContent.commentList;
+
   // 클릭한 Content의 Comment List입니다.
   let commentList = [];
-  if (nowContent.length) {
+  if (commentList2.length) {
     commentList = channelList
-      ?.find((c) => c.channelId === channelId)
+      .find((c) => c.channelId === channelId)
       .contentList.find((c) => c.contentId === contentId).commentList;
-    console.log(commentList);
   }
+
+  console.log(commentList);
+  console.log(commentList2);
 
   const time = moment(nowContent.createdAt).format("M월 DD일, HH:MM");
   console.log(time);
@@ -154,7 +158,7 @@ const ChannelComment = (props) => {
               </ChatListBoxInfo>
             )}
             <CommentBox
-              channelName={nowContent?.channelName}
+              channelId={nowContent?.channelId}
               contentId={nowContent?.contentId}
             />
           </ChatListBox>

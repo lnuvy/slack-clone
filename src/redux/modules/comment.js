@@ -9,7 +9,7 @@ import { channelActions } from "./channel";
 const BASE_URL = "BASE_URL";
 
 const initialState = {
-  oneChannel: {},
+  oneComment: {},
 };
 
 // 액션
@@ -20,8 +20,8 @@ const DELETE_COMMENT = "DELETECOMMENT";
 // 액션 생성함수
 // 한울 추가: 언더바는 사용해보니 좋은걸 잘 모르겠어서 빼버렸습니다!
 
-const getComment = createAction(GET_COMMENT, (commentList) => ({
-  commentList,
+const getComment = createAction(GET_COMMENT, (comment) => ({
+  comment,
 }));
 const addComment = createAction(ADD_COMMENT, (comment) => ({
   comment,
@@ -30,11 +30,11 @@ const deleteComment = createAction(DELETE_COMMENT, (commentId) => ({
   commentId,
 }));
 
-const getCommentList = (channelName, contentId) => {
+const getCommentList = (channelId, contentId) => {
   return async function (dispatch, getState, { history }) {
     const commentList = getState()
-      .channel.channelList.find((l) => l.channelName === channelName)
-      .contentList.find((l) => l.contentId === contentId);
+      .channel.channelList.find((l) => l.channelId === channelId)
+      .contentList.find((l) => l.contentId === contentId).commentList;
     console.log(commentList);
 
     dispatch(getComment(commentList));
@@ -48,9 +48,11 @@ const getCommentList = (channelName, contentId) => {
   };
 };
 
-const addCommentDB = (channelName, contentId, comment) => {
+const addCommentDB = (channelId, contentId, comment) => {
   return async function (dispatch, getState, { history }) {
     if (!comment) return;
+
+    console.log(channelId, contentId, comment);
 
     // axios
     // await axios.post(`${BASE_URL}/${channelName}/${contentId}/comment`).then((res) => {
@@ -72,11 +74,9 @@ const addCommentDB = (channelName, contentId, comment) => {
       profileImg,
     };
 
-    dispatch(addComment(fakeResponseData));
+    // dispatch(addComment(fakeResponseData));
     // 여기서 채널 액션함수 호출
-    dispatch(
-      channelActions.addComment(channelName, contentId, fakeResponseData)
-    );
+    dispatch(channelActions.addComment(channelId, contentId, fakeResponseData));
   };
 };
 
@@ -101,12 +101,12 @@ export default handleActions(
   {
     [GET_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.oneChannel = action.payload.commentList;
+        draft.oneComment = action.payload.commentList;
       }),
 
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.oneChannel.commentList.push(action.payload.commentList);
+        draft.oneComment.push(action.payload.commentList);
       }),
 
     [DELETE_COMMENT]: (state, action) =>

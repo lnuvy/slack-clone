@@ -39,10 +39,11 @@ const deleteContent = createAction(DELETE_CONTENT, (contentId) => ({
   contentId,
 }));
 
-const getContentList = (channelId) => {
+const getContentList = (contentId) => {
   return function (dispatch, getState, { history }) {
+    if (!contentId) return;
     const contentList = getState().channel.channelList.find(
-      (l) => l.channelId === channelId
+      (l) => l.channelId === contentId
     );
     dispatch(getContent(contentList));
   };

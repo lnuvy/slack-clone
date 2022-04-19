@@ -57,7 +57,7 @@ const ChannelComment = (props) => {
           <BsXLg
             style={{ color: "gray", fontSize: "15px" }}
             onClick={() => {
-              history.push(`/channel/${nowContent.channelName}`);
+              history.push(`/channel/${nowContent.channelId}`);
             }}
           />
         </CommentHeaderWrap>

@@ -156,6 +156,7 @@ const Modal = ({ onClose, data, children }) => {
             onClose={handleModal}
             title="이 채널 이름 변경"
             btnText="변경사항 저장"
+            btnColor="#007a5a"
             onSubmit={handleSubmit}
           >
             <div style={{ textAlign: "start" }}>

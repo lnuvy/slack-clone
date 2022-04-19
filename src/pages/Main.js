@@ -74,9 +74,7 @@ const MainWrap = styled.div`
 `;
 
 const ChannelsWrap = styled.nav`
-  max-width: 260px;
-  width: 100%;
-  min-width: 200px;
+  width: 260px;
   display: inline-flex;
   flex-direction: column;
   background: #3f0e40;

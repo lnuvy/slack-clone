@@ -84,7 +84,7 @@ const loginDB = (inputs) => {
     insertToken(fakeResponseToken);
     console.log("로컬 스토리지에 토큰을 넣었습니다");
     dispatch(login(fakeResponseToken, fakeResponseData));
-    history.push("/main");
+    history.push("/");
   };
 };
 

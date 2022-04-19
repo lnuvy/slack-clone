@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import moment from "moment";
+import "moment/locale/ko";
 import { Button, Image, Text } from "../../elements";
 import { useDispatch } from "react-redux";
 import { contentActions } from "../../redux/modules/content";
 import { history } from "../../redux/configureStore";
+import { FaRegEdit } from "react-icons/fa";
+import { BsXLg } from "react-icons/bs";
+import { ModalPortal } from "../../shared/modal/portals";
+import TwobtnModal from "../../shared/modal/component/TwobtnModal";
 
 const OneChat = (props) => {
   const dispatch = useDispatch();
@@ -26,7 +31,13 @@ const OneChat = (props) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editText, setEditText] = useState(content);
 
-  const [hoverComment, setHoverComment] = useState(true);
+  const [hoverComment, setHoverComment] = useState(false);
+  const [hoverUDIcon, sethoverUDIcon] = useState(false);
+
+  const [modalOn, setModalOn] = useState(false);
+  const handleModal = () => {
+    setModalOn(!modalOn);
+  };
 
   const editChat = () => {
     dispatch(
@@ -35,7 +46,13 @@ const OneChat = (props) => {
     setIsEditMode(false);
   };
 
+  const deleteChat = () => {
+    dispatch(contentActions.deleteContentDB(channelId, contentId));
+  };
+
   const time = moment(createdAt).format("HH:mm");
+  // 삭제 모달때 보여지는 시간정보
+  const deleteKo = moment(createdAt).calendar();
 
   if (isEditMode) {
     return (
@@ -88,77 +105,119 @@ const OneChat = (props) => {
     );
   } else
     return (
-      <ChatListBoxInfo>
-        <ChatListUserImageWrap>
-          <Image
-            shape="ProfileImg"
-            src={
-              profileImg ||
-              "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
-            }
-          />
-        </ChatListUserImageWrap>
-        <ChatListUserInfo>
-          <div className="flex-row" style={{ justifyContent: "start" }}>
-            <Text fontWeight="700" color="black">
-              {nickname}
-            </Text>
-            <span>{time}</span>
+      <>
+        <ChatListBoxInfo
+          onMouseEnter={() => sethoverUDIcon(true)}
+          onMouseLeave={() => sethoverUDIcon(false)}
+        >
+          <div style={{ display: "flex" }}>
+            <ChatListUserImageWrap>
+              <Image
+                shape="ProfileImg"
+                src={
+                  profileImg ||
+                  "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
+                }
+              />
+            </ChatListUserImageWrap>
+            <ChatListUserInfo>
+              <div className="flex-row" style={{ justifyContent: "start" }}>
+                <Text fontWeight="700" color="black">
+                  {nickname}
+                </Text>
+                <span>{time}</span>
+              </div>
+
+              <ContentWrap>
+                {content}&nbsp;
+                <Text fontWeight="400" color="#696969">
+                  {isEdit && "(편집됨)"}
+                </Text>
+              </ContentWrap>
+              {commentList?.length && (
+                <>
+                  <CommentBox
+                    onClick={() => {
+                      // 여기에서 해당 채널에 대한 뷰를 변경해줍니다
+                      history.push(`/channel/${channelId}/${contentId}`);
+                    }}
+                    onMouseEnter={() => setHoverComment(true)}
+                    onMouseLeave={() => setHoverComment(false)}
+                  >
+                    <Image
+                      shape="ProfileImg"
+                      src={
+                        profileImg ||
+                        "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
+                      }
+                      size="24"
+                      margin="0px 4px 0px 0px"
+                    />
+                    {hoverComment ? (
+                      <p>
+                        {commentList?.length}개의 답글 <span>스레드 보기</span>
+                      </p>
+                    ) : (
+                      <p>{commentList?.length}개의 답글</p>
+                    )}
+                  </CommentBox>
+                </>
+              )}
+            </ChatListUserInfo>
           </div>
+          <div style={{ display: "flex" }}>
+            <IconBox
+              onClick={() => {
+                console.log("수정");
+                setIsEditMode(true);
+              }}
+            >
+              {hoverUDIcon && <FaRegEdit />}
+            </IconBox>
+            <IconBox onClick={handleModal}>{hoverUDIcon && <BsXLg />}</IconBox>
+          </div>
+        </ChatListBoxInfo>
 
-          <ContentWrap>
-            {content}&nbsp;
-            <Text fontWeight="400" color="#696969">
-              {isEdit && "(편집됨)"}
-            </Text>
-          </ContentWrap>
-          {commentList?.length && (
-            <>
-              <CommentBox
-                onClick={() => {
-                  // 여기에서 해당 채널에 대한 뷰를 변경해줍니다
-                  history.push(`/channel/${channelId}/${contentId}`);
-                }}
-                onMouseEnter={() => setHoverComment(false)}
-                onMouseLeave={() => setHoverComment(true)}
-              >
-                <Image
-                  shape="ProfileImg"
-                  src={
-                    profileImg ||
-                    "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
-                  }
-                  size="24"
-                  margin="0px 4px 0px 0px"
-                />
-                {hoverComment ? (
-                  <p>{commentList?.length}개의 답글</p>
-                ) : (
-                  <p>
-                    {commentList?.length}개의 답글 <span>스레드 보기</span>
-                  </p>
-                )}
-              </CommentBox>
-            </>
+        <ModalPortal>
+          {modalOn && (
+            <TwobtnModal
+              onClose={handleModal}
+              title="이 메시지 삭제"
+              btnText="삭제"
+              btnColor="#e01e5a"
+              onSubmit={deleteChat}
+            >
+              이 메시지를 삭제하시겠습니까? 이 작업은 실행 취소할 수 없습니다.
+              <ModalPreview>
+                <ChatListUserImageWrap>
+                  <Image
+                    shape="ProfileImg"
+                    src={
+                      profileImg ||
+                      "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
+                    }
+                  />
+                </ChatListUserImageWrap>
+                <ChatListUserInfo>
+                  <div className="flex-row" style={{ justifyContent: "start" }}>
+                    <Text fontWeight="700" color="black">
+                      {nickname}
+                    </Text>
+                    <span>{deleteKo}</span>
+                  </div>
+
+                  <ContentWrap>
+                    {content}&nbsp;
+                    <Text fontWeight="400" color="#696969">
+                      {isEdit && "(편집됨)"}
+                    </Text>
+                  </ContentWrap>
+                </ChatListUserInfo>
+              </ModalPreview>
+            </TwobtnModal>
           )}
-
-          <button
-            onClick={() => {
-              dispatch(contentActions.deleteContentDB(channelId, contentId));
-            }}
-          >
-            삭제
-          </button>
-          <button
-            onClick={() => {
-              console.log("수정");
-              setIsEditMode(true);
-            }}
-          >
-            수정
-          </button>
-        </ChatListUserInfo>
-      </ChatListBoxInfo>
+        </ModalPortal>
+      </>
     );
 };
 
@@ -166,6 +225,7 @@ const ChatListBoxInfo = styled.div`
   display: flex;
   padding: 8px 20px;
   flex-direction: rows;
+  justify-content: space-between;
   &:hover {
     background: rgba(221, 221, 221, 0.2);
   }
@@ -198,7 +258,7 @@ const ContentWrap = styled.div`
 const CommentBox = styled.div`
   display: flex;
   align-items: center;
-  width: 50vw;
+  width: calc(100vw - 500px);
   margin: 6px 0px 0px;
   padding: 5px 5px 5px 5px;
   border-radius: 4px;
@@ -253,6 +313,28 @@ const InputText = styled.input`
   border: none;
   outline: none;
   background: #fff;
+`;
+
+const IconBox = styled.div`
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  padding: 5px;
+  &:hover {
+    background: rgba(29, 28, 29, 0.1);
+  }
+`;
+
+const ModalPreview = styled.div`
+  margin-top: 10px;
+  display: flex;
+  padding: 16px;
+  border: 1px solid rgba(29, 28, 29, 0.3);
+  border-radius: 4px;
 `;
 
 export default OneChat;

@@ -2,58 +2,29 @@ import React, { useEffect } from "react";
 import { BsXLg } from "react-icons/bs";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { Image, Text } from "../../../elements";
 import moment from "moment";
 import { history } from "../../../redux/configureStore";
 import CommentBox from "./CommentBox";
-import { channelActions } from "../../../redux/modules/channel";
 import { commentActions } from "../../../redux/modules/comment";
-import { contentActions } from "../../../redux/modules/content";
-// import {CommentBox}
 
 const ChannelComment = (props, oneChannel) => {
   const dispatch = useDispatch();
-  console.log(oneChannel);
-  const { channelId } = props.match?.params;
-  console.log(channelId);
 
-  const contentId = useParams().contentId;
-
-  // const nowContent = useSelector((state) => state?.comment || []);
-  const channelList = useSelector((state) => state?.channel.channelList || []);
-  // console.log(channelList);
+  const { channelId, contentId } = props.match?.params;
 
   // const oneChannel = useSelector((state) => state.content.oneChannel);
 
   useEffect(() => {
-    // dispatch(channelActions.getChannel());
-    // dispatch(contentActions.getContentList(channelName));
     dispatch(commentActions.getCommentList(channelId, contentId));
-  }, []);
+  }, [contentId]);
 
-  // 클릭한 Content 입니다.
-  const nowContent =
-    channelList
-      ?.find((c) => c.channelId === channelId)
-      .contentList.find((c) => c.contentId === contentId) || [];
+  const nowContent = useSelector((state) => state.comment.oneContent);
   console.log(nowContent);
 
-  const commentList2 = nowContent.commentList;
-
-  // 클릭한 Content의 Comment List입니다.
-  let commentList = [];
-  if (commentList2.length) {
-    commentList = channelList
-      .find((c) => c.channelId === channelId)
-      .contentList.find((c) => c.contentId === contentId).commentList;
-  }
-
-  console.log(commentList);
-  console.log(commentList2);
+  const commentList = nowContent.commentList;
 
   const time = moment(nowContent.createdAt).format("M월 DD일, HH:MM");
-  console.log(time);
 
   return (
     <>

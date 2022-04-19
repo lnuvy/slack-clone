@@ -227,7 +227,6 @@ export default handleActions(
         let index = draft.channelList.findIndex(
           (l) => l.channelId === channelId
         );
-        console.log(index);
 
         // 수정된 게시글을 제외한 나머지를 배열로 반환
         let contentList = nowChannel.contentList.filter(
@@ -240,8 +239,6 @@ export default handleActions(
             new moment(a.createdAt).format("YYYYMMDDHHmm") -
             new moment(b.createdAt).format("YYYYMMDDHHmm")
         );
-
-        console.log(newArr);
 
         // 현재채널정보 갱신
         nowChannel = { ...nowChannel, contentList: newArr };

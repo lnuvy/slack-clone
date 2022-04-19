@@ -23,7 +23,7 @@ const Container = styled.div`
 `;
 
 const Content = styled.div`
-  width: fit-content;
+  /* width: fit-content; */
   font-size: 13px;
   background: black;
   color: white;

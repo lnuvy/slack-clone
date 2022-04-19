@@ -34,31 +34,23 @@ const deleteContent = createAction(DELETE_CONTENT, (contentId) => ({
 }));
 
 const getContentList = (channelName) => {
-  return async function (dispatch, getState, { history }) {
-    // //form타입
-    // await axios.get(`${BASE_URL}/user/signup`)
-    //   .then((doc) => {
-    //     const content = doc.data.board;
-    //   })
-    //   .catch((error) => {
-    //     console.log("에러남", error);
-    //   });
-
+  return function (dispatch, getState, { history }) {
     const contentList = getState().channel.channelList.find(
       (l) => l.channelName === channelName
     );
+    console.log(contentList);
 
     dispatch(getContent(contentList));
   };
 };
 
-const addContentDB = (channelName, content) => {
+const addContentDB = (channelId, channelName, content) => {
   return async function (dispatch, getState, { history }) {
     if (!content) return;
 
     // axios
     // await axios.post(`${BASE_URL}/${channelName}/content`).then((res) => {
-    //   console.log(res);
+    // console.log(res);
     // }).catch((err) => {
     //   console.log(err);
     //   console.log(err.response);
@@ -67,6 +59,7 @@ const addContentDB = (channelName, content) => {
     const { email, nickname, profileImg } = getState().user.user;
 
     let fakeResponseData = {
+      channelId,
       channelName,
       contentId: new Date().getTime() + "",
       nickname: nickname,
@@ -79,11 +72,13 @@ const addContentDB = (channelName, content) => {
 
     dispatch(addContent(fakeResponseData));
     // 여기서 채널 액션함수 호출
-    dispatch(channelActions.addContent(channelName, fakeResponseData));
+    dispatch(
+      channelActions.addContent(fakeResponseData.channelId, fakeResponseData)
+    );
   };
 };
 
-const editContentDB = (channelName, contentId, content) => {
+const editContentDB = (channelId, channelName, contentId, content) => {
   return async function (dispatch, getState, { history }) {
     if (!(channelName && contentId && content)) return;
 
@@ -108,8 +103,25 @@ const editContentDB = (channelName, contentId, content) => {
     dispatch(editContent(fakeResponseData));
     // 여기서 채널 액션함수 호출
     dispatch(
-      channelActions.editContent(channelName, contentId, fakeResponseData)
+      channelActions.editContent(channelId, contentId, fakeResponseData)
     );
+  };
+};
+
+const deleteContentDB = (channelId, contentId) => {
+  return async function (dispatch, getState, { history }) {
+    if (!(channelId && contentId)) return;
+
+    // axios
+    // await axios.delete(`${BASE_URL}/${channelId}/${contentId}`).then((res) => {
+    //   console.log(res);
+    // }).catch((err) => {
+    //   console.log(err);
+    //   console.log(err.response);
+    // })
+
+    dispatch(deleteContent(contentId));
+    dispatch(channelActions.deleteContent(channelId, contentId));
   };
 };
 
@@ -136,18 +148,30 @@ export default handleActions(
         let newArr = draft.oneChannel.contentList.filter(
           (c) => c.contentId !== content.contentId
         );
-
-        newArr = [...newArr, content];
+        newArr = [...newArr, content].sort(
+          (a, b) =>
+            new moment(a.createdAt).format("YYYYMMDDHHmm") -
+            new moment(b.createdAt).format("YYYYMMDDHHmm")
+        );
         draft.oneChannel.contentList = newArr;
-        // console.log(editChat);
       }),
     [DELETE_CONTENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.user = action.payload.user;
-        draft.isLogin = true;
+        const { contentId } = action.payload;
+
+        let newArr = draft.oneChannel.contentList.filter(
+          (c) => c.contentId !== contentId
+        );
+
+        draft.oneChannel.contentList = newArr;
       }),
   },
   initialState
 );
 
-export const contentActions = { getContentList, addContentDB, editContentDB };
+export const contentActions = {
+  getContentList,
+  addContentDB,
+  editContentDB,
+  deleteContentDB,
+};

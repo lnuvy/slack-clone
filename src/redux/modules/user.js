@@ -5,7 +5,7 @@ import axios from "axios";
 // 로컬스토리지 token 작업 임포트
 import { getToken, insertToken, removeToken } from "../../shared/token";
 
-const BASE_URL = "BASE_URL";
+const BASE_URL = "http://52.78.246.163";
 
 const initialState = {
   user: null,
@@ -34,21 +34,23 @@ const userLogout = () => {
 // /user/signup
 const signUpDB = (inputs) => {
   return async function (dispatch, getState, { history }) {
-    const { email, password, nickname } = inputs;
-    let fakeResponse = {
-      email,
-      password,
-      nickname,
-    };
-    console.log("회원가입 됐다치고", fakeResponse);
+    // const { email, password, nickname } = inputs;
+    // let fakeResponse = {
+    //   email,
+    //   password,
+    //   nickname,
+    // };
+    // console.log("회원가입 됐다치고", fakeResponse);
     // axios
-    // await axios.post(`${BASE_URL}/user/signup`, inputs).then((res) => {
-    //   console.log(res);
-    //   // ...
-    // }).catch((err) => {
-    //   console.log(err);
-    //   console.log(err.response);
-    // })
+    await axios
+      .post(`${BASE_URL}/user/signup`, inputs)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+      });
   };
 };
 

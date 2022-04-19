@@ -6,12 +6,13 @@ import { Button } from "../../elements";
 import { useDispatch } from "react-redux";
 import { contentActions } from "../../redux/modules/content";
 
-const ChannelMsgBox = ({ title }) => {
+const ChannelMsgBox = ({ title, channelId }) => {
   const dispatch = useDispatch();
+
   const [chat, setChat] = useState("");
 
   const submitChat = () => {
-    dispatch(contentActions.addContentDB(title, chat));
+    dispatch(contentActions.addContentDB(channelId, title, chat));
     setChat("");
   };
 

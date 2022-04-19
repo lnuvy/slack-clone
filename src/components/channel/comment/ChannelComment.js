@@ -8,24 +8,26 @@ import moment from "moment";
 import { history } from "../../../redux/configureStore";
 import CommentBox from "./CommentBox";
 import { channelActions } from "../../../redux/modules/channel";
-import { conmmentActions } from "../../../redux/modules/comment";
+import { commentActions } from "../../../redux/modules/comment";
+import { contentActions } from "../../../redux/modules/content";
 // import {CommentBox}
 
 const ChannelComment = (props) => {
   const dispatch = useDispatch();
 
   const { channelName } = props.match?.params;
-  console.log(channelName);
 
   const contentId = useParams().contentId;
-  console.log(contentId);
 
+  // const nowContent = useSelector((state) => state?.comment || []);
   const channelList = useSelector((state) => state?.channel.channelList || []);
-  console.log(channelList);
+  // console.log(channelList);
 
   useEffect(() => {
-    dispatch(channelActions.getChannelDB());
-  }, [contentId]);
+    // dispatch(channelActions.getChannel());
+    // dispatch(contentActions.getContentList(channelName));
+    dispatch(commentActions.getCommentList(channelName, contentId));
+  }, []);
 
   // 클릭한 Content 입니다.
   const nowContent =
@@ -38,14 +40,12 @@ const ChannelComment = (props) => {
   const commentList = channelList
     .filter((c) => c.channelName === channelName)[0]
     .contentList.filter((c) => c.contentId === contentId)[0].commentList;
+
+  // const commentList = nowContent.commentList;
   console.log(commentList);
 
   const time = moment(nowContent.createdAt).format("M월 DD일, HH:MM");
   console.log(time);
-
-  const commentId = commentList.forEach((c) => c.commentId);
-
-  console.log(commentId);
 
   return (
     <>
@@ -88,7 +88,6 @@ const ChannelComment = (props) => {
               <hr />
             </CommentCount>
 
-            {/* 새로고침 시에 에러나지 않게 막아놨습니다 */}
             {commentList ? (
               commentList.map((c, i) => {
                 const time = moment(c.createdAt).format("HH:mm");
@@ -120,7 +119,7 @@ const ChannelComment = (props) => {
                       }}
                       onClick={() => {
                         dispatch(
-                          conmmentActions.deleteCommentDB(
+                          commentActions.deleteCommentDB(
                             channelName,
                             contentId,
                             c.commentId
@@ -165,7 +164,8 @@ const ChannelComment = (props) => {
 
 const CommentWrap = styled.div`
   width: 100%;
-  height: calc(100vh - 50px);
+  // 여기 고치니까 아래쪽 괜찮아지네요
+  height: calc(100vh - 44px);
   display: flex;
   flex-direction: column;
 `;
@@ -218,12 +218,12 @@ const ChatListBoxInfo = styled.div`
 const ChatListUserImageWrap = styled.div`
   display: flex;
   // align-items: center;
-  & > Image {
+  /* & > Image {
     shape: ProfileImg;
     src: {
-      c.profileImg ||
+      profileImg ||
       "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
-    }
+    } */
 `;
 
 const ChatListUserInfo = styled.div`

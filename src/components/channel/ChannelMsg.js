@@ -10,13 +10,6 @@ import OneChat from "./OneChat";
 const ChannelMsg = (props) => {
   // ChannelPage 에서 받은 채널 정보의 contentList
   const { contentList } = props?.nowChannel || [];
-  console.log(contentList);
-
-  const [hoverComment, setHoverComment] = useState(true);
-
-  // const handleComment = () => {
-  //   setHoverComment(true);
-  // };
 
   return (
     <>
@@ -49,7 +42,8 @@ const ChannelMsg = (props) => {
 };
 
 const ChatListWrap = styled.div`
-  height: 76vh;
+  // 여기 높이를 좀 줄이니까 메인 스크롤바가 안생기네요
+  height: 73vh;
   padding: 8px 0px;
   flex-direction: rows;
   overflow-y: scroll;
@@ -69,13 +63,6 @@ const ChatListBoxInfo = styled.div`
 `;
 const ChatListUserImageWrap = styled.div`
   display: flex;
-  // align-items: center;
-  & > Image {
-    shape: ProfileImg;
-    src: {
-      c.profileImg ||
-      "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
-    }
 `;
 
 const ChatListUserInfo = styled.div`

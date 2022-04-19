@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { ModalPortal, Modal } from "../../shared/modal/portals";
+import { Text } from "../../elements";
 import Tooltip from "../../shared/Tooltip";
 
-const ChannelHeader = ({ title }) => {
+const ChannelHeader = ({ nowChannel }) => {
+  const { channelName, channelId } = nowChannel;
+
   const [modalOn, setModalOn] = useState(false);
 
   // 토글
@@ -16,8 +19,19 @@ const ChannelHeader = ({ title }) => {
       {/* 채널 헤더의 타이틀을 눌렀을때 나오는 모달창 */}
       <ModalPortal>
         {modalOn && (
-          <Modal onClose={handleModal}>
-            <ChannelInfo>안녕하세요</ChannelInfo>
+          <Modal data={nowChannel} onClose={handleModal}>
+            <ChannelInfo>
+              <div
+                className="flex-row"
+                style={{ justifyContent: "space-between", width: "100%" }}
+              >
+                <Text size="15px" fontWeight="700">
+                  채널 이름
+                </Text>
+                <TagP>편집</TagP>
+              </div>
+              <Text size="15px"># {channelName}</Text>
+            </ChannelInfo>
           </Modal>
         )}
       </ModalPortal>
@@ -25,10 +39,9 @@ const ChannelHeader = ({ title }) => {
       <ChannelHeaderWrap>
         <ChatHeaderTextbox onClick={handleModal}>
           <Tooltip message="채널 세부정보 받기">
-            <ChannelName># {title}</ChannelName>
+            <ChannelName># {channelName}</ChannelName>
           </Tooltip>
         </ChatHeaderTextbox>
-
         <ModalBtn width="50px" height=""></ModalBtn>
       </ChannelHeaderWrap>
     </>
@@ -73,18 +86,36 @@ const ModalBtn = styled.button`
   border-radius: 4px;
   color: rgba(var(--sk_foreground_max, 29, 28, 29), 7);
   &:hover {
-    background: rgba(221, 221, 221, 0.3);
+    background: rgba(29, 28, 29, 0.13);
   }
 `;
 
 //
 // 아래부터 한울 작업
 const ChannelInfo = styled.div`
+  cursor: pointer;
   display: flex;
+  flex-direction: column;
+  align-items: start;
   border-radius: 12px;
+  border: 1px solid rgba(29, 28, 29, 0.13);
   background: rgba(255, 255, 255, 1);
+  width: 100%;
   padding: 16px 20px;
-  margin: 16px 28px;
+  &:hover {
+    background: #f8f8f8;
+  }
+`;
+
+const TagP = styled.p`
+  font-weight: 600;
+  text-align: end;
+  color: #1264a3;
+  font-size: 13px;
+  &:hover {
+    text-decoration: underline;
+    color: #0b4c8c;
+  }
 `;
 
 export default ChannelHeader;

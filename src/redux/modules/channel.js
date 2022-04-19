@@ -2,14 +2,11 @@ import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 // import axios from "axios";
 
-// 한울: 명세당시에 데이터형식을 너무 대충작성한거같네요 ㅠㅠ
-// 석일님과 협의 후 데이터 형식 정리했습니다! 임시로 더미데이터 넣어놨어요~
 import { Dummy } from "../../shared/DummyData";
 import moment from "moment";
 
 const BASE_URL = "BASE_URL";
 
-// 한울: 언더바나 - 대쉬 보다는 카멜케이스를 선호해서 바꿨습니다!
 const initialState = {
   channelList: [],
 };
@@ -39,20 +36,25 @@ const addChannel = createAction(ADD_CHANNEL, (channel) => ({
 const editChannelName = createAction(EDIT_CHANNEL_NAME, (channelName) => ({
   channelName,
 }));
-const deleteChannel = createAction(DELETE_CHANNEL, (channelName) => ({
-  channelName,
+const deleteChannel = createAction(DELETE_CHANNEL, (channelId) => ({
+  channelId,
 }));
 
 // 컨텐츠 추가부분
-const addContent = createAction(ADD_CONTENTS, (channelName, content) => ({
-  channelName,
+// channelName 대신 channelId 로 로직 다 수정
+const addContent = createAction(ADD_CONTENTS, (channelId, content) => ({
+  channelId,
   content,
 }));
 const editContent = createAction(
   EDIT_CONTENTS,
-  (channelName, contentId, content) => ({ channelName, contentId, content })
+  (channelId, contentId, content) => ({ channelId, contentId, content })
 );
-// const deleteContent = createAction();
+
+const deleteContent = createAction(DELETE_CONTENTS, (channelId, contentId) => ({
+  channelId,
+  contentId,
+}));
 
 // 코멘트 추가부분
 const addComment = createAction(
@@ -64,7 +66,7 @@ const addComment = createAction(
   })
 );
 const deleteComment = createAction(
-  ADD_COMMENTS,
+  DELETE_COMMENTS,
   (channelName, contentId, commentId) => ({
     channelName,
     contentId,
@@ -114,6 +116,7 @@ const addChannelDB = (channelData) => {
     const { nickname } = getState().user.user;
 
     const fakeResponseData = {
+      channelId: new Date().getTime() + "",
       channelName: channelData.channelName,
       createdAt: moment().format("YYYY-MM-DD HH:mm"),
       channelHost: nickname,
@@ -123,7 +126,7 @@ const addChannelDB = (channelData) => {
   };
 };
 
-const editChannelNameDB = (channelName, id) => {
+const editChannelNameDB = (channelId, changeName) => {
   return async function (dispatch, getState, { history }) {
     // await axios.post(`${BASE_URL}/channel/channel${id}`, channeldata)
     //   axios({
@@ -183,22 +186,21 @@ export default handleActions(
     // 컨텐츠 리듀서
     [ADD_CONTENTS]: (state, action) =>
       produce(state, (draft) => {
-        const { channelName, content } = action.payload;
+        const { channelId, content } = action.payload;
         draft.channelList.forEach((l) => {
-          if (l.channelName === channelName) l.contentList.push(content);
+          if (l.channelId === channelId) l.contentList.push(content);
         });
-        console.log(state.channelList);
       }),
     [EDIT_CONTENTS]: (state, action) =>
       produce(state, (draft) => {
-        const { channelName, contentId, content } = action.payload;
+        const { channelId, contentId, content } = action.payload;
         let nowChannel = draft.channelList.find(
-          (l) => l.channelName === channelName
+          (l) => l.channelId === channelId
         );
 
         // 현재채널 인덱스 찾기
         let index = draft.channelList.findIndex(
-          (l) => l.channelName === channelName
+          (l) => l.channelId === channelId
         );
         console.log(index);
 
@@ -207,26 +209,48 @@ export default handleActions(
           (c) => c.contentId !== contentId
         );
 
-        // 수정한 컨텐츠 합치기
-        contentList = [...contentList, content];
+        // 수정한 컨텐츠 합치기 , 시간 순으로 재정렬
+        let newArr = [...contentList, content].sort(
+          (a, b) =>
+            new moment(a.createdAt).format("YYYYMMDDHHmm") -
+            new moment(b.createdAt).format("YYYYMMDDHHmm")
+        );
+
+        console.log(newArr);
+
+        // 현재채널정보 갱신
+        nowChannel = { ...nowChannel, contentList: newArr };
+
+        draft.channelList[index] = nowChannel;
+      }),
+    [DELETE_CONTENTS]: (state, action) =>
+      produce(state, (draft) => {
+        const { channelId, contentId } = action.payload;
+
+        // 현재채널 인덱스 찾기
+        let index = draft.channelList.findIndex(
+          (l) => l.channelId === channelId
+        );
+
+        let nowChannel = draft.channelList[index];
+
+        // 삭제할 게시글을 제외하고 나머지를 반환
+        let contentList = nowChannel.contentList.filter(
+          (c) => c.contentId !== contentId
+        );
 
         // 현재채널정보 갱신
         nowChannel = { ...nowChannel, contentList };
 
         draft.channelList[index] = nowChannel;
-
-        console.log(nowChannel);
-
-        // draft.channelList.forEach((l) => {
-        //   if (l.channelName === channelName) {
-        //     let newArr = l.contentList.filter((c) => c.contentId !== contentId);
-        //     draft.channelList.l.contentList = [...newArr, content];
       }),
 
     // 코멘트 리듀서
     [ADD_COMMENTS]: (state, action) =>
       produce(state, (draft) => {
         const { channelName, contentId, comment } = action.payload;
+
+        // 추가해줄 데이터 경로
         draft.channelList
           .filter((c) => c.channelName === channelName)[0]
           .contentList.forEach((l) => {
@@ -234,15 +258,48 @@ export default handleActions(
           });
       }),
 
-    // [DELETE_COMMENTS]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     const { channelName, contentId, commentId } = action.payload;
-    //     draft.channelList
-    //       .filter((c) => c.channelName === channelName)[0]
-    //       .contentList.forEach((l) => {
-    //         if (l.contentId === contentId) l.commentList.push(commentId);
-    //       });
-    //   }),
+    [DELETE_COMMENTS]: (state, action) =>
+      produce(state, (draft) => {
+        const { channelName, contentId, commentId } = action.payload;
+
+        console.log(channelName, contentId, commentId);
+
+        // let contentList = draft.channelList.filter(
+        //   (c) => c.channelName === channelName
+        // )[0];
+
+        let contentList = state.channelList.filter(
+          (c) => c.channelName === channelName
+        )[0].contentList;
+
+        // let contentList = draft;
+
+        console.log(contentList);
+
+        // 현재 컨텐츠 인덱스 찾기
+        let index = contentList.findIndex((l) => l.contentId === contentId);
+
+        console.log(index);
+
+        // 현재 컨텐츠
+        let nowContent = contentList[index];
+
+        console.log(nowContent);
+
+        // 삭제할 코멘트를 제외하고 나머지를 반환
+        let commentList = nowContent.commentList.filter(
+          (c) => c.commentId !== commentId
+        );
+
+        console.log(commentList);
+
+        // 현재채널정보 갱신
+        nowContent = { ...nowContent, commentList };
+
+        draft.channelList.filter(
+          (c) => c.channelName === channelName
+        )[0].contentList[index] = nowContent;
+      }),
   },
   initialState
 );

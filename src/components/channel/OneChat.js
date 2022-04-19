@@ -40,6 +40,8 @@ const OneChat = (props) => {
     setModalOn(!modalOn);
   };
 
+  // console.log(isEditMode, editText, hoverComment, hoverUDIcon)
+
   const editChat = () => {
     dispatch(
       contentActions.editContentDB(channelId, channelName, contentId, editText)
@@ -187,12 +189,20 @@ const OneChat = (props) => {
           {modalOn && (
             <TwobtnModal
               onClose={handleModal}
-              title="이 메시지 삭제"
+              title="메시지 삭제"
               btnText="삭제"
               btnColor="#e01e5a"
               onSubmit={deleteChat}
             >
-              이 메시지를 삭제하시겠습니까? 이 작업은 실행 취소할 수 없습니다.
+              <p
+                style={{
+                  paddingRight: "53px",
+                  marginBottom: "15px",
+                  fontSize: "15px",
+                }}
+              >
+                이 메세지를 삭제하시겠습니까? 이 작업은 실행 취소할 수 없습니다.
+              </p>
               <ModalPreview>
                 <ChatListUserImageWrap>
                   <Image

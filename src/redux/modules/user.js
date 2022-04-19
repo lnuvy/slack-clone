@@ -5,7 +5,7 @@ import axios from "axios";
 // 로컬스토리지 token 작업 임포트
 import { getToken, insertToken, removeToken } from "../../shared/token";
 
-const BASE_URL = "http://52.78.246.163";
+const BASE_URL = "http://3.34.129.39";
 
 const initialState = {
   user: null,
@@ -57,34 +57,33 @@ const signUpDB = (inputs) => {
 // /user/login
 const loginDB = (inputs) => {
   return async function (dispatch, getState, { history }) {
-    // axios
-    // await axios
-    //   .post(`${BASE_URL}/user/login`, inputs)
-    //   .then((res) => {
-    //     console.log(res);
-    //     const token = res.data;
-    //     insertToken(res.data.token);
-    //     history.push("/main");
-    //
-
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     console.log(err.response);
-    //   });
+    console.log(inputs);
+    await axios
+      .post(`${BASE_URL}/user/login`, inputs)
+      .then((res) => {
+        console.log(res);
+        const token = res.data;
+        insertToken(res.data.token);
+        // 리로드 하는 코드
+        history.go(0);
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+      });
 
     // 서버 열리면 이 아래로 다 지워버리면 됩니다!
-    console.log("로그인 성공했다 치고");
-    const { email, password } = inputs;
+    // console.log("로그인 성공했다 치고");
+    // const { email, password } = inputs;
 
-    // /user/getuser axios 요청 또 해야되나?
-    let fakeResponseData = { email, nickname: "닉네임", profileImg: "" };
-    let fakeResponseToken = "토큰입니다";
+    // // /user/getuser axios 요청 또 해야되나?
+    // let fakeResponseData = { email, nickname: "닉네임", profileImg: "" };
+    // let fakeResponseToken = "토큰입니다";
 
-    insertToken(fakeResponseToken);
-    console.log("로컬 스토리지에 토큰을 넣었습니다");
-    dispatch(login(fakeResponseToken, fakeResponseData));
-    history.push("/");
+    // insertToken(fakeResponseToken);
+    // console.log("로컬 스토리지에 토큰을 넣었습니다");
+    // dispatch(login(fakeResponseToken, fakeResponseData));
+    // history.push("/");
   };
 };
 

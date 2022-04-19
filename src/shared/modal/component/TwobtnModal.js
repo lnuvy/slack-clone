@@ -28,7 +28,7 @@ const TwobtnModal = ({
           }}
         >
           <Title>
-            <h1 style={{ fontSize: "28px" }}>{title}</h1>
+            <h1 style={{ fontSize: "22px" }}>{title}</h1>
           </Title>
           <CancelBtn
             className="flex-row"
@@ -48,6 +48,7 @@ const TwobtnModal = ({
                 height="36px"
                 fontSize="15px"
                 margin="0 12px 0 0"
+                weight="700"
                 onClick={(e) => {
                   e.stopPropagation();
                   onClose();
@@ -57,9 +58,10 @@ const TwobtnModal = ({
               </Button>
               <Button
                 padding="0 12px 1px"
-                width="fit-content"
+                width="80px"
                 height="36px"
                 fontSize="15px"
+                weight="700"
                 bg={btnColor}
                 color="white"
                 onClick={(e) => {
@@ -126,7 +128,7 @@ const Background = styled.div`
 const Content = styled.div`
   justify-content: start;
   z-index: 205;
-  height: 518px;
+  height: auto;
   max-width: 520px;
   width: 100%;
   border-radius: 8px;

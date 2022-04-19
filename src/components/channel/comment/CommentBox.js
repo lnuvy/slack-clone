@@ -7,18 +7,16 @@ import { useDispatch } from "react-redux";
 import { commentActions } from "../../../redux/modules/comment";
 import { contentActions } from "../../../redux/modules/content";
 
-const CommentBox = ({ channelId, contentId, oneChannel }) => {
+const CommentBox = ({ channelId, contentId }) => {
   const dispatch = useDispatch();
   const [chat, setChat] = useState("");
-  console.log(oneChannel);
+
   useEffect(() => {
     dispatch(contentActions.getContentList(channelId));
   }, []);
 
   const submitChat = () => {
-    dispatch(
-      commentActions.addCommentDB(oneChannel.channelId, contentId, chat)
-    );
+    dispatch(commentActions.addCommentDB(channelId, contentId, chat));
     setChat("");
   };
 
@@ -113,4 +111,5 @@ const VerticalLine = styled.div`
   height: 18px;
   right: 24px;
 `;
+
 export default CommentBox;

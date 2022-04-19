@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Route } from "react-router-dom";
 import { Switch } from "react-router-dom";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 import NavigationBar from "../components/NavigationBar";
 import ChannelList from "../components/channel/ChannelList";
@@ -18,6 +19,7 @@ import { history } from "../redux/configureStore";
 // 처음 로그인 했을때, 주된 컨텐츠가 되는 부분 (슬랙에서 Slack Connect 부분)
 
 const Main = () => {
+  const oneChannel = useSelector((state) => state.content.oneChannel);
   return (
     <>
       <NavigationBar />
@@ -48,7 +50,6 @@ const Main = () => {
               </SlackConnect>
               <ChannelList />
               <MassageList />
-              {/* <ChannelComment /> */}
             </div>
           </MenuScroll>
         </ChannelsWrap>
@@ -61,6 +62,7 @@ const Main = () => {
               path="/channel/:channelId/:contentId"
               exact
               component={ChannelComment}
+              oneChannel={oneChannel}
             />
           </Switch>
         </ChatsWrap>

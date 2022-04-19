@@ -12,9 +12,9 @@ import { commentActions } from "../../../redux/modules/comment";
 import { contentActions } from "../../../redux/modules/content";
 // import {CommentBox}
 
-const ChannelComment = (props) => {
+const ChannelComment = (props, oneChannel) => {
   const dispatch = useDispatch();
-
+  console.log(oneChannel);
   const { channelId } = props.match?.params;
   console.log(channelId);
 
@@ -23,6 +23,8 @@ const ChannelComment = (props) => {
   // const nowContent = useSelector((state) => state?.comment || []);
   const channelList = useSelector((state) => state?.channel.channelList || []);
   // console.log(channelList);
+
+  // const oneChannel = useSelector((state) => state.content.oneChannel);
 
   useEffect(() => {
     // dispatch(channelActions.getChannel());
@@ -160,6 +162,7 @@ const ChannelComment = (props) => {
             <CommentBox
               channelId={nowContent?.channelId}
               contentId={nowContent?.contentId}
+              oneChannel={oneChannel}
             />
           </ChatListBox>
         </ChatListWrap>

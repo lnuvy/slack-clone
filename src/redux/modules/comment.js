@@ -9,19 +9,19 @@ import { channelActions } from "./channel";
 const BASE_URL = "BASE_URL";
 
 const initialState = {
-  oneContent: {},
+  oneComment: {},
 };
 
 // 액션
 const GET_COMMENT = "GET_COMMENT";
 const ADD_COMMENT = "ADD_COMMENT";
-const DELETE_COMMENT = "DELETECOMMENT";
+const DELETE_COMMENT = "DELETE_COMMENT";
 
 // 액션 생성함수
 // 한울 추가: 언더바는 사용해보니 좋은걸 잘 모르겠어서 빼버렸습니다!
 
-const getComment = createAction(GET_COMMENT, (content) => ({
-  content,
+const getComment = createAction(GET_COMMENT, (comment) => ({
+  comment,
 }));
 const addComment = createAction(ADD_COMMENT, (comment) => ({
   comment,
@@ -32,22 +32,27 @@ const deleteComment = createAction(DELETE_COMMENT, (commentId) => ({
 
 const getCommentList = (channelId, contentId) => {
   return async function (dispatch, getState, { history }) {
-    // 채널 찾기
-    let nowChannel = getState().channel.channelList.find(
-      (l) => l.channelId === channelId
-    );
+    const commentList = getState()
+      .channel.channelList.find((l) => l.channelId === channelId)
+      .contentList.find((l) => l.contentId === contentId).commentList;
+    console.log(commentList);
 
-    let nowContent = nowChannel.contentList.find(
-      (l) => l.contentId === contentId
-    );
+    dispatch(getComment(commentList));
 
-    dispatch(getComment(nowContent));
+    // const contentList = getState().channel.channelList.find(
+    //   (l) => l.channelName === channelName
+    // );
+    // console.log(contentList);
+
+    // dispatch(getComment(contentList));
   };
 };
 
 const addCommentDB = (channelId, contentId, comment) => {
   return async function (dispatch, getState, { history }) {
     if (!comment) return;
+
+    console.log(channelId, contentId, comment);
 
     // axios
     // await axios.post(`${BASE_URL}/${channelName}/${contentId}/comment`).then((res) => {
@@ -69,7 +74,7 @@ const addCommentDB = (channelId, contentId, comment) => {
       profileImg,
     };
 
-    dispatch(addComment(fakeResponseData));
+    // dispatch(addComment(fakeResponseData));
     // 여기서 채널 액션함수 호출
     dispatch(channelActions.addComment(channelId, contentId, fakeResponseData));
   };
@@ -86,7 +91,7 @@ const deleteCommentDB = (channelId, contentId, commentId) => {
     // })
 
     console.log(channelId, contentId, commentId);
-    dispatch(deleteComment(commentId));
+    // dispatch(deleteComment(commentId));
     dispatch(channelActions.deleteComment(channelId, contentId, commentId));
   };
 };
@@ -96,12 +101,12 @@ export default handleActions(
   {
     [GET_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.oneContent = action.payload.content;
+        draft.oneComment = action.payload.commentList;
       }),
 
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.oneChannel.commentList.push(action.payload.commentList);
+        draft.oneComment.push(action.payload.commentList);
       }),
 
     [DELETE_COMMENT]: (state, action) =>
@@ -127,6 +132,4 @@ export const commentActions = {
   addCommentDB,
   deleteCommentDB,
   getCommentList,
-  addComment,
-  deleteComment,
 };

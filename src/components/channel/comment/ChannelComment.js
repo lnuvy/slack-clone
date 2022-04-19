@@ -15,17 +15,40 @@ import { contentActions } from "../../../redux/modules/content";
 const ChannelComment = (props) => {
   const dispatch = useDispatch();
 
-  // 주소창 파라미터
-  const { channelId, contentId } = props.match?.params;
+  const { channelId } = props.match?.params;
+  console.log(channelId);
+
+  const contentId = useParams().contentId;
+
+  // const nowContent = useSelector((state) => state?.comment || []);
+  const channelList = useSelector((state) => state?.channel.channelList || []);
+  // console.log(channelList);
 
   useEffect(() => {
-    console.log(channelId, contentId);
+    // dispatch(channelActions.getChannel());
+    // dispatch(contentActions.getContentList(channelName));
     dispatch(commentActions.getCommentList(channelId, contentId));
-  }, [contentId]);
+  }, []);
 
-  const nowContent = useSelector((state) => state.comment.oneContent);
+  // 클릭한 Content 입니다.
+  const nowContent =
+    channelList
+      ?.find((c) => c.channelId === channelId)
+      .contentList.find((c) => c.contentId === contentId) || [];
+  console.log(nowContent);
 
-  let { commentList } = nowContent;
+  const commentList2 = nowContent.commentList;
+
+  // 클릭한 Content의 Comment List입니다.
+  let commentList = [];
+  if (commentList2.length) {
+    commentList = channelList
+      .find((c) => c.channelId === channelId)
+      .contentList.find((c) => c.contentId === contentId).commentList;
+  }
+
+  console.log(commentList);
+  console.log(commentList2);
 
   const time = moment(nowContent.createdAt).format("M월 DD일, HH:MM");
   console.log(time);
@@ -36,12 +59,12 @@ const ChannelComment = (props) => {
         <CommentHeaderWrap>
           <ChatHeaderTextbox>
             스레드
-            <ChannelName>#{nowContent?.channelName}</ChannelName>
+            <ChannelName>#{nowContent.channelName}</ChannelName>
           </ChatHeaderTextbox>
           <BsXLg
             style={{ color: "gray", fontSize: "15px" }}
             onClick={() => {
-              history.push(`/channel/${nowContent?.channelId}`);
+              history.push(`/channel/${nowContent.channelId}`);
             }}
           />
         </CommentHeaderWrap>
@@ -135,7 +158,7 @@ const ChannelComment = (props) => {
               </ChatListBoxInfo>
             )}
             <CommentBox
-              channelName={nowContent?.channelName}
+              channelId={nowContent?.channelId}
               contentId={nowContent?.contentId}
             />
           </ChatListBox>

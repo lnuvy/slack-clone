@@ -9,18 +9,18 @@ import { commentActions } from "../../../redux/modules/comment";
 import { channelActions } from "../../../redux/modules/channel";
 import { contentActions } from "../../../redux/modules/content";
 
-const CommentBox = ({ channelName, contentId }) => {
+const CommentBox = ({ channelId, contentId }) => {
   const dispatch = useDispatch();
   const [chat, setChat] = useState("");
 
   useEffect(() => {
     // dispatch(channelActions.getChannel());
-    dispatch(contentActions.getContentList(channelName));
-    dispatch(commentActions.getCommentList(channelName, contentId));
+    dispatch(contentActions.getContentList(channelId));
+    dispatch(commentActions.getCommentList(channelId, contentId));
   }, []);
 
   const submitChat = () => {
-    dispatch(commentActions.addCommentDB(channelName, contentId, chat));
+    dispatch(commentActions.addCommentDB(channelId, contentId, chat));
     setChat("");
   };
 

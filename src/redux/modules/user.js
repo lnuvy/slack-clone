@@ -6,6 +6,7 @@ import axios from "axios";
 import { getToken, insertToken, removeToken } from "../../shared/token";
 
 const BASE_URL = "http://52.78.246.163";
+// const BASE_URL = "http://3.34.129.39";
 
 const initialState = {
   user: null,
@@ -26,7 +27,7 @@ const getUser = createAction(GET_USER, (user) => ({ user }));
 const userLogout = () => {
   return async function (dispatch, getState, { history }) {
     dispatch(logOut());
-    history.replace("/login");
+    history.replace("/user/login");
   };
 };
 
@@ -42,14 +43,20 @@ const signUpDB = (inputs) => {
     // };
     // console.log("회원가입 됐다치고", fakeResponse);
     // axios
+
+    console.log("미들웨어:", inputs);
+
     await axios
       .post(`${BASE_URL}/user/signup`, inputs)
       .then((res) => {
         console.log(res);
+        if (res.data.result === "sucess") alert("회원가입 성공!");
+        history.push("/");
       })
       .catch((err) => {
         console.log(err);
         console.log(err.response);
+        alert(err.response.data.errorMessage);
       });
   };
 };
@@ -58,62 +65,53 @@ const signUpDB = (inputs) => {
 const loginDB = (inputs) => {
   return async function (dispatch, getState, { history }) {
     // axios
-    // await axios
-    //   .post(`${BASE_URL}/user/login`, inputs)
-    //   .then((res) => {
-    //     console.log(res);
-    //     const token = res.data;
-    //     insertToken(res.data.token);
-    //     history.push("/main");
-    //
-
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     console.log(err.response);
-    //   });
+    await axios
+      .post(`${BASE_URL}/user/login`, inputs)
+      .then((res) => {
+        console.log(res);
+        const token = res.data.token;
+        insertToken(token);
+        history.go(0);
+      })
+      .catch((err) => {
+        console.log(err);
+        alert(err.response.data.errorMessage);
+      });
 
     // 서버 열리면 이 아래로 다 지워버리면 됩니다!
-    console.log("로그인 성공했다 치고");
-    const { email, password } = inputs;
+    // console.log("로그인 성공했다 치고");
+    // const { email, password } = inputs;
 
-    // /user/getuser axios 요청 또 해야되나?
-    let fakeResponseData = { email, nickname: "닉네임", profileImg: "" };
-    let fakeResponseToken = "토큰입니다";
+    // // /user/getuser axios 요청 또 해야되나?
+    // let fakeResponseData = { email, nickname: "닉네임", profileImg: "" };
+    // let fakeResponseToken = "토큰입니다";
 
-    insertToken(fakeResponseToken);
-    console.log("로컬 스토리지에 토큰을 넣었습니다");
-    dispatch(login(fakeResponseToken, fakeResponseData));
-    history.push("/");
+    // insertToken(fakeResponseToken);
+    // console.log("로컬 스토리지에 토큰을 넣었습니다");
+    // dispatch(login(fakeResponseToken, fakeResponseData));
+    // history.push("/");
   };
 };
 
 // /user/getuser
 const getUserInfo = (token) => {
   return async function (dispatch, getState, { history }) {
+    // let fakeResposeUser = {
+    //   email: "asdf@gmail.com",
+    //   nickname: "닉네임~",
+    //   profileImg:
+    //     "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png",
+    // };
     const config = { Authorization: `Bearer ${token}` };
-    console.log("토큰 헤더로 넘겼다 치고~ ", config);
-
-    let fakeResposeUser = {
-      email: "asdf@gmail.com",
-      nickname: "닉네임~",
-      profileImg:
-        "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png",
-    };
-
-    if (getToken()) {
-      dispatch(getUser(fakeResposeUser));
-    }
-    // await axios
-    //   .get(`${BASE_URL}/user/getuser`, { headers: config })
-    //   .then((res) => {
-    //     console.log(res);
-    //     // getUser(res.data.받아온형식);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //     console.log(err.response);
-    //   });
+    await axios
+      .get(`${BASE_URL}/user/getuser`, { headers: config })
+      .then((res) => {
+        dispatch(getUser(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+      });
   };
 };
 

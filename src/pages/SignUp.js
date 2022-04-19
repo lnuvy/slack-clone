@@ -1,14 +1,28 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import LoginFooter from "../components/login/LoginFooter";
 import LoginHeader from "../components/login/LoginHeader";
 import { LoginButton, Input, Text } from "../elements";
+import { imageActions } from "../redux/modules/image";
 import { userActions } from "../redux/modules/user";
 
 const SignUp = () => {
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({});
+
+  const fileInput = useRef();
+
+  const selectFile = (e) => {
+    const reader = new FileReader(); //사진이 인풋에 들어갔을 때 가져올 것이라서 selectFile안에 써준다.
+    const file = fileInput.current.files[0];
+
+    reader.readAsDataURL(file);
+
+    reader.onloadend = () => {
+      dispatch(imageActions.setPreview(reader.result));
+    };
+  };
 
   const handleChange = (e) => {
     const { id } = e.target;
@@ -22,8 +36,25 @@ const SignUp = () => {
       alert("빈값이 있네요~");
       return;
     }
-    console.log(inputs);
-    dispatch(userActions.signUpDB(inputs));
+
+    const file = fileInput.current.files[0];
+    const formData = new FormData();
+    const { email, nickname, password, passwordCheck } = inputs;
+
+    if (file) {
+      formData.append("image", file);
+    }
+    formData.append("email", email);
+    formData.append("nickname", nickname);
+    formData.append("password", password);
+    formData.append("passwordCheck", passwordCheck);
+
+    console.log("formData", formData);
+    for (var pair of formData.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+
+    dispatch(userActions.signUpDB(formData));
   };
 
   return (
@@ -74,14 +105,23 @@ const SignUp = () => {
               onChange={handleChange}
               value={inputs.passwordCheck}
             />
-            <Input
+            <input
+              type="file"
               id="profileImg"
+              ref={fileInput}
+              onChange={selectFile}
+            />
+
+            {/* <Input
+              type="file"
+              multiple
+              // id="profileImg"
               padding="11px 12px 13px"
               margin="0 0 20px"
               placeholder="Please Enter your Profile Img URL (Options)"
-              onChange={handleChange}
-              value={inputs.profileImg}
-            />
+              ref={fileInput}
+              onChange={selectFile}
+            /> */}
             <LoginButton onClick={handleSubmit}>회원가입</LoginButton>
           </InnerWrap>
         </SignUpWrap>

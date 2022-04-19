@@ -12,6 +12,10 @@ import { history } from "../redux/configureStore";
 
 const ChannelPage = (props) => {
   const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(channelActions.getChannelDB())
+  // }, [])
   const { channelId } = props.match?.params;
 
   // 여기서 데이터를 정리해서 props로 주는게 더 깔끔할거같아서 일단 이렇게 했습니다

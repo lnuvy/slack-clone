@@ -25,6 +25,12 @@
   }
 }
 
+@media only screen and (max-width: 840px) {
+  .res-none-img {
+    display: none !important;
+  }
+}
+
 .flex-row {
   display: flex;
   flex-direction: row;

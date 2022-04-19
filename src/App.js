@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getToken } from "./shared/token";
 import { userActions } from "./redux/modules/user";
 
-// 안녕하세요
 function App() {
   const dispatch = useDispatch();
   const isLogin = useSelector((state) => state.user.isLogin);
@@ -29,9 +28,7 @@ function App() {
       <div className="App">
         <ConnectedRouter history={history}>
           <Switch>
-            <Route path="/" component={Main} />
-            <Route path="/user/login" exact component={Login} />
-            <Route path="/user/signup" exact component={SignUp} />
+            <Route path="/" axact component={Main} />
           </Switch>
         </ConnectedRouter>
       </div>

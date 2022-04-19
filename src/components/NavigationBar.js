@@ -1,11 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoTimeOutline } from "react-icons/io5";
+import { useDispatch, useSelector } from "react-redux";
 
 import styled from "styled-components";
-import { Input, Image } from "../elements";
+import { Input, Image, Text } from "../elements";
+import { userActions } from "../redux/modules/user";
+import LogoutModal from "../shared/modal/component/LogoutModal";
+import { ModalPortal } from "../shared/modal/portals";
 
 // 내비게이션 바
 const NavigationBar = () => {
+  const dispatch = useDispatch();
+  const { profileImg, email, nickname } = useSelector(
+    (state) => state.user.user
+  );
+
+  // 로그아웃 추가
+  const [modalOn, setModalOn] = useState(false);
+
+  // 토글
+  const handleModal = () => {
+    setModalOn(!modalOn);
+  };
+
   return (
     <>
       <div>
@@ -21,9 +38,46 @@ const NavigationBar = () => {
             color="white"
             bg="rgb(207,195,207)"
           />
-          <Image shape="ProfileImg" size="26" opacity="0.9" />
+          <div
+            onClick={handleModal}
+            style={{ borderRadius: "4px", background: "#fff", opacity: ".9" }}
+          >
+            <Image
+              src={profileImg}
+              shape="ProfileImg"
+              size="26"
+              opacity="0.9"
+            />
+          </div>
         </NavigationBarWarp>
       </div>
+
+      <ModalPortal>
+        {modalOn && (
+          <LogoutModal onClose={handleModal}>
+            <ChannelInfo>
+              <div
+                className="flex-row"
+                style={{ justifyContent: "space-between", width: "100%" }}
+              >
+                <Text size="15px" fontWeight="700">
+                  아이디: {email}
+                </Text>
+              </div>
+              <Text size="15px">닉네임: {nickname}</Text>
+            </ChannelInfo>
+            <LogoutInfo
+              onClick={() => {
+                dispatch(userActions.userLogout());
+              }}
+            >
+              <Text color="#e01e5a" size="15px" fontWeight="700">
+                로그아웃 하기
+              </Text>
+            </LogoutInfo>
+          </LogoutModal>
+        )}
+      </ModalPortal>
     </>
   );
 };
@@ -99,6 +153,38 @@ const LogOutButton = styled.button`
     background-color: #1363a3;
     color: #fff;
   }
-  //
 `;
+
+const ChannelInfo = styled.div`
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  border-radius: 12px 12px 0 0;
+  border: 1px solid rgba(29, 28, 29, 0.13);
+  background: rgba(255, 255, 255, 1);
+  width: 100%;
+  padding: 16px 20px;
+  &:hover {
+    background: #f8f8f8;
+  }
+`;
+
+const LogoutInfo = styled.div`
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  border-radius: 0 0 12px 12px;
+  border-left: 1px solid rgba(29, 28, 29, 0.13);
+  border-right: 1px solid rgba(29, 28, 29, 0.13);
+  border-bottom: 1px solid rgba(29, 28, 29, 0.13);
+  background: rgba(255, 255, 255, 1);
+  width: 100%;
+  padding: 16px 20px;
+  &:hover {
+    background: #f8f8f8;
+  }
+`;
+
 export default NavigationBar;

@@ -1,12 +1,12 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
-// import axios from "axios";
+import axios from "axios";
 
 import { Dummy } from "../../shared/DummyData";
 import moment from "moment";
 import { contentActions } from "./content";
 
-const BASE_URL = "BASE_URL";
+const BASE_URL = "http://3.34.129.39";
 
 const initialState = {
   channelList: [],
@@ -80,16 +80,20 @@ const deleteComment = createAction(
 );
 
 // api 응답 받는 미들웨어
-const getChannelDB = (userId) => {
+const getChannelDB = () => {
   return async function (dispatch, getState, { history }) {
-    // await axios.get(`${BASE_URL}/channel/:${userId}`.then((res) => {
-    //     const channelTitle = res.data.channelTitle;
-    //     console.log(channelTitle)
-    //     dispatch(getChannel(channelTitle))
-    //   })
-    //   .catch((error) => {
-    //     console.log("체널 데이터 안옴", error);
-    //   })
+    const { email } = getState().user.user;
+
+    await axios
+      .get(`${BASE_URL}/channel/${email}`)
+      .then((res) => {
+        const data = res.data;
+        console.log(data);
+        // dispatch(getChannel(channelTitle));
+      })
+      .catch((error) => {
+        console.log("체널 데이터 안옴", error);
+      });
 
     // 한울: 더미데이터를 받아와서 넣었습니당
     dispatch(getChannel(Dummy));

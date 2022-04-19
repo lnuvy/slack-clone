@@ -26,7 +26,6 @@ const ChannelComment = (props) => {
 
   return (
     <>
-      {}
       <CommentWrap>
         <CommentHeaderWrap>
           <ChatHeaderTextbox>

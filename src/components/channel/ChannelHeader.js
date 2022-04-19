@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ModalPortal, Modal } from "../../shared/modal/portals";
-import { Text } from "../../elements";
+import { Image, Text } from "../../elements";
 import Tooltip from "../../shared/Tooltip";
 import { useSelector } from "react-redux";
 
@@ -38,12 +38,14 @@ const ChannelHeader = (props) => {
       </ModalPortal>
 
       <ChannelHeaderWrap>
-        <ChatHeaderTextbox onClick={handleModal}>
+        <ChatHeaderTextbox>
           <Tooltip message="채널 세부정보 받기">
-            <ChannelName># {channelName}</ChannelName>
+            <ChannelName onClick={handleModal}># {channelName}</ChannelName>
           </Tooltip>
         </ChatHeaderTextbox>
-        <ModalBtn width="50px" height=""></ModalBtn>
+        <ModalBtn width="50px" height="">
+          <Image shape="ProfileImg" size="26" opacity="0.9" />
+        </ModalBtn>
       </ChannelHeaderWrap>
     </>
   );

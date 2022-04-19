@@ -26,8 +26,6 @@ const SignUp = () => {
     dispatch(userActions.signUpDB(inputs));
   };
 
-  console.log(inputs);
-
   return (
     <>
       <div className="flex-column">

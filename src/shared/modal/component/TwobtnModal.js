@@ -5,7 +5,14 @@ import { IoCloseOutline } from "react-icons/io5";
 import { Button, Text } from "../../../elements";
 import { useDispatch } from "react-redux";
 
-const TwobtnModal = ({ children, onClose, title, btnText, onSubmit }) => {
+const TwobtnModal = ({
+  children,
+  onClose,
+  title,
+  btnText,
+  btnColor,
+  onSubmit,
+}) => {
   return (
     <ModalPortal>
       <Background
@@ -53,7 +60,7 @@ const TwobtnModal = ({ children, onClose, title, btnText, onSubmit }) => {
                 width="fit-content"
                 height="36px"
                 fontSize="15px"
-                bg="#007a5a"
+                bg={btnColor}
                 color="white"
                 onClick={(e) => {
                   e.stopPropagation();

@@ -8,17 +8,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { contentActions } from "../redux/modules/content";
 import ChannelComment from "../components/channel/comment/ChannelComment";
 import { channelActions } from "../redux/modules/channel";
-import { commentActions } from "../redux/modules/comment";
+import { history } from "../redux/configureStore";
 
 const ChannelPage = (props) => {
   const dispatch = useDispatch();
-  const { channelName } = props.match?.params;
+  const { channelId } = props.match?.params;
 
   useEffect(() => {
-    console.log(channelName);
-    dispatch(contentActions.getContentList(channelName));
-  }, [channelName]);
-
+    dispatch(contentActions.getContentList(channelId));
+  }, [channelId]);
   // 주소창에서 파라미터값을 받아오기
 
   // 여기서 데이터를 정리해서 props로 주는게 더 깔끔할거같아서 일단 이렇게 했습니다
@@ -31,7 +29,7 @@ const ChannelPage = (props) => {
         <ChannelHeader nowChannel={oneChannel} />
         <ChannelMsg nowChannel={oneChannel} />
         {/* 한울: 여기서 옵셔널체이닝을 안주면 채널 생성후 그 채널로 들어갔을때 터지네요! 참고하시면 좋을듯합니다 */}
-        <ChannelMsgBox channelId={oneChannel?.channelId} title={channelName} />
+        <ChannelMsgBox channelId={channelId} title={oneChannel?.channelName} />
       </ChannelsWrap>
     </>
   );

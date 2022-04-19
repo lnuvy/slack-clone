@@ -22,7 +22,6 @@ const Main = () => {
     <>
       <NavigationBar />
       <MainWrap>
-        {/* 화면넓이가 500px 이하일때 사이드바 없애기*/}
         <ChannelsWrap className="res-none">
           <Title>Slack</Title>
           <MenuScroll>
@@ -56,10 +55,10 @@ const Main = () => {
         <ChatsWrap>
           <Switch>
             <Route path="/" exact component={MainIndex} />
-            <Route path="/channel/:channelName" exact component={ChannelPage} />
+            <Route path="/channel/:channelId" exact component={ChannelPage} />
             <Route path="/dm/:dmName" exact component={MessagePage} />
             <Route
-              path="/channel/:channelName/:contentId"
+              path="/channel/:channelId/:contentId"
               exact
               component={ChannelComment}
             />
@@ -76,9 +75,7 @@ const MainWrap = styled.div`
 `;
 
 const ChannelsWrap = styled.nav`
-  max-width: 260px;
-  width: 100%;
-  min-width: 200px;
+  width: 260px;
   display: inline-flex;
   flex-direction: column;
   background: #3f0e40;

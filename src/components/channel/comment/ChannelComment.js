@@ -8,7 +8,8 @@ import moment from "moment";
 import { history } from "../../../redux/configureStore";
 import CommentBox from "./CommentBox";
 import { channelActions } from "../../../redux/modules/channel";
-import { conmmentActions } from "../../../redux/modules/comment";
+import { commentActions } from "../../../redux/modules/comment";
+import { contentActions } from "../../../redux/modules/content";
 // import {CommentBox}
 
 const ChannelComment = (props) => {
@@ -19,12 +20,15 @@ const ChannelComment = (props) => {
 
   const contentId = useParams().contentId;
 
+  // const nowContent = useSelector((state) => state?.comment || []);
   const channelList = useSelector((state) => state?.channel.channelList || []);
-  console.log(channelList);
+  // console.log(channelList);
 
   useEffect(() => {
-    dispatch(channelActions.getChannelDB());
-  }, [contentId]);
+    // dispatch(channelActions.getChannel());
+    // dispatch(contentActions.getContentList(channelName));
+    dispatch(commentActions.getCommentList(channelId, contentId));
+  }, []);
 
   // 클릭한 Content 입니다.
   const nowContent =
@@ -117,7 +121,7 @@ const ChannelComment = (props) => {
                       }}
                       onClick={() => {
                         dispatch(
-                          conmmentActions.deleteCommentDB(
+                          commentActions.deleteCommentDB(
                             channelId,
                             contentId,
                             c.commentId
@@ -162,6 +166,7 @@ const ChannelComment = (props) => {
 
 const CommentWrap = styled.div`
   width: 100%;
+  // 여기 고치니까 아래쪽 괜찮아지네요
   height: calc(100vh - 44px);
   display: flex;
   flex-direction: column;

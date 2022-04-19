@@ -30,13 +30,21 @@ const deleteComment = createAction(DELETE_COMMENT, (commentId) => ({
   commentId,
 }));
 
-const getCommentList = (channelName) => {
+const getCommentList = (channelName, contentId) => {
   return async function (dispatch, getState, { history }) {
-    const contentList = getState().channel.channelList.find(
-      (l) => l.channelName === channelName
-    );
+    const commentList = getState()
+      .channel.channelList.find((l) => l.channelName === channelName)
+      .contentList.find((l) => l.contentId === contentId);
+    console.log(commentList);
 
-    dispatch(getComment(contentList));
+    dispatch(getComment(commentList));
+
+    // const contentList = getState().channel.channelList.find(
+    //   (l) => l.channelName === channelName
+    // );
+    // console.log(contentList);
+
+    // dispatch(getComment(contentList));
   };
 };
 
@@ -56,7 +64,7 @@ const addCommentDB = (channelName, contentId, comment) => {
 
     let fakeResponseData = {
       comment: comment,
-      commentId: `${comment}id`,
+      commentId: new Date().getTime() + "",
       contentId: contentId,
       createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
       nickname: nickname,
@@ -81,26 +89,47 @@ const deleteCommentDB = (channelId, contentId, commentId) => {
     //   console.log(err);
     //   console.log(err.response);
     // })
-    dispatch(deleteComment);
-    // dispatch(channelActions.deleteComment(channelId, contentId, commentId));
+
+    console.log(channelId, contentId, commentId);
+    // dispatch(deleteComment(commentId));
+    dispatch(channelActions.deleteComment(channelId, contentId, commentId));
   };
 };
 
 // 리듀서
 export default handleActions(
   {
+    [GET_COMMENT]: (state, action) =>
+      produce(state, (draft) => {
+        draft.oneChannel = action.payload.commentList;
+      }),
+
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.oneChannel.contentList.push(action.payload.content);
+        draft.oneChannel.commentList.push(action.payload.commentList);
       }),
 
     [DELETE_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.user = action.payload.user;
-        draft.isLogin = true;
+        const commentId = action.payload.commentId;
+
+        let newArr = draft.oneChannel.commentList.filter(
+          (c) => c.commentId !== commentId
+        );
+
+        console.log(newArr);
+
+        console.log(commentId);
+
+        draft.oneChannel.commentList = newArr;
       }),
   },
   initialState
 );
 
-export const conmmentActions = { getComment, addCommentDB, deleteCommentDB };
+export const commentActions = {
+  getComment,
+  addCommentDB,
+  deleteCommentDB,
+  getCommentList,
+};

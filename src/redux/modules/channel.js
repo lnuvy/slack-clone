@@ -71,7 +71,7 @@ const addComment = createAction(
   })
 );
 const deleteComment = createAction(
-  ADD_COMMENTS,
+  DELETE_COMMENTS,
   (channelName, contentId, commentId) => ({
     channelName,
     contentId,
@@ -274,6 +274,8 @@ export default handleActions(
     [ADD_COMMENTS]: (state, action) =>
       produce(state, (draft) => {
         const { channelName, contentId, comment } = action.payload;
+
+        // 추가해줄 데이터 경로
         draft.channelList
           .filter((c) => c.channelName === channelName)[0]
           .contentList.forEach((l) => {
@@ -281,15 +283,43 @@ export default handleActions(
           });
       }),
 
-    // [DELETE_COMMENTS]: (state, action) =>
-    //   produce(state, (draft) => {
-    //     const { channelName, contentId, commentId } = action.payload;
-    //     draft.channelList
-    //       .filter((c) => c.channelName === channelName)[0]
-    //       .contentList.forEach((l) => {
-    //         if (l.contentId === contentId) l.commentList.push(commentId);
-    //       });
-    //   }),
+    [DELETE_COMMENTS]: (state, action) =>
+      produce(state, (draft) => {
+        const { channelName, contentId, commentId } = action.payload;
+
+        console.log(channelName, contentId, commentId);
+
+        // 컨텐츠 리스트 찾기
+        let contentList = state.channelList.filter(
+          (c) => c.channelName === channelName
+        )[0].contentList;
+
+        console.log(contentList);
+
+        // 현재 컨텐츠 인덱스 찾기
+        let index = contentList.findIndex((l) => l.contentId === contentId);
+
+        console.log(index);
+
+        // 현재 컨텐츠
+        let nowContent = contentList[index];
+
+        console.log(nowContent);
+
+        // 삭제할 코멘트를 제외하고 나머지를 반환
+        let commentList = nowContent.commentList.filter(
+          (c) => c.commentId !== commentId
+        );
+
+        console.log(commentList);
+
+        // 현재채널정보 갱신
+        nowContent = { ...nowContent, commentList };
+
+        draft.channelList.filter(
+          (c) => c.channelName === channelName
+        )[0].contentList[index] = nowContent;
+      }),
   },
   initialState
 );

@@ -1,24 +1,28 @@
-import React, { useState, useSelector } from "react";
+import React, { useState, useSelector, useEffect } from "react";
 import styled from "styled-components";
 import { IoSend } from "react-icons/io5";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { Button } from "../../../elements";
 import { useDispatch } from "react-redux";
 // import { contentActions } from "../../redux/modules/content";
-import { conmmentActions } from "../../../redux/modules/comment";
+import { commentActions } from "../../../redux/modules/comment";
+import { channelActions } from "../../../redux/modules/channel";
+import { contentActions } from "../../../redux/modules/content";
 
 const CommentBox = ({ channelName, contentId }) => {
-  console.log(channelName);
-  console.log(contentId);
   const dispatch = useDispatch();
   const [chat, setChat] = useState("");
 
+  useEffect(() => {
+    // dispatch(channelActions.getChannel());
+    dispatch(contentActions.getContentList(channelName));
+    dispatch(commentActions.getCommentList(channelName, contentId));
+  }, []);
+
   const submitChat = () => {
-    dispatch(conmmentActions.addCommentDB(channelName, contentId, chat));
+    dispatch(commentActions.addCommentDB(channelName, contentId, chat));
     setChat("");
   };
-
-  console.log(channelName);
 
   return (
     <>

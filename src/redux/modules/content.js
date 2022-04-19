@@ -72,6 +72,7 @@ const addContentDB = (channelId, channelName, content) => {
       content,
       createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
       isEdit: false,
+      commentList: [],
     };
 
     dispatch(addContent(fakeResponseData));

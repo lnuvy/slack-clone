@@ -8,6 +8,7 @@ import { contentActions } from "../../redux/modules/content";
 import { history } from "../../redux/configureStore";
 import { FaRegEdit } from "react-icons/fa";
 import { BsXLg } from "react-icons/bs";
+import { FaRegCommentDots } from "react-icons/fa";
 import { ModalPortal } from "../../shared/modal/portals";
 import TwobtnModal from "../../shared/modal/component/TwobtnModal";
 
@@ -127,48 +128,52 @@ const OneChat = (props) => {
                 </Text>
                 <span>{time}</span>
               </div>
-
               <ContentWrap>
                 {content}&nbsp;
                 <Text fontWeight="400" color="#696969">
                   {isEdit && "(편집됨)"}
                 </Text>
               </ContentWrap>
-              {commentList?.length && (
-                <>
-                  <CommentBox
-                    onClick={() => {
-                      // 여기에서 해당 채널에 대한 뷰를 변경해줍니다
-                      history.push(`/channel/${channelId}/${contentId}`);
-                    }}
-                    onMouseEnter={() => setHoverComment(true)}
-                    onMouseLeave={() => setHoverComment(false)}
-                  >
-                    <Image
-                      shape="ProfileImg"
-                      src={
-                        profileImg ||
-                        "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
-                      }
-                      size="24"
-                      margin="0px 4px 0px 0px"
-                    />
-                    {hoverComment ? (
-                      <p>
-                        {commentList?.length}개의 답글 <span>스레드 보기</span>
-                      </p>
-                    ) : (
-                      <p>{commentList?.length}개의 답글</p>
-                    )}
-                  </CommentBox>
-                </>
+              {/* 여기 왜 이러지 ? (!== 0 안붙이면 그냥 0 이라고 출력됨) */}
+              {commentList?.length !== 0 && (
+                <CommentBox
+                  onClick={() => {
+                    // 여기에서 해당 채널에 대한 뷰를 변경해줍니다
+                    history.push(`/channel/${channelId}/${contentId}`);
+                  }}
+                  onMouseEnter={() => setHoverComment(true)}
+                  onMouseLeave={() => setHoverComment(false)}
+                >
+                  <Image
+                    shape="ProfileImg"
+                    src={
+                      profileImg ||
+                      "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
+                    }
+                    size="24"
+                    margin="0px 4px 0px 0px"
+                  />
+                  {hoverComment ? (
+                    <p>
+                      {commentList?.length}개의 답글 <span>스레드 보기</span>
+                    </p>
+                  ) : (
+                    <p>{commentList?.length}개의 답글</p>
+                  )}
+                </CommentBox>
               )}
             </ChatListUserInfo>
           </div>
           <div style={{ display: "flex" }}>
             <IconBox
               onClick={() => {
-                console.log("수정");
+                history.push(`/channel/${channelId}/${contentId}`);
+              }}
+            >
+              {hoverUDIcon && <FaRegCommentDots />}
+            </IconBox>
+            <IconBox
+              onClick={() => {
                 setIsEditMode(true);
               }}
             >

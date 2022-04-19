@@ -29,22 +29,21 @@ const ChannelComment = (props) => {
   // 클릭한 Content 입니다.
   const nowContent =
     channelList
-      .find((c) => c.channelId === channelId)
+      ?.find((c) => c.channelId === channelId)
       .contentList.find((c) => c.contentId === contentId) || [];
   console.log(nowContent);
 
   // 클릭한 Content의 Comment List입니다.
-  const commentList = channelList
-    .find((c) => c.channelId === channelId)
-    .contentList.find((c) => c.contentId === contentId).commentList;
-  console.log(commentList);
+  let commentList = [];
+  if (nowContent.length) {
+    commentList = channelList
+      ?.find((c) => c.channelId === channelId)
+      .contentList.find((c) => c.contentId === contentId).commentList;
+    console.log(commentList);
+  }
 
   const time = moment(nowContent.createdAt).format("M월 DD일, HH:MM");
   console.log(time);
-
-  const commentId = commentList.forEach((c) => c.commentId);
-
-  console.log(commentId);
 
   return (
     <>
@@ -83,7 +82,7 @@ const ChannelComment = (props) => {
               </ChatListUserInfo>
             </ChatListBoxInfo>
             <CommentCount>
-              <p>{commentList.length}개의 답글</p>
+              <p>{commentList?.length}개의 답글</p>
               <hr />
             </CommentCount>
 
@@ -151,8 +150,8 @@ const ChannelComment = (props) => {
               </ChatListBoxInfo>
             )}
             <CommentBox
-              channelName={nowContent.channelName}
-              contentId={nowContent.contentId}
+              channelName={nowContent?.channelName}
+              contentId={nowContent?.contentId}
             />
           </ChatListBox>
         </ChatListWrap>

@@ -64,7 +64,7 @@ const addCommentDB = (channelName, contentId, comment) => {
 
     let fakeResponseData = {
       comment: comment,
-      commentId: `${comment}id`,
+      commentId: new Date().getTime() + "",
       contentId: contentId,
       createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
       nickname: nickname,

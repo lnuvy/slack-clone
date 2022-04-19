@@ -44,10 +44,11 @@ const ChannelComment = (props) => {
             />
           </IconBox>
         </CommentHeaderWrap>
-        <ChatListWrap>
-          <ChatListBox>
-            <ChatListBoxInfo>
-              <ChatListUserImageWrap>
+
+        <CommentListWrap>
+          <CommentListBox>
+            <CommentListBoxInfo>
+              <CommentListUserImageWrap>
                 <Image
                   shape="ProfileImg"
                   src={
@@ -56,8 +57,8 @@ const ChannelComment = (props) => {
                   }
                   margin="4px"
                 />
-              </ChatListUserImageWrap>
-              <ChatListUserInfo>
+              </CommentListUserImageWrap>
+              <CommentListUserInfo>
                 <NicknameBox>
                   <p>{nowContent.nickname}</p>
                   <span>{time}</span>
@@ -68,37 +69,39 @@ const ChannelComment = (props) => {
                     {isEdit && "(편집됨)"}
                   </Text>
                 </div>
-              </ChatListUserInfo>
-            </ChatListBoxInfo>
+              </CommentListUserInfo>
+            </CommentListBoxInfo>
             <CommentCount>
               <p>{commentList?.length}개의 답글</p>
               <hr />
             </CommentCount>
+            {/* <div ref={scrollRef}> */}
             {commentList ? (
               commentList.map((c, i) => {
                 return <OneComment key={i} {...c} channelId={channelId} />;
               })
             ) : (
               // 여긴 덕행님이 작성해두신 기본 뷰입니다
-              <ChatListBoxInfo>
-                <ChatListUserImageWrap>
+              <CommentListBoxInfo>
+                <CommentListUserImageWrap>
                   <Image shape="ProfileImg" margin="4px" />
-                </ChatListUserImageWrap>
-                <ChatListUserInfo>
+                </CommentListUserImageWrap>
+                <CommentListUserInfo>
                   <NicknameBox>
                     <p>홍길동</p>
                     <span>12:00</span>
                   </NicknameBox>
                   <div>댓글 입니다.</div>
-                </ChatListUserInfo>
-              </ChatListBoxInfo>
+                </CommentListUserInfo>
+              </CommentListBoxInfo>
             )}
+            {/* </div> */}
             <CommentBox
               channelId={nowContent?.channelId}
               contentId={nowContent?.contentId}
             />
-          </ChatListBox>
-        </ChatListWrap>
+          </CommentListBox>
+        </CommentListWrap>
       </CommentWrap>
     </>
   );
@@ -153,16 +156,19 @@ const IconBox = styled.div`
   }
 `;
 
-const ChatListWrap = styled.div`
+const CommentListWrap = styled.div`
   height: 100vh;
   padding: 8px 0px;
   flex-direction: rows;
   overflow-y: scroll;
+  max-height: 100vh;
+  // overflow-x: hidden;
+  overflow-y: auto;
 `;
-const ChatListBox = styled.div`
+const CommentListBox = styled.div`
   margin-bottom: 16px;
 `;
-const ChatListBoxInfo = styled.div`
+const CommentListBoxInfo = styled.div`
   display: flex;
   padding: 8px 20px;
   flex-direction: rows;
@@ -171,18 +177,11 @@ const ChatListBoxInfo = styled.div`
   }
   cursor: pointer;
 `;
-const ChatListUserImageWrap = styled.div`
+const CommentListUserImageWrap = styled.div`
   display: flex;
-  // align-items: center;
-  /* & > Image {
-    shape: ProfileImg;
-    src: {
-      profileImg ||
-      "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
-    } */
 `;
 
-const ChatListUserInfo = styled.div`
+const CommentListUserInfo = styled.div`
   width: 100%;
   display: flex;
   margin-left: 10px;

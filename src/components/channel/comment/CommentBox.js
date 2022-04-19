@@ -82,7 +82,7 @@ const InputBox = styled.div`
 `;
 const InputText = styled.input`
   margin: 0 15px;
-  width: 95%;
+  // width: 95%;
   border: none;
   outline: none;
 `;

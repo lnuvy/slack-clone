@@ -21,16 +21,16 @@ const ChannelPage = (props) => {
 
   useEffect(() => {
     dispatch(contentActions.getContentList(channelId));
-  }, [oneChannel]);
+  }, [channelId]);
+
+  // const contentRedux = useSelector((state) => state.content.oneChannel);
   // 주소창에서 파라미터값을 받아오기
 
   return (
     <>
       <ChannelsWrap>
-        {/* 헤더에 모달이 연결돼있어서 채널 정보를 다받아오는게 좋을거같아 수정했습니다 */}
-        <ChannelHeader nowChannel={oneChannel} />
-        <ChannelMsg nowChannel={oneChannel} />
-        {/* 한울: 여기서 옵셔널체이닝을 안주면 채널 생성후 그 채널로 들어갔을때 터지네요! 참고하시면 좋을듯합니다 */}
+        <ChannelHeader nowChannel={oneChannel || []} />
+        <ChannelMsg nowChannel={oneChannel || []} />
         <ChannelMsgBox channelId={channelId} title={oneChannel?.channelName} />
       </ChannelsWrap>
     </>

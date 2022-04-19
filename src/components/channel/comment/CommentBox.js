@@ -14,9 +14,7 @@ const CommentBox = ({ channelId, contentId }) => {
   const [chat, setChat] = useState("");
 
   useEffect(() => {
-    // dispatch(channelActions.getChannel());
     dispatch(contentActions.getContentList(channelId));
-    dispatch(commentActions.getCommentList(channelId, contentId));
   }, []);
 
   const submitChat = () => {

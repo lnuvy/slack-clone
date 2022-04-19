@@ -5,8 +5,8 @@ import { Text } from "../../elements";
 import Tooltip from "../../shared/Tooltip";
 import { useSelector } from "react-redux";
 
-const ChannelHeader = ({ nowChannel }) => {
-  const { channelName, channelId } = nowChannel;
+const ChannelHeader = (props) => {
+  const { channelName, channelId } = props?.nowChannel;
 
   const [modalOn, setModalOn] = useState(false);
 
@@ -20,7 +20,7 @@ const ChannelHeader = ({ nowChannel }) => {
       {/* 채널 헤더의 타이틀을 눌렀을때 나오는 모달창 */}
       <ModalPortal>
         {modalOn && (
-          <Modal data={nowChannel} onClose={handleModal}>
+          <Modal data={props?.nowChannel} onClose={handleModal}>
             <ChannelInfo>
               <div
                 className="flex-row"

@@ -9,7 +9,7 @@ import { channelActions } from "./channel";
 const BASE_URL = "BASE_URL";
 
 const initialState = {
-  oneComment: {},
+  oneContent: {},
 };
 
 // 액션
@@ -20,8 +20,8 @@ const DELETE_COMMENT = "DELETE_COMMENT";
 // 액션 생성함수
 // 한울 추가: 언더바는 사용해보니 좋은걸 잘 모르겠어서 빼버렸습니다!
 
-const getComment = createAction(GET_COMMENT, (comment) => ({
-  comment,
+const getComment = createAction(GET_COMMENT, (nowContent) => ({
+  nowContent,
 }));
 const addComment = createAction(ADD_COMMENT, (comment) => ({
   comment,
@@ -31,13 +31,19 @@ const deleteComment = createAction(DELETE_COMMENT, (commentId) => ({
 }));
 
 const getCommentList = (channelId, contentId) => {
+  console.log("아이디 잘들어오니?", channelId, contentId);
   return async function (dispatch, getState, { history }) {
-    const commentList = getState()
-      .channel.channelList.find((l) => l.channelId === channelId)
-      .contentList.find((l) => l.contentId === contentId).commentList;
-    console.log(commentList);
+    const nowChannel = getState().channel.channelList.find(
+      (l) => l.channelId === channelId
+    );
 
-    dispatch(getComment(commentList));
+    console.log(nowChannel);
+    const nowContent = nowChannel.contentList.find(
+      (l) => l.contentId === contentId
+    );
+    console.log(nowContent);
+
+    dispatch(getComment(nowContent));
 
     // const contentList = getState().channel.channelList.find(
     //   (l) => l.channelName === channelName
@@ -74,7 +80,7 @@ const addCommentDB = (channelId, contentId, comment) => {
       profileImg,
     };
 
-    // dispatch(addComment(fakeResponseData));
+    dispatch(addComment(fakeResponseData));
     // 여기서 채널 액션함수 호출
     dispatch(channelActions.addComment(channelId, contentId, fakeResponseData));
   };
@@ -91,7 +97,7 @@ const deleteCommentDB = (channelId, contentId, commentId) => {
     // })
 
     console.log(channelId, contentId, commentId);
-    // dispatch(deleteComment(commentId));
+    dispatch(deleteComment(commentId));
     dispatch(channelActions.deleteComment(channelId, contentId, commentId));
   };
 };
@@ -101,27 +107,23 @@ export default handleActions(
   {
     [GET_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.oneComment = action.payload.commentList;
+        draft.oneContent = action.payload.nowContent;
       }),
 
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.oneComment.push(action.payload.commentList);
+        draft.oneContent.commentList.push(action.payload.comment);
       }),
 
     [DELETE_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        const commentId = action.payload.commentId;
+        const { commentId } = action.payload;
+        // const id = action.payload.commentId;
 
-        let newArr = draft.oneChannel.commentList.filter(
+        let newArr = draft.oneContent.commentList.filter(
           (c) => c.commentId !== commentId
         );
-
-        console.log(newArr);
-
-        console.log(commentId);
-
-        draft.oneChannel.commentList = newArr;
+        draft.oneContent.commentList = newArr;
       }),
   },
   initialState

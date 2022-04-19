@@ -16,6 +16,7 @@ const rootReducer = combineReducers({
   user: User,
   channel: Channel,
   content: Content,
+  comment: Comment,
   // image: Image,
   // comment: Comment,
   router: connectRouter(history),

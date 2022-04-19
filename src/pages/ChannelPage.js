@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { contentActions } from "../redux/modules/content";
 import ChannelComment from "../components/channel/comment/ChannelComment";
 import { channelActions } from "../redux/modules/channel";
+import { commentActions } from "../redux/modules/comment";
 
 const ChannelPage = (props) => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const ChannelPage = (props) => {
     console.log(channelName);
     dispatch(contentActions.getContentList(channelName));
   }, [channelName]);
+
   // 주소창에서 파라미터값을 받아오기
 
   // 여기서 데이터를 정리해서 props로 주는게 더 깔끔할거같아서 일단 이렇게 했습니다

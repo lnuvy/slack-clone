@@ -15,13 +15,13 @@ const initialState = {
 // 액션
 const GET_COMMENT = "GET_COMMENT";
 const ADD_COMMENT = "ADD_COMMENT";
-const DELETE_COMMENT = "DELETECOMMENT";
+const DELETE_COMMENT = "DELETE_COMMENT";
 
 // 액션 생성함수
 // 한울 추가: 언더바는 사용해보니 좋은걸 잘 모르겠어서 빼버렸습니다!
 
-const getComment = createAction(GET_COMMENT, (comment) => ({
-  comment,
+const getComment = createAction(GET_COMMENT, (nowContent) => ({
+  nowContent,
 }));
 const addComment = createAction(ADD_COMMENT, (comment) => ({
   comment,
@@ -36,6 +36,8 @@ const getCommentList = (channelId, contentId) => {
       .channel.channelList.find((l) => l.channelId === channelId)
       .contentList.find((l) => l.contentId === contentId).commentList;
     console.log(commentList);
+
+    const nowContent
 
     dispatch(getComment(commentList));
 

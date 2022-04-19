@@ -15,36 +15,17 @@ import { contentActions } from "../../../redux/modules/content";
 const ChannelComment = (props) => {
   const dispatch = useDispatch();
 
-  const { channelId } = props.match?.params;
-  console.log(channelId);
-
-  const contentId = useParams().contentId;
-
-  // const nowContent = useSelector((state) => state?.comment || []);
-  const channelList = useSelector((state) => state?.channel.channelList || []);
-  // console.log(channelList);
+  // 주소창 파라미터
+  const { channelId, contentId } = props.match?.params;
 
   useEffect(() => {
-    // dispatch(channelActions.getChannel());
-    // dispatch(contentActions.getContentList(channelName));
+    console.log(channelId, contentId);
     dispatch(commentActions.getCommentList(channelId, contentId));
-  }, []);
+  }, [contentId]);
 
-  // 클릭한 Content 입니다.
-  const nowContent =
-    channelList
-      ?.find((c) => c.channelId === channelId)
-      .contentList.find((c) => c.contentId === contentId) || [];
-  console.log(nowContent);
+  const nowContent = useSelector((state) => state.comment.oneContent);
 
-  // 클릭한 Content의 Comment List입니다.
-  let commentList = [];
-  if (nowContent.length) {
-    commentList = channelList
-      ?.find((c) => c.channelId === channelId)
-      .contentList.find((c) => c.contentId === contentId).commentList;
-    console.log(commentList);
-  }
+  let { commentList } = nowContent;
 
   const time = moment(nowContent.createdAt).format("M월 DD일, HH:MM");
   console.log(time);
@@ -55,12 +36,12 @@ const ChannelComment = (props) => {
         <CommentHeaderWrap>
           <ChatHeaderTextbox>
             스레드
-            <ChannelName>#{nowContent.channelName}</ChannelName>
+            <ChannelName>#{nowContent?.channelName}</ChannelName>
           </ChatHeaderTextbox>
           <BsXLg
             style={{ color: "gray", fontSize: "15px" }}
             onClick={() => {
-              history.push(`/channel/${nowContent.channelId}`);
+              history.push(`/channel/${nowContent?.channelId}`);
             }}
           />
         </CommentHeaderWrap>

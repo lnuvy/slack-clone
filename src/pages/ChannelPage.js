@@ -14,13 +14,15 @@ const ChannelPage = (props) => {
   const dispatch = useDispatch();
   const { channelId } = props.match?.params;
 
+  // 여기서 데이터를 정리해서 props로 주는게 더 깔끔할거같아서 일단 이렇게 했습니다
+  const oneChannel = useSelector((state) => state.channel.channelList).find(
+    (l) => l.channelId === channelId
+  );
+
   useEffect(() => {
     dispatch(contentActions.getContentList(channelId));
-  }, [channelId]);
+  }, [oneChannel]);
   // 주소창에서 파라미터값을 받아오기
-
-  // 여기서 데이터를 정리해서 props로 주는게 더 깔끔할거같아서 일단 이렇게 했습니다
-  const oneChannel = useSelector((state) => state.content.oneChannel);
 
   return (
     <>

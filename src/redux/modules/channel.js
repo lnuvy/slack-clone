@@ -64,16 +64,16 @@ const deleteContent = createAction(DELETE_CONTENTS, (channelId, contentId) => ({
 // 코멘트 추가부분
 const addComment = createAction(
   ADD_COMMENTS,
-  (channelName, contentId, comment) => ({
-    channelName,
+  (channelId, contentId, comment) => ({
+    channelId,
     contentId,
     comment,
   })
 );
 const deleteComment = createAction(
   DELETE_COMMENTS,
-  (channelName, contentId, commentId) => ({
-    channelName,
+  (channelId, contentId, commentId) => ({
+    channelId,
     contentId,
     commentId,
   })
@@ -227,7 +227,6 @@ export default handleActions(
         let index = draft.channelList.findIndex(
           (l) => l.channelId === channelId
         );
-        console.log(index);
 
         // 수정된 게시글을 제외한 나머지를 배열로 반환
         let contentList = nowChannel.contentList.filter(
@@ -240,8 +239,6 @@ export default handleActions(
             new moment(a.createdAt).format("YYYYMMDDHHmm") -
             new moment(b.createdAt).format("YYYYMMDDHHmm")
         );
-
-        console.log(newArr);
 
         // 현재채널정보 갱신
         nowChannel = { ...nowChannel, contentList: newArr };
@@ -273,11 +270,11 @@ export default handleActions(
     // 코멘트 리듀서
     [ADD_COMMENTS]: (state, action) =>
       produce(state, (draft) => {
-        const { channelName, contentId, comment } = action.payload;
+        const { channelId, contentId, comment } = action.payload;
 
         // 추가해줄 데이터 경로
         draft.channelList
-          .filter((c) => c.channelName === channelName)[0]
+          .filter((c) => c.channelId === channelId)[0]
           .contentList.forEach((l) => {
             if (l.contentId === contentId) l.commentList.push(comment);
           });
@@ -285,13 +282,13 @@ export default handleActions(
 
     [DELETE_COMMENTS]: (state, action) =>
       produce(state, (draft) => {
-        const { channelName, contentId, commentId } = action.payload;
+        const { channelId, contentId, commentId } = action.payload;
 
-        console.log(channelName, contentId, commentId);
+        console.log(channelId, contentId, commentId);
 
         // 컨텐츠 리스트 찾기
         let contentList = state.channelList.filter(
-          (c) => c.channelName === channelName
+          (c) => c.channelId === channelId
         )[0].contentList;
 
         console.log(contentList);
@@ -317,7 +314,7 @@ export default handleActions(
         nowContent = { ...nowContent, commentList };
 
         draft.channelList.filter(
-          (c) => c.channelName === channelName
+          (c) => c.channelId === channelId
         )[0].contentList[index] = nowContent;
       }),
   },

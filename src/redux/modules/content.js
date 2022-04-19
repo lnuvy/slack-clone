@@ -26,8 +26,8 @@ const editNowChannel = createAction(EDIT_NOW_CHANNEL_NAME, (channelName) => ({
   channelName,
 }));
 
-const getContent = createAction(GET_CONTENT, (contentList) => ({
-  contentList,
+const getContent = createAction(GET_CONTENT, (oneChannel) => ({
+  oneChannel,
 }));
 const addContent = createAction(ADD_CONTENT, (content) => ({
   content,
@@ -40,11 +40,17 @@ const deleteContent = createAction(DELETE_CONTENT, (contentId) => ({
 }));
 
 const getContentList = (channelId) => {
+  console.log("content get 실행됨");
   return function (dispatch, getState, { history }) {
-    const contentList = getState().channel.channelList.find(
-      (l) => l.channelId === channelId
-    );
-    dispatch(getContent(contentList));
+    if (!channelId) return;
+
+    // const oneChannel = getState().channel.channelList.find(
+    //   (l) => l.channelId === channelId
+    // );
+    console.log(channelId);
+    console.log(getState().channel.channelList);
+
+    // dispatch(getContent(oneChannel));
   };
 };
 
@@ -75,7 +81,7 @@ const addContentDB = (channelId, channelName, content) => {
       commentList: [],
     };
 
-    dispatch(addContent(fakeResponseData));
+    // dispatch(addContent(fakeResponseData));
     // 여기서 채널 액션함수 호출
     dispatch(
       channelActions.addContent(fakeResponseData.channelId, fakeResponseData)
@@ -105,7 +111,7 @@ const editContentDB = (channelId, channelName, contentId, content) => {
     };
 
     console.log(fakeResponseData);
-    dispatch(editContent(fakeResponseData));
+    // dispatch(editContent(fakeResponseData));
     // 여기서 채널 액션함수 호출
     dispatch(
       channelActions.editContent(channelId, contentId, fakeResponseData)
@@ -139,7 +145,7 @@ export default handleActions(
       }),
     [GET_CONTENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.oneChannel = action.payload.contentList;
+        draft.oneChannel = action.payload.oneChannel;
       }),
     [ADD_CONTENT]: (state, action) =>
       produce(state, (draft) => {

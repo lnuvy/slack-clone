@@ -264,15 +264,10 @@ export default handleActions(
 
         console.log(channelName, contentId, commentId);
 
-        // let contentList = draft.channelList.filter(
-        //   (c) => c.channelName === channelName
-        // )[0];
-
+        // 컨텐츠 리스트 찾기
         let contentList = state.channelList.filter(
           (c) => c.channelName === channelName
         )[0].contentList;
-
-        // let contentList = draft;
 
         console.log(contentList);
 

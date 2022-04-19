@@ -16,6 +16,7 @@ import { MdOutlineLayers } from "react-icons/md";
 import { history } from "../redux/configureStore";
 
 // 처음 로그인 했을때, 주된 컨텐츠가 되는 부분 (슬랙에서 Slack Connect 부분)
+
 const Main = () => {
   return (
     <>

@@ -13,13 +13,19 @@ const initialState = {
 };
 
 // 액션
+// 채널 이름변경시 바로 적용되게 하기위해 만든 액션함수
+const EDIT_NOW_CHANNEL_NAME = "EDIT_NOW_CHANNEL_NAME";
+
 const GET_CONTENT = "GET_CONTENT";
 const ADD_CONTENT = "ADD_CONTENT";
 const EDIT_CONTENT = "EDIT_CONTENT";
 const DELETE_CONTENT = "DELETE_CONTENT";
 
 // 액션 생성함수
-// 한울 추가: 언더바는 사용해보니 좋은걸 잘 모르겠어서 빼버렸습니다!
+const editNowChannel = createAction(EDIT_NOW_CHANNEL_NAME, (channelName) => ({
+  channelName,
+}));
+
 const getContent = createAction(GET_CONTENT, (contentList) => ({
   contentList,
 }));
@@ -33,13 +39,11 @@ const deleteContent = createAction(DELETE_CONTENT, (contentId) => ({
   contentId,
 }));
 
-const getContentList = (channelName) => {
+const getContentList = (channelId) => {
   return function (dispatch, getState, { history }) {
     const contentList = getState().channel.channelList.find(
-      (l) => l.channelName === channelName
+      (l) => l.channelId === channelId
     );
-    console.log(contentList);
-
     dispatch(getContent(contentList));
   };
 };
@@ -128,6 +132,10 @@ const deleteContentDB = (channelId, contentId) => {
 // 리듀서
 export default handleActions(
   {
+    [EDIT_NOW_CHANNEL_NAME]: (state, action) =>
+      produce(state, (draft) => {
+        draft.oneChannel.channelName = action.payload.channelName;
+      }),
     [GET_CONTENT]: (state, action) =>
       produce(state, (draft) => {
         draft.oneChannel = action.payload.contentList;
@@ -140,11 +148,6 @@ export default handleActions(
       produce(state, (draft) => {
         const { content } = action.payload;
 
-        // draft.oneChannel.contentList.forEach((c) => {
-        //   if (c.contentId === content.contentId) {
-        //     return (c = content);
-        //   }
-        // });
         let newArr = draft.oneChannel.contentList.filter(
           (c) => c.contentId !== content.contentId
         );
@@ -170,6 +173,7 @@ export default handleActions(
 );
 
 export const contentActions = {
+  editNowChannel,
   getContentList,
   addContentDB,
   editContentDB,

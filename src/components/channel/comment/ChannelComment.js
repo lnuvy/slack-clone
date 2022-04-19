@@ -14,7 +14,8 @@ import { conmmentActions } from "../../../redux/modules/comment";
 const ChannelComment = (props) => {
   const dispatch = useDispatch();
 
-  const { channelName } = props.match?.params;
+  const { channelId } = props.match?.params;
+  console.log(channelId);
 
   const contentId = useParams().contentId;
 
@@ -28,14 +29,14 @@ const ChannelComment = (props) => {
   // 클릭한 Content 입니다.
   const nowContent =
     channelList
-      .filter((c) => c.channelName === channelName)[0]
-      .contentList.filter((c) => c.contentId === contentId)[0] || [];
+      .find((c) => c.channelId === channelId)
+      .contentList.find((c) => c.contentId === contentId) || [];
   console.log(nowContent);
 
   // 클릭한 Content의 Comment List입니다.
   const commentList = channelList
-    .filter((c) => c.channelName === channelName)[0]
-    .contentList.filter((c) => c.contentId === contentId)[0].commentList;
+    .find((c) => c.channelId === channelId)
+    .contentList.find((c) => c.contentId === contentId).commentList;
   console.log(commentList);
 
   const time = moment(nowContent.createdAt).format("M월 DD일, HH:MM");
@@ -118,7 +119,7 @@ const ChannelComment = (props) => {
                       onClick={() => {
                         dispatch(
                           conmmentActions.deleteCommentDB(
-                            channelName,
+                            channelId,
                             contentId,
                             c.commentId
                           )

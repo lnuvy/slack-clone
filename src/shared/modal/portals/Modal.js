@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ModalPortal from "./ModalPortal";
 import styled from "styled-components";
-
+import moment from "moment";
 import { IoCloseOutline, IoCallOutline } from "react-icons/io5";
 import { BsStar } from "react-icons/bs";
 import { HiOutlineBell } from "react-icons/hi";
@@ -11,11 +11,10 @@ import InfoModal from "../component/InfoModal";
 import { useDispatch, useSelector } from "react-redux";
 import { channelActions } from "../../../redux/modules/channel";
 
-// onClose= 모달을 닫는 함수, channelName= 모달 최상단의 타이틀, children= 모달의 내용(각각 커스텀)
+// 채널 이름 수정 , 채널 나가기 에서 사용되는 모달입니다
 const Modal = ({ onClose, data, children }) => {
   const dispatch = useDispatch();
   const channel = useSelector((state) => state.channel.channelList);
-
   const { channelId, channelName, createdAt, channelHost } = data;
 
   // 채널 이름 변경 input
@@ -34,7 +33,8 @@ const Modal = ({ onClose, data, children }) => {
       alert("이미 존재하는 채널명입니다!");
       return;
     }
-    dispatch(channelActions.editChannelNameDB(channelName, channelId));
+    dispatch(channelActions.editChannelNameDB(channelId, changeName));
+    onClose();
   };
 
   const [modalOn, setModalOn] = useState(false);
@@ -130,12 +130,14 @@ const Modal = ({ onClose, data, children }) => {
                   만든 사람
                 </Text>
                 <Text size="15px">
-                  작성자: asdfasdf 작성 날짜: ㅁ니어ㅏㄹ미낭러
+                  작성자: {channelHost} 작성 날짜:{" "}
+                  {moment(createdAt).format("YYYY년 MM월 DD일")}
                 </Text>
               </MakeChannelInfo>
               <OutChannelInfo
                 onClick={() => {
                   console.log("삭제");
+                  dispatch(channelActions.deleteChannelDB(channelId));
                 }}
               >
                 <Text color="#e01e5a" size="15px" fontWeight="700">

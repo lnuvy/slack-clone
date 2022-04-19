@@ -4,6 +4,7 @@ import { produce } from "immer";
 
 import { Dummy } from "../../shared/DummyData";
 import moment from "moment";
+import { contentActions } from "./content";
 
 const BASE_URL = "BASE_URL";
 
@@ -33,9 +34,13 @@ const getChannel = createAction(GET_CHANNEL, (channelList) => ({
 const addChannel = createAction(ADD_CHANNEL, (channel) => ({
   channel,
 }));
-const editChannelName = createAction(EDIT_CHANNEL_NAME, (channelName) => ({
-  channelName,
-}));
+const editChannelName = createAction(
+  EDIT_CHANNEL_NAME,
+  (channelId, channelName) => ({
+    channelId,
+    channelName,
+  })
+);
 const deleteChannel = createAction(DELETE_CHANNEL, (channelId) => ({
   channelId,
 }));
@@ -93,7 +98,6 @@ const getChannelDB = (userId) => {
 
 const addChannelDB = (channelData) => {
   return async function (dispatch, getState, { history }) {
-    console.log("미들웨어:", channelData);
     //     await axios.post(`${BASE_URL}/channel/channel${id}`, channeldata);
     //     axios({
     //       method: "post",
@@ -126,7 +130,7 @@ const addChannelDB = (channelData) => {
   };
 };
 
-const editChannelNameDB = (channelId, changeName) => {
+const editChannelNameDB = (channelId, channelName) => {
   return async function (dispatch, getState, { history }) {
     // await axios.post(`${BASE_URL}/channel/channel${id}`, channeldata)
     //   axios({
@@ -145,10 +149,14 @@ const editChannelNameDB = (channelId, changeName) => {
     //     console.log(err);
     //     console.log(err.response);
     //   })
+
+    dispatch(editChannelName(channelId, channelName));
+    // 채널헤더가 바로 반영되지않아서 만든 content 디스패치
+    dispatch(contentActions.editNowChannel(channelName));
   };
 };
 
-const deleteChannelDB = (id) => {
+const deleteChannelDB = (channelId) => {
   return async function (dispatch, getState, { history }) {
     // await axios.post(`${BASE_URL}/channel/channel${id}`, channeldata)
     //   axios({
@@ -166,6 +174,10 @@ const deleteChannelDB = (id) => {
     //     console.log(err);
     //     console.log(err.response);
     //   })
+
+    alert("삭제!");
+    dispatch(deleteChannel(channelId));
+    history.replace("/");
   };
 };
 
@@ -180,8 +192,21 @@ export default handleActions(
       produce(state, (draft) => {
         draft.channelList.push(action.payload.channel);
       }),
-    [EDIT_CHANNEL_NAME]: (state, action) => produce(state, (draft) => {}),
-    [DELETE_CHANNEL]: (state, action) => produce(state, (draft) => {}),
+    [EDIT_CHANNEL_NAME]: (state, action) =>
+      produce(state, (draft) => {
+        const { channelId, channelName } = action.payload;
+        draft.channelList.forEach((l) => {
+          if (l.channelId === channelId) {
+            l.channelName = channelName;
+          }
+        });
+      }),
+    [DELETE_CHANNEL]: (state, action) =>
+      produce(state, (draft) => {
+        const { channelId } = action.payload;
+        let newArr = draft.channelList.filter((l) => l.channelId !== channelId);
+        draft.channelList = newArr;
+      }),
 
     // 컨텐츠 리듀서
     [ADD_CONTENTS]: (state, action) =>
@@ -282,4 +307,5 @@ export const channelActions = {
   editContent,
   deleteComment,
   addComment,
+  deleteContent,
 };

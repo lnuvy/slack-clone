@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ModalPortal, Modal } from "../../shared/modal/portals";
 import { Text } from "../../elements";
 import Tooltip from "../../shared/Tooltip";
+import { useSelector } from "react-redux";
 
 const ChannelHeader = ({ nowChannel }) => {
   const { channelName, channelId } = nowChannel;

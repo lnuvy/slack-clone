@@ -31,20 +31,53 @@ const ChannelList = (props) => {
   const handleChange = (e) => {
     const id = e.target.id;
     const value = e.target.value;
-    console.log(inputs);
     setInputs((values) => ({ ...values, [id]: value }));
   };
 
   // 버튼을 눌렀을때 dispatch 해서 가짜데이터가 일단 들어갑니다
   // 모달창에 있는 버튼과 연결하기위해 props onSubmit 으로 넘겨줍니다!
   const handleSubmit = () => {
-    console.log("버튼 클릭", inputs);
     dispatch(channelActions.addChannelDB(inputs));
     setModalOn(false);
   };
 
   return (
     <>
+      <ListWrap>
+        <GridMenu>채널</GridMenu>
+        <ChannelWarp>
+          {/* channel.channelName 이 너무 길어져서 c로 줄였습니다 */}
+          {channel.map((c, i) => {
+            return (
+              <Channnal
+                key={c.channelId}
+                {...c}
+                onClick={() => {
+                  // 여기에서 해당 채널에 대한 뷰를 변경해줍니다
+                  history.push(`/channel/${c.channelId}`);
+                }}
+              >
+                <span style={{ margin: "0px 5px" }}># {c.channelName}</span>
+              </Channnal>
+            );
+          })}
+          <ChannnalAdd onClick={handleModal}>
+            <BsPlus
+              style={{
+                color: "white",
+                background: "rgb(80 37 80)",
+                fontSize: "20px",
+                borderRadius: "5px",
+                display: "flex",
+                alignItems: "center",
+                margin: "1px 7px 0px 4px",
+              }}
+            />
+            채널 추가
+          </ChannnalAdd>
+        </ChannelWarp>
+      </ListWrap>
+
       {/* channel 생성 모달 */}
       <ModalPortal>
         {modalOn && (
@@ -85,41 +118,6 @@ const ChannelList = (props) => {
           </OnebtnModal>
         )}
       </ModalPortal>
-
-      <ListWrap>
-        <GridMenu>채널</GridMenu>
-        <ChannelWarp>
-          {/* channel.channelName 이 너무 길어져서 c로 줄였습니다 */}
-          {channel.map((c, i) => {
-            return (
-              <Channnal
-                key={`${c.channelName}_${i}`}
-                {...c}
-                onClick={() => {
-                  // 여기에서 해당 채널에 대한 뷰를 변경해줍니다
-                  history.push(`/channel/${c.channelName}`);
-                }}
-              >
-                <span style={{ margin: "0px 5px" }}># {c.channelName}</span>
-              </Channnal>
-            );
-          })}
-          <ChannnalAdd onClick={handleModal}>
-            <BsPlus
-              style={{
-                color: "white",
-                background: "rgb(80 37 80)",
-                fontSize: "20px",
-                borderRadius: "5px",
-                display: "flex",
-                alignItems: "center",
-                margin: "1px 7px 0px 4px",
-              }}
-            />
-            채널 추가
-          </ChannnalAdd>
-        </ChannelWarp>
-      </ListWrap>
     </>
   );
 };

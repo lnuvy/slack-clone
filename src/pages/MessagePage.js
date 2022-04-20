@@ -18,13 +18,13 @@ const MessagePage = () => {
   const { nickname, profileImg } = user;
   console.log(nickname);
 
-  socket.emit("init", { name: "testName", user: user });
+  socket.emit("init", { user });
 
   return (
     <>
       <MessagePageWrap>
         <MassageHeader />
-        <Massage profileImg={profileImg} />
+        <Massage nickname={nickname} />
         <MassageBox nickname={nickname} profileImg={profileImg} />
       </MessagePageWrap>
     </>

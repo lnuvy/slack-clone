@@ -4,9 +4,10 @@ import moment from "moment";
 import { history } from "../configureStore";
 import axios from "axios";
 import { channelActions } from "./channel";
+import { getToken } from "../../shared/token";
 // import axios from "axios";
 
-const BASE_URL = "BASE_URL";
+const BASE_URL = "http://52.78.246.163";
 
 const initialState = {
   oneContent: {},
@@ -33,22 +34,18 @@ const deleteComment = createAction(DELETE_COMMENT, (commentId) => ({
 const getCommentList = (channelId, contentId) => {
   console.log("아이디 잘들어오니?", channelId, contentId);
   return async function (dispatch, getState, { history }) {
-    const nowChannel = getState().channel.channelList.find(
-      (l) => l.channelId === channelId
-    );
-
-    console.log(nowChannel);
-    const nowContent = nowChannel.contentList.find(
-      (l) => l.contentId === contentId
-    );
-
-    dispatch(getComment(nowContent));
-
+    // const nowChannel = getState().channel.channelList.find(
+    //   (l) => l.channelId === channelId
+    // );
+    // console.log(nowChannel);
+    // const nowContent = nowChannel.contentList.find(
+    //   (l) => l.contentId === contentId
+    // );
+    // dispatch(getComment(nowContent));
     // const contentList = getState().channel.channelList.find(
     //   (l) => l.channelName === channelName
     // );
     // console.log(contentList);
-
     // dispatch(getComment(contentList));
   };
 };
@@ -56,32 +53,49 @@ const getCommentList = (channelId, contentId) => {
 const addCommentDB = (channelId, contentId, comment) => {
   return async function (dispatch, getState, { history }) {
     if (!comment) return;
+    const { email } = getState().user.user;
+    const config = { Authorization: `Bearer ${getToken()}` };
 
     console.log(channelId, contentId, comment);
 
-    // axios
-    // await axios.post(`${BASE_URL}/${channelName}/${contentId}/comment`).then((res) => {
-    //   console.log(res);
-    // }).catch((err) => {
-    //   console.log(err);
-    //   console.log(err.response);
-    // })
+    await axios
+      .post(
+        `${BASE_URL}/${channelId}/${contentId}/comment`,
+        { comment },
+        { headers: config }
+      )
+      .then((res) => {
+        console.log(res);
+        let resData = res.data;
+        console.log(resData);
 
-    const { email, nickname, profileImg } = getState().user.user;
+        let newDic = {
+          ...resData,
+          // userId: email,
+        };
+        console.log(newDic);
 
-    let fakeResponseData = {
-      comment: comment,
-      commentId: new Date().getTime() + "",
-      contentId: contentId,
-      createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
-      nickname: nickname,
-      userId: email,
-      profileImg,
-    };
+        // dispatch(addComment(newDic));
+        dispatch(channelActions.addComment(channelId, contentId, newDic));
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+      });
 
-    dispatch(addComment(fakeResponseData));
-    // 여기서 채널 액션함수 호출
-    dispatch(channelActions.addComment(channelId, contentId, fakeResponseData));
+    // let fakeResponseData = {
+    //   comment: comment,
+    //   commentId: new Date().getTime() + "",
+    //   contentId: contentId,
+    //   createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
+    //   nickname: nickname,
+    //   userId: email,
+    //   profileImg,
+    // };
+
+    // dispatch(addComment(fakeResponseData));
+    // // 여기서 채널 액션함수 호출
+    // dispatch(channelActions.addComment(channelId, contentId, fakeResponseData));
   };
 };
 
@@ -111,7 +125,8 @@ export default handleActions(
 
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        draft.oneContent.commentList.push(action.payload.comment);
+        // draft.oneContent.commentList.push(action.payload.comment);
+        console.log(state.oneContent);
       }),
 
     [DELETE_COMMENT]: (state, action) =>

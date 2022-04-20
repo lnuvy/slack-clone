@@ -37,7 +37,7 @@ const ChannelList = (props) => {
   // 버튼을 눌렀을때 dispatch 해서 가짜데이터가 일단 들어갑니다
   // 모달창에 있는 버튼과 연결하기위해 props onSubmit 으로 넘겨줍니다!
   const handleSubmit = () => {
-    dispatch(channelActions.addChannelDB(inputs));
+    dispatch(channelActions.addChannelDB(inputs.channelName));
     setModalOn(false);
   };
 
@@ -46,7 +46,6 @@ const ChannelList = (props) => {
       <ListWrap>
         <GridMenu>채널</GridMenu>
         <ChannelWarp>
-          {/* channel.channelName 이 너무 길어져서 c로 줄였습니다 */}
           {channel.map((c, i) => {
             return (
               <Channnal

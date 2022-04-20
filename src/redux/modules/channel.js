@@ -1,12 +1,12 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import axios from "axios";
-
 import { Dummy } from "../../shared/DummyData";
 import moment from "moment";
 import { contentActions } from "./content";
+import { getToken } from "../../shared/token";
 
-const BASE_URL = "http://3.34.129.39";
+const BASE_URL = "http://52.78.246.163";
 
 const initialState = {
   channelList: [],
@@ -83,104 +83,102 @@ const deleteComment = createAction(
 const getChannelDB = () => {
   return async function (dispatch, getState, { history }) {
     const { email } = getState().user.user;
-
+    const config = { Authorization: `Bearer ${getToken()}` };
     await axios
-      .get(`${BASE_URL}/channel/${email}`)
+      .get(`${BASE_URL}/channel/${email}`, { headers: config })
       .then((res) => {
-        const data = res.data;
-        console.log(data);
-        // dispatch(getChannel(channelTitle));
+        console.log(res);
+        const { channel, content, comment } = res.data;
+        for (let i = 0; i < channel.length; i++) {
+          let newContentList = [];
+          if (channel[i].contentList.length !== 0) {
+            newContentList = channel[i].contentList.map((id, i) => {
+              let now = "";
+              for (let j = 0; j < content.length; j++) {
+                now = content[j];
+                if (id === now.contentId) break;
+              }
+              return now;
+            });
+          }
+          channel[i].contentList = newContentList;
+        }
+        console.log(channel);
+        dispatch(getChannel(channel));
       })
       .catch((error) => {
-        console.log("체널 데이터 안옴", error);
+        console.log("채널 데이터 안옴", error);
+        console.log(error.response);
       });
-
     // 한울: 더미데이터를 받아와서 넣었습니당
-    dispatch(getChannel(Dummy));
+    // dispatch(getChannel(Dummy));
   };
 };
 
-const addChannelDB = (channelData) => {
+const addChannelDB = (channelName) => {
   return async function (dispatch, getState, { history }) {
-    //     await axios.post(`${BASE_URL}/channel/channel${id}`, channeldata);
-    //     axios({
-    //       method: "post",
-    //       url: `${BASE_URL}/channel/channel`,
-    //       data: channelData,
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //         Authorization: `Bearer ${getCookie("token")}`,
-    //       },
-    //     })
-    //       .then((res) => {
-    //         console.log(res);
-    //       })
-    //       .catch((err) => {
-    //         console.log(err);
-    //         console.log(err.response);
-    //       });
+    const config = { Authorization: `Bearer ${getToken()}` };
 
-    // 연결되면 버리면됩니당~
     const { nickname } = getState().user.user;
 
-    const fakeResponseData = {
-      channelId: new Date().getTime() + "",
-      channelName: channelData.channelName,
-      createdAt: moment().format("YYYY-MM-DD HH:mm"),
-      channelHost: nickname,
-      contentList: [],
-    };
-    dispatch(addChannel(fakeResponseData));
+    const input = { channelName, nickname };
+    console.log(channelName);
+    await axios
+      .post(`${BASE_URL}/channel/channel`, input, { headers: config })
+      .then((res) => {
+        console.log(res);
+        dispatch(addChannel(res.data));
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+      });
   };
 };
 
 const editChannelNameDB = (channelId, channelName) => {
   return async function (dispatch, getState, { history }) {
-    // await axios.post(`${BASE_URL}/channel/channel${id}`, channeldata)
-    //   axios({
-    //       method: "patch",
-    //       url: `${BASE_URL}/channel/channel${id}`,
-    //       data: channelName,
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //         Authorization: `Bearer ${getCookie("token")}`,
-    //       },
-    //     })
-    //   .then((res) => {
-    //     console.log(res);
-    //     window.alert(res.msg)
-    //   }).catch((err) => {
-    //     console.log(err);
-    //     console.log(err.response);
-    //   })
-
-    dispatch(editChannelName(channelId, channelName));
-    // 채널헤더가 바로 반영되지않아서 만든 content 디스패치
-    dispatch(contentActions.editNowChannel(channelName));
+    const token = getToken();
+    console.log(token);
+    const config = { Authorization: `Bearer ${token}` };
+    await axios
+      .patch(
+        `${BASE_URL}/channel/${channelId}`,
+        { channelName },
+        {
+          headers: config,
+        }
+      )
+      .then((res) => {
+        console.log(res);
+        dispatch(editChannelName(channelId, channelName));
+        dispatch(contentActions.editNowChannel(channelName));
+        // window.alert(res.msg)
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+      });
   };
 };
 
 const deleteChannelDB = (channelId) => {
   return async function (dispatch, getState, { history }) {
-    // await axios.post(`${BASE_URL}/channel/channel${id}`, channeldata)
-    //   axios({
-    //       method: "delete",
-    //       url: `${BASE_URL}/channel/channel${id}`,
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //         Authorization: `Bearer ${getCookie("token")}`,
-    //       },
-    //     })
-    //   .then((res) => {
-    //     console.log(res);
-    //     window.alert(res.msg)
-    //   }).catch((err) => {
-    //     console.log(err);
-    //     console.log(err.response);
-    //   })
-
-    alert("삭제!");
-    dispatch(deleteChannel(channelId));
+    const config = { Authorization: `Bearer ${getToken()}` };
+    await axios
+      .delete(`${BASE_URL}/channel/${channelId}`, {
+        headers: config,
+      })
+      .then((res) => {
+        console.log(res);
+        // window.alert(res.msg)
+        alert("삭제!");
+        dispatch(deleteChannel(channelId));
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+      });
     history.replace("/");
   };
 };

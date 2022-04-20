@@ -4,9 +4,10 @@ import moment from "moment";
 import { history } from "../configureStore";
 import axios from "axios";
 import { channelActions } from "./channel";
+import { getToken } from "../../shared/token";
 // import axios from "axios";
 
-const BASE_URL = "BASE_URL";
+const BASE_URL = "http://52.78.246.163";
 
 const initialState = {
   oneChannel: {},
@@ -52,35 +53,46 @@ const getContentList = (contentId) => {
 const addContentDB = (channelId, channelName, content) => {
   return async function (dispatch, getState, { history }) {
     if (!content) return;
-
-    // axios
-    // await axios.post(`${BASE_URL}/${channelName}/content`).then((res) => {
-    // console.log(res);
-    // }).catch((err) => {
-    //   console.log(err);
-    //   console.log(err.response);
-    // })
-
-    const { email, nickname, profileImg } = getState().user.user;
-
-    let fakeResponseData = {
-      channelId,
-      channelName,
-      contentId: new Date().getTime() + "",
-      nickname: nickname,
-      userId: email,
-      profileImg,
-      content,
-      createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
-      isEdit: false,
-      commentList: [],
-    };
-
-    dispatch(addContent(fakeResponseData));
-    // 여기서 채널 액션함수 호출
-    dispatch(
-      channelActions.addContent(fakeResponseData.channelId, fakeResponseData)
-    );
+    const { email } = getState().user.user;
+    const config = { Authorization: `Bearer ${getToken()}` };
+    await axios
+      .post(
+        `${BASE_URL}/${channelId}/content`,
+        { content },
+        { headers: config }
+      )
+      .then((res) => {
+        console.log(res);
+        let resData = res.data[0];
+        console.log(resData);
+        let newDic = {
+          ...resData,
+          nickname: resData.userNickname,
+          channelId,
+          channelName,
+          userId: email,
+        };
+        console.log(newDic);
+        dispatch(addContent(newDic));
+        // // 여기서 채널 액션함수 호출
+        dispatch(channelActions.addContent(newDic.channelId, newDic));
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+      });
+    // let fakeResponseData = {
+    //   channelId,
+    //   channelName,
+    //   contentId: new Date().getTime() + "",
+    //   nickname: nickname,
+    //   userId: email,
+    //   profileImg,
+    //   content,
+    //   createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
+    //   isEdit: false,
+    //   commentList: [],
+    // };
   };
 };
 

@@ -46,7 +46,7 @@ const Massage = (userNickname) => {
 
   useEffect(() => {
     socket.on("receive message", (message) => {
-      console.log(message.name);
+      console.log(message);
       setChatArr((chatArr) => chatArr.concat(message));
     }); //receive message이벤트에 대한 콜백을 등록해줌
   }, []);

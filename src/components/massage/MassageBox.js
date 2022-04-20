@@ -10,30 +10,29 @@ import "moment/locale/ko";
 import { socket } from "../../pages/MessagePage";
 
 const MassageBox = ({ userNickname }) => {
-  console.log(userNickname);
-
-  const [chat, setChat] = useState({ name: "", message: "" });
+  const [chat, setChat] = useState({
+    name: userNickname,
+    message: "",
+    createdAt: "",
+  });
 
   const buttonHandler = useCallback(() => {
-    socket.emit("send message", { name: userNickname, message: chat.message });
+    const time = moment().format("YY-MM-DD HH:mm:ss");
+    socket.emit("send message", {
+      name: userNickname,
+      message: chat.message,
+      createdAt: time,
+    });
+    setChat({ name: userNickname, message: "", createdAt: "" });
     //버튼을 클릭했을 때 send message이벤트 발생
   }, [chat]);
-
-  console.log(chat);
 
   const changeMessage = useCallback(
     (e) => {
       setChat({ message: e.target.value });
     },
-
     [chat]
   );
-
-  // const changeButton = (e) => {
-  //   const { value } = e.target;
-  //   setChat(value);
-  // };
-  const time = moment().format("HH:mm");
 
   return (
     <>
@@ -41,7 +40,7 @@ const MassageBox = ({ userNickname }) => {
         <InputBox>
           <InputText
             onChange={changeMessage}
-            placeholder={"# 에게 메시지 보내기"}
+            placeholder="메세지 보내기..."
             onKeyPress={(e) => {
               if (e.key === "Enter") buttonHandler();
             }}
@@ -55,7 +54,7 @@ const MassageBox = ({ userNickname }) => {
                   border: "none",
                   background: `${chat ? "#007a5a" : ""}`,
                 }}
-                disabled={!chat}
+                disabled={!chat.message === ""}
                 onClick={buttonHandler}
               >
                 <IoSend

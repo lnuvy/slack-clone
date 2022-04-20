@@ -8,9 +8,11 @@ import OneMassage from "./OneMassage";
 //소켓
 import { socket } from "../../pages/MessagePage";
 
-const Massage = (userNickname) => {
+const Massage = (nickname, profileImg) => {
   const [chatArr, setChatArr] = useState([]);
-
+  // console.log(profileImg);
+  // const userProfileImg = profileImg;
+  // console.log(userProfileImg);
   useEffect(() => {
     return () => {
       socket.close();

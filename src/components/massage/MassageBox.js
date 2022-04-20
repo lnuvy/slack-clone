@@ -9,13 +9,18 @@ import "moment/locale/ko";
 //소켓 import
 import { socket } from "../../pages/MessagePage";
 
-const MassageBox = ({ userNickname }) => {
-  console.log(userNickname);
+const MassageBox = ({ nickname, profileImg }) => {
+  console.log(nickname);
 
   const [chat, setChat] = useState({ name: "", message: "" });
 
   const buttonHandler = useCallback(() => {
-    socket.emit("send message", { name: userNickname, message: chat.message });
+    const time = moment().format("YY-MM-DD HH:mm:ss");
+    socket.emit("send message", {
+      nickname: nickname,
+      message: chat.message,
+      createdAt: time,
+    });
     //버튼을 클릭했을 때 send message이벤트 발생
   }, [chat]);
 

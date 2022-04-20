@@ -32,7 +32,6 @@ const deleteComment = createAction(DELETE_COMMENT, (commentId) => ({
 }));
 
 const getCommentList = (channelId, contentId) => {
-  console.log("아이디 잘들어오니?", channelId, contentId);
   return async function (dispatch, getState, { history }) {
     // const nowChannel = getState().channel.channelList.find(
     //   (l) => l.channelId === channelId

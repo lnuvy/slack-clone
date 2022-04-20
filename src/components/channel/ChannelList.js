@@ -34,7 +34,6 @@ const ChannelList = (props) => {
     setInputs((values) => ({ ...values, [id]: value }));
   };
 
-  // 버튼을 눌렀을때 dispatch 해서 가짜데이터가 일단 들어갑니다
   // 모달창에 있는 버튼과 연결하기위해 props onSubmit 으로 넘겨줍니다!
   const handleSubmit = () => {
     dispatch(channelActions.addChannelDB(inputs.channelName));

@@ -6,6 +6,7 @@ import moment from "moment";
 import { contentActions } from "./content";
 import { getToken } from "../../shared/token";
 
+// const BASE_URL = "http://3.34.129.39";
 const BASE_URL = "http://52.78.246.163";
 
 const initialState = {
@@ -121,12 +122,13 @@ const addChannelDB = (channelName) => {
 
     const { nickname } = getState().user.user;
 
-    const input = { channelName, nickname };
-    console.log(channelName);
+    const inputs = { channelName, nickname };
+
     await axios
-      .post(`${BASE_URL}/channel/channel`, input, { headers: config })
+      .post(`${BASE_URL}/channel/channel`, inputs, { headers: config })
       .then((res) => {
         console.log(res);
+        console.log(res.data);
         dispatch(addChannel(res.data));
       })
       .catch((err) => {
@@ -138,9 +140,8 @@ const addChannelDB = (channelName) => {
 
 const editChannelNameDB = (channelId, channelName) => {
   return async function (dispatch, getState, { history }) {
-    const token = getToken();
-    console.log(token);
-    const config = { Authorization: `Bearer ${token}` };
+    const config = { Authorization: `Bearer ${getToken()}` };
+
     await axios
       .patch(
         `${BASE_URL}/channel/${channelId}`,
@@ -153,12 +154,13 @@ const editChannelNameDB = (channelId, channelName) => {
         console.log(res);
         dispatch(editChannelName(channelId, channelName));
         dispatch(contentActions.editNowChannel(channelName));
-        // window.alert(res.msg)
       })
       .catch((err) => {
         console.log(err);
         console.log(err.response);
       });
+
+    // // 채널헤더가 바로 반영되지않아서 만든 content 디스패치
   };
 };
 

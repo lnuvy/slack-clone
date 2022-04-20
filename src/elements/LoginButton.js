@@ -19,7 +19,6 @@ const LoginBtn = styled.button`
   border-radius: 4px;
   &:hover {
     box-shadow: 0 1px 4px rgb(0 0 0 / 30%);
-    // rgba로 바꿔서 색깔만 투명도주는걸로 바꾸는게 좋을듯
     opacity: 0.9;
   }
 

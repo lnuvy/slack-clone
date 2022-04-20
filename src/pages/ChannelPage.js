@@ -25,7 +25,7 @@ const ChannelPage = (props) => {
 
   useEffect(() => {
     dispatch(contentActions.getContentList(channelId));
-  }, [channelId]);
+  }, [oneChannel]);
 
   // const contentRedux = useSelector((state) => state.content.oneChannel);
   // 주소창에서 파라미터값을 받아오기

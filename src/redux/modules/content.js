@@ -5,7 +5,6 @@ import { history } from "../configureStore";
 import axios from "axios";
 import { channelActions } from "./channel";
 import { getToken } from "../../shared/token";
-// import axios from "axios";
 
 const BASE_URL = "http://52.78.246.163";
 
@@ -53,8 +52,11 @@ const getContentList = (contentId) => {
 const addContentDB = (channelId, channelName, content) => {
   return async function (dispatch, getState, { history }) {
     if (!content) return;
+
     const { email } = getState().user.user;
+
     const config = { Authorization: `Bearer ${getToken()}` };
+
     await axios
       .post(
         `${BASE_URL}/${channelId}/content`,
@@ -64,7 +66,9 @@ const addContentDB = (channelId, channelName, content) => {
       .then((res) => {
         console.log(res);
         let resData = res.data[0];
+
         console.log(resData);
+
         let newDic = {
           ...resData,
           nickname: resData.userNickname,
@@ -98,31 +102,51 @@ const addContentDB = (channelId, channelName, content) => {
 
 const editContentDB = (channelId, channelName, contentId, content) => {
   return async function (dispatch, getState, { history }) {
-    if (!(channelName && contentId && content)) return;
+    if (!(contentId && content)) return;
 
+    console.log(channelId);
+    const config = { Authorization: `Bearer ${getToken()}` };
     // axios
-    // await axios.patch(`${BASE_URL}/${channelName}/${contentId}`, {contentId, content}).then((res) => {
-    //   console.log(res);
-    // }).catch((err) => {
-    //   console.log(err);
-    //   console.log(err.response);
-    // })
+    await axios
+      .patch(
+        `${BASE_URL}/${channelId}/${contentId}`,
+        { contentId, content },
+        { headers: config }
+      )
+      .then((res) => {
+        console.log(res);
+        const nowContent = getState().content.oneChannel.contentList.find(
+          (l) => l.contentId === contentId
+        );
+        console.log(nowContent);
+        const newContent = {
+          ...nowContent,
+          content,
+          isEdit: true,
+        };
+        console.log(newContent);
+        dispatch(editContent(newContent));
+        // 여기서 채널 액션함수 호출
+        console.log("채널액션함수 전 콘솔:", channelId, contentId, newContent);
+        dispatch(channelActions.editContent(channelId, contentId, newContent));
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+      });
 
-    const nowContent = getState().content.oneChannel.contentList.find(
-      (l) => l.contentId === contentId
-    );
-    const fakeResponseData = {
-      ...nowContent,
-      content,
-      isEdit: true,
-    };
+    // const fakeResponseData = {
+    //   ...nowContent,
+    //   content,
+    //   isEdit: true,
+    // };
 
-    console.log(fakeResponseData);
-    dispatch(editContent(fakeResponseData));
-    // 여기서 채널 액션함수 호출
-    dispatch(
-      channelActions.editContent(channelId, contentId, fakeResponseData)
-    );
+    // console.log(fakeResponseData);
+    // dispatch(editContent(fakeResponseData));
+    // // 여기서 채널 액션함수 호출
+    // dispatch(
+    //   channelActions.editContent(channelId, contentId, fakeResponseData)
+    // );
   };
 };
 
@@ -130,16 +154,20 @@ const deleteContentDB = (channelId, contentId) => {
   return async function (dispatch, getState, { history }) {
     if (!(channelId && contentId)) return;
 
+    const config = { Authorization: `Bearer ${getToken()}` };
     // axios
-    // await axios.delete(`${BASE_URL}/${channelId}/${contentId}`).then((res) => {
-    //   console.log(res);
-    // }).catch((err) => {
-    //   console.log(err);
-    //   console.log(err.response);
-    // })
+    await axios
+      .delete(`${BASE_URL}/${channelId}/${contentId}`, { headers: config })
+      .then((res) => {
+        console.log(res);
 
-    dispatch(deleteContent(contentId));
-    dispatch(channelActions.deleteContent(channelId, contentId));
+        dispatch(deleteContent(contentId));
+        dispatch(channelActions.deleteContent(channelId, contentId));
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+      });
   };
 };
 

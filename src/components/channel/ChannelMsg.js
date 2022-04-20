@@ -11,6 +11,7 @@ const ChannelMsg = (props) => {
   // ChannelPage 에서 받은 채널 정보의 contentList
   const { contentList } = props?.nowChannel || [];
 
+  console.log("리덕스컨텐츠:", contentList);
   return (
     <>
       <ChatListWrap>

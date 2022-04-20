@@ -1,49 +1,76 @@
-import React from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 import { Image, Text } from "../../elements/index";
 
-const Massage = () => {
+import OneMassage from "./OneMassage";
+
+//소켓
+import { socket } from "../../pages/MessagePage";
+
+const Massage = (userNickname) => {
+  const [chatArr, setChatArr] = useState([]);
+
+  useEffect(() => {
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+  // const messageRef = useRef < HTMLDivElement > null;
+  // const onHomeClick = () => {
+  //   messageRef.current?.scrollIntoView({ behavior: "smooth" });
+  // };
+
+  // const scrollRef = useRef();
+  // const { editDone } = useSelector((state) => state.board);
+
+  // const scrollToBottom = useCallback(() => {
+  //   if (editDone) {
+  //     // 스크롤 내리기
+  //     scrollRef.current.scrollIntoView({
+  //       behavior: "smooth",
+  //       block: "end",
+  //       inline: "nearest",
+  //     });
+  //   }
+  // }, [editDone]);
+
+  // const scrollToBottom = () => {
+  //   scrollRef.scrollIntoView({ behavior: "smooth" });
+  // };
+
+  // useEffect(() => {
+  //   scrollToBottom();
+  // }, [scrollToBottom]);
+
+  useEffect(() => {
+    socket.on("receive message", (message) => {
+      console.log(message.name);
+      setChatArr((chatArr) => chatArr.concat(message));
+    }); //receive message이벤트에 대한 콜백을 등록해줌
+  }, []);
+
   return (
     <>
       <ChatListWrap>
         <ChatListBox>
-          <ChatListBoxInfo>
-            <ChatListUserImageWrap>
-              <Image shape="ProfileImg" />
-            </ChatListUserImageWrap>
-            <ChatListUserInfo>
-              <Text fontWeight="700" color="black">
-                홍길동
-              </Text>
-              <span>12:00</span>
-              <div>내용</div>
-            </ChatListUserInfo>
-          </ChatListBoxInfo>
-          <ChatListBoxInfo>
-            <ChatListUserImageWrap>
-              <Image shape="ProfileImg" />
-            </ChatListUserImageWrap>
-            <ChatListUserInfo>
-              <Text fontWeight="700" color="black">
-                홍길동
-              </Text>
-              <span>12:00</span>
-              <div>내용</div>
-            </ChatListUserInfo>
-          </ChatListBoxInfo>
-          <ChatListBoxInfo>
-            <ChatListUserImageWrap>
-              <Image shape="ProfileImg" />
-            </ChatListUserImageWrap>
-            <ChatListUserInfo>
-              <Text fontWeight="700" color="black">
-                홍길동
-              </Text>
-              <span>12:00</span>
-              <div>내용</div>
-            </ChatListUserInfo>
-          </ChatListBoxInfo>
+          {chatArr ? (
+            chatArr.map((ele, idx) => <OneMassage key={idx} {...ele} />)
+          ) : (
+            <ChatListBoxInfo>
+              <ChatListUserImageWrap>
+                <Image shape="ProfileImg" />
+              </ChatListUserImageWrap>
+              <ChatListUserInfo>
+                <Text fontWeight="700" color="black">
+                  홍길동
+                </Text>
+                <span>12:00</span>
+                <div>내용</div>
+              </ChatListUserInfo>
+            </ChatListBoxInfo>
+          )}
         </ChatListBox>
       </ChatListWrap>
     </>
@@ -51,7 +78,8 @@ const Massage = () => {
 };
 
 const ChatListWrap = styled.div`
-  height: 100vh;
+  // 여기 높이를 좀 줄이니까 메인 스크롤바가 안생기네요
+  height: 73vh;
   padding: 8px 0px;
   flex-direction: rows;
   overflow-y: scroll;
@@ -67,18 +95,14 @@ const ChatListBoxInfo = styled.div`
     background: rgba(221, 221, 221, 0.2);
   }
   cursor: pointer;
+  min-height: 100px;
 `;
 const ChatListUserImageWrap = styled.div`
   display: flex;
-  align-items: center;
 `;
 
 const ChatListUserInfo = styled.div`
   margin-left: 10px;
-  & > p {
-    font-size: 15px;
-    display: inline;
-  }
   & > span {
     font-size: 12px;
     margin: 0px 5px;

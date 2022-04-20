@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { history } from "../../redux/configureStore";
 import { BsPlus } from "react-icons/bs";
-
 import { Image } from "../../elements/index";
 
 const MassageList = () => {

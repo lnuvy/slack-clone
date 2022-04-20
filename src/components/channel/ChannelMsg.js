@@ -75,48 +75,4 @@ const ChatListUserInfo = styled.div`
   }
 `;
 
-const NicknameBox = styled.div`
-  align-items: center;
-  & > p {
-    font-size: 15px;
-    float: left;
-    display: flex;
-    font-weight: 700;
-  }
-  & span {
-    font-size: 12px;
-    display: flex;
-    color: gray;
-    margin-left: 4px;
-  }
-`;
-
-const CommentBox = styled.div`
-  display: flex;
-  align-items: center;
-  width: 50vw;
-  margin: 6px 0px 0px;
-  padding: 5px 5px 5px 5px;
-  border-radius: 4px;
-  &:hover {
-    background: #fff;
-    border: 1px solid rgba(29, 28, 29, 0.3);
-  }
-  & > p {
-    font-size: 14px;
-    display: inline;
-    float: left;
-    font-weight: 600;
-    color: #1264a3;
-  }
-
-  & > p > span {
-    font-size: 14px;
-    color: gray;
-    font-weight: 500;
-    margin-left: 4px;
-  }
-  cursor: pointer;
-`;
-
 export default ChannelMsg;

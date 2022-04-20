@@ -33,6 +33,7 @@ const Modal = ({ onClose, data, children }) => {
       alert("이미 존재하는 채널명입니다!");
       return;
     }
+    console.log(channelId, changeName);
     dispatch(channelActions.editChannelNameDB(channelId, changeName));
     onClose();
   };

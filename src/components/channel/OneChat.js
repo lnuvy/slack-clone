@@ -11,10 +11,12 @@ import { BsXLg } from "react-icons/bs";
 import { FaRegCommentDots } from "react-icons/fa";
 import { ModalPortal } from "../../shared/modal/portals";
 import TwobtnModal from "../../shared/modal/component/TwobtnModal";
+import { useParams } from "react-router-dom";
 
 const OneChat = (props) => {
   const dispatch = useDispatch();
 
+  const { channelId } = useParams();
   const {
     contentId,
     profileImg,
@@ -24,7 +26,6 @@ const OneChat = (props) => {
     content,
     channelName,
     commentList,
-    channelId,
   } = props;
 
   // useEffect(() => {}, [commentList]);
@@ -43,6 +44,8 @@ const OneChat = (props) => {
   // console.log(isEditMode, editText, hoverComment, hoverUDIcon)
 
   const editChat = () => {
+    console.log("Gd");
+    console.log(channelId);
     dispatch(
       contentActions.editContentDB(channelId, channelName, contentId, editText)
     );

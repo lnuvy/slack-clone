@@ -23,13 +23,13 @@ const OneMassage = (props) => {
     return (
       <div>
         <ChatListBoxInfo style={{ justifyContent: "end" }}>
-          <ChatListUserInfo>
+          <MyChatListUserInfo>
             <span>{time}</span>
             <Text fontWeight="700" color="black">
               {nickname}
             </Text>
             <div>{message}</div>
-          </ChatListUserInfo>
+          </MyChatListUserInfo>
           <ChatListUserImageWrap>
             <Image
               shape="ProfileImg"
@@ -80,10 +80,28 @@ const ChatListBoxInfo = styled.div`
 `;
 const ChatListUserImageWrap = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const ChatListUserInfo = styled.div`
   margin-left: 10px;
+  & > p {
+    font-size: 15px;
+    display: inline;
+  }
+  & > span {
+    font-size: 12px;
+    margin: 0px 5px;
+    color: gray;
+  }
+  & > div {
+    display: flex;
+    font-size: 15px;
+  }
+`;
+
+const MyChatListUserInfo = styled.div`
+  margin-right: 10px;
   & > p {
     font-size: 15px;
     display: inline;

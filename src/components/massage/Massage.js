@@ -5,6 +5,7 @@ import { Image, Text } from "../../elements/index";
 
 import OneMassage from "./OneMassage";
 
+import { useSelector } from "react-redux";
 //소켓
 import { socket } from "../../pages/MessagePage";
 
@@ -20,39 +21,22 @@ const Massage = (nickname, profileImg) => {
     };
   }, []);
 
-  // const messageRef = useRef < HTMLDivElement > null;
-  // const onHomeClick = () => {
-  //   messageRef.current?.scrollIntoView({ behavior: "smooth" });
-  // };
-
-  // const scrollRef = useRef();
-  // const { editDone } = useSelector((state) => state.board);
-
-  // const scrollToBottom = useCallback(() => {
-  //   if (editDone) {
-  //     // 스크롤 내리기
-  //     scrollRef.current.scrollIntoView({
-  //       behavior: "smooth",
-  //       block: "end",
-  //       inline: "nearest",
-  //     });
-  //   }
-  // }, [editDone]);
-
-  // const scrollToBottom = () => {
-  //   scrollRef.scrollIntoView({ behavior: "smooth" });
-  // };
-
-  // useEffect(() => {
-  //   scrollToBottom();
-  // }, [scrollToBottom]);
-
   useEffect(() => {
     socket.on("receive message", (message) => {
       console.log(message);
       setChatArr((chatArr) => chatArr.concat(message));
     }); //receive message이벤트에 대한 콜백을 등록해줌
   }, []);
+
+  // 스크롤
+  const messagesEndRef = useRef(null);
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatArr]);
 
   return (
     <>
@@ -74,6 +58,7 @@ const Massage = (nickname, profileImg) => {
               </ChatListUserInfo>
             </ChatListBoxInfo>
           )}
+          <div ref={messagesEndRef} />
         </ChatListBox>
       </ChatListWrap>
     </>

@@ -62,8 +62,7 @@ const UserWarp = styled.div`
   display: flex;
   height: 26px;
   width: 100%;
-  padding: 15px 12px 15px 15px;
-  // margin: 5px -4px;
+  padding: 15px 12px 15px 20px;
   align-items: center;
   &:hover {
     background: #340c35;

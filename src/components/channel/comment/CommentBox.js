@@ -82,7 +82,7 @@ const InputBox = styled.div`
 `;
 const InputText = styled.input`
   margin: 0 15px;
-  width: 95%;
+  // width: 95%;
   border: none;
   outline: none;
 `;
@@ -111,4 +111,5 @@ const VerticalLine = styled.div`
   height: 18px;
   right: 24px;
 `;
+
 export default CommentBox;

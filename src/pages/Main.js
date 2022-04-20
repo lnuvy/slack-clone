@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Route } from "react-router-dom";
 import { Switch } from "react-router-dom";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 import NavigationBar from "../components/NavigationBar";
 import ChannelList from "../components/channel/ChannelList";
@@ -48,7 +49,6 @@ const Main = () => {
               </SlackConnect>
               <ChannelList />
               <MassageList />
-              {/* <ChannelComment /> */}
             </div>
           </MenuScroll>
         </ChannelsWrap>

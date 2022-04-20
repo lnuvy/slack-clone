@@ -38,7 +38,7 @@ function App() {
       <div className="App">
         <ConnectedRouter history={history}>
           <Switch>
-            <Route path={["/user/login", "/"]} exact component={Login} />
+            <Route path={["/"]} exact component={Login} />
             <Route path="/user/signup" exact component={SignUp} />
           </Switch>
         </ConnectedRouter>

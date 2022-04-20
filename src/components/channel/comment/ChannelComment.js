@@ -7,6 +7,7 @@ import moment from "moment";
 import { history } from "../../../redux/configureStore";
 import CommentBox from "./CommentBox";
 import { commentActions } from "../../../redux/modules/comment";
+import OneComment from "./OneComment";
 
 const ChannelComment = (props) => {
   const dispatch = useDispatch();
@@ -24,6 +25,8 @@ const ChannelComment = (props) => {
 
   const time = moment(nowContent.createdAt).format("M월 DD일, HH:MM");
 
+  const isEdit = nowContent.isEdit;
+
   return (
     <>
       <CommentWrap>
@@ -32,17 +35,20 @@ const ChannelComment = (props) => {
             스레드
             <ChannelName>#{nowContent.channelName}</ChannelName>
           </ChatHeaderTextbox>
-          <BsXLg
-            style={{ color: "gray", fontSize: "15px" }}
-            onClick={() => {
-              history.push(`/channel/${nowContent.channelId}`);
-            }}
-          />
+          <IconBox>
+            <BsXLg
+              style={{ color: "gray", fontSize: "15px" }}
+              onClick={() => {
+                history.push(`/channel/${nowContent.channelId}`);
+              }}
+            />
+          </IconBox>
         </CommentHeaderWrap>
-        <ChatListWrap>
-          <ChatListBox>
-            <ChatListBoxInfo>
-              <ChatListUserImageWrap>
+
+        <CommentListWrap>
+          <CommentListBox>
+            <CommentListBoxInfo>
+              <CommentListUserImageWrap>
                 <Image
                   shape="ProfileImg"
                   src={
@@ -51,89 +57,51 @@ const ChannelComment = (props) => {
                   }
                   margin="4px"
                 />
-              </ChatListUserImageWrap>
-              <ChatListUserInfo>
+              </CommentListUserImageWrap>
+              <CommentListUserInfo>
                 <NicknameBox>
                   <p>{nowContent.nickname}</p>
                   <span>{time}</span>
                 </NicknameBox>
-                <div>{nowContent.content}</div>
-              </ChatListUserInfo>
-            </ChatListBoxInfo>
+                <div>
+                  {nowContent.content}&nbsp;
+                  <Text fontWeight="400" color="#696969" size="15px">
+                    {isEdit && "(편집됨)"}
+                  </Text>
+                </div>
+              </CommentListUserInfo>
+            </CommentListBoxInfo>
             <CommentCount>
               <p>{commentList?.length}개의 답글</p>
               <hr />
             </CommentCount>
-
+            {/* <div ref={scrollRef}> */}
             {commentList ? (
               commentList.map((c, i) => {
-                const time = moment(c.createdAt).format("HH:mm");
-                return (
-                  <ChatListBoxInfo key={c.commentId}>
-                    <ChatListUserImageWrap>
-                      <Image
-                        shape="ProfileImg"
-                        src={
-                          c.profileImg ||
-                          "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
-                        }
-                        margin="4px"
-                      />
-                    </ChatListUserImageWrap>
-                    <ChatListUserInfo>
-                      <NicknameBox>
-                        <p>{c.nickname}</p>
-                        <span>{time}</span>
-                      </NicknameBox>
-                      <div>{c.comment}</div>
-                    </ChatListUserInfo>
-                    <BsXLg
-                      style={{
-                        color: "gray",
-                        fontSize: "15px",
-                        display: "flex",
-                        float: "right",
-                      }}
-                      onClick={() => {
-                        dispatch(
-                          commentActions.deleteCommentDB(
-                            channelId,
-                            contentId,
-                            c.commentId
-                          )
-                        );
-                      }}
-                    />
-                  </ChatListBoxInfo>
-                );
+                return <OneComment key={i} {...c} channelId={channelId} />;
               })
             ) : (
               // 여긴 덕행님이 작성해두신 기본 뷰입니다
-              <ChatListBoxInfo>
-                <ChatListUserImageWrap>
-                  <Image
-                    shape="ProfileImg"
-                    src={
-                      "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
-                    }
-                    margin="4px"
-                  />
-                </ChatListUserImageWrap>
-                <ChatListUserInfo>
+              <CommentListBoxInfo>
+                <CommentListUserImageWrap>
+                  <Image shape="ProfileImg" margin="4px" />
+                </CommentListUserImageWrap>
+                <CommentListUserInfo>
                   <NicknameBox>
                     <p>홍길동</p>
-                    <span>{time}</span>
+                    <span>12:00</span>
                   </NicknameBox>
                   <div>댓글 입니다.</div>
-                </ChatListUserInfo>
-              </ChatListBoxInfo>
+                </CommentListUserInfo>
+              </CommentListBoxInfo>
             )}
+            {/* </div> */}
             <CommentBox
               channelId={nowContent?.channelId}
               contentId={nowContent?.contentId}
             />
-          </ChatListBox>
-        </ChatListWrap>
+          </CommentListBox>
+        </CommentListWrap>
       </CommentWrap>
     </>
   );
@@ -172,18 +140,35 @@ const ChannelName = styled.div`
   font-weight: 500;
 `;
 
-// const
+const IconBox = styled.div`
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  padding: 5px;
+  color: gray;
+  fontsize: 15px;
+  &:hover {
+    background: rgba(29, 28, 29, 0.1);
+  }
+`;
 
-const ChatListWrap = styled.div`
+const CommentListWrap = styled.div`
   height: 100vh;
   padding: 8px 0px;
   flex-direction: rows;
   overflow-y: scroll;
+  max-height: 100vh;
+  // overflow-x: hidden;
+  overflow-y: auto;
 `;
-const ChatListBox = styled.div`
+const CommentListBox = styled.div`
   margin-bottom: 16px;
 `;
-const ChatListBoxInfo = styled.div`
+const CommentListBoxInfo = styled.div`
   display: flex;
   padding: 8px 20px;
   flex-direction: rows;
@@ -192,18 +177,12 @@ const ChatListBoxInfo = styled.div`
   }
   cursor: pointer;
 `;
-const ChatListUserImageWrap = styled.div`
+const CommentListUserImageWrap = styled.div`
   display: flex;
-  // align-items: center;
-  /* & > Image {
-    shape: ProfileImg;
-    src: {
-      profileImg ||
-      "https://boyohaeng-image.s3.ap-northeast-2.amazonaws.com/profile_img.png"
-    } */
 `;
 
-const ChatListUserInfo = styled.div`
+const CommentListUserInfo = styled.div`
+  width: 100%;
   display: flex;
   margin-left: 10px;
   flex-direction: column;

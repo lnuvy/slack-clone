@@ -41,7 +41,6 @@ const getCommentList = (channelId, contentId) => {
     const nowContent = nowChannel.contentList.find(
       (l) => l.contentId === contentId
     );
-    console.log(nowContent);
 
     dispatch(getComment(nowContent));
 
@@ -118,7 +117,6 @@ export default handleActions(
     [DELETE_COMMENT]: (state, action) =>
       produce(state, (draft) => {
         const { commentId } = action.payload;
-        // const id = action.payload.commentId;
 
         let newArr = draft.oneContent.commentList.filter(
           (c) => c.commentId !== commentId

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { ModalPortal } from "../portals";
 import { IoCloseOutline } from "react-icons/io5";
 import { Button, Text } from "../../../elements";
-import { useDispatch } from "react-redux";
 
 const TwobtnModal = ({
   children,
@@ -44,7 +43,7 @@ const TwobtnModal = ({
           <ModalFooter>
             <div style={{ marginLeft: "auto", display: "flex" }}>
               <Button
-                width="80px"
+                width="102px"
                 height="36px"
                 fontSize="15px"
                 margin="0 12px 0 0"
@@ -58,7 +57,6 @@ const TwobtnModal = ({
               </Button>
               <Button
                 padding="0 12px 1px"
-                width="80px"
                 height="36px"
                 fontSize="15px"
                 weight="700"

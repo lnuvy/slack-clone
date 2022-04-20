@@ -11,49 +11,31 @@ import OneComment from "./OneComment";
 
 const ChannelComment = (props) => {
   const dispatch = useDispatch();
-
   const { channelId, contentId } = props.match?.params;
-
-  console.log(contentId);
-  console.log(channelId);
 
   useEffect(() => {
     dispatch(commentActions.getCommentList(channelId, contentId));
   }, [contentId]);
 
   const nowContent = useSelector((state) => state.comment.oneContent);
-
-  // const contentList = useSelector(
-  //   (state) => state.content.oneChannel.contentList
-  // );
-
-  // console.log(contentList);
-
-  // const nowContent2 = contentList.filter((c) => c.contentId !== contentId);
-
-  // console.log(nowContent2);
-
   const commentList = nowContent.commentList;
 
   const time = moment(nowContent.createdAt).format("M월 DD일, HH:MM");
-
   const isEdit = nowContent.isEdit;
 
-  // const nowContent = useSelector((state) => state.comment.oneContent);
-  // console.log(nowContent);
   return (
     <>
       <CommentWrap>
         <CommentHeaderWrap>
           <ChatHeaderTextbox>
             스레드
-            <ChannelName>#{nowContent.channelName}</ChannelName>
+            <ChannelName>#{nowContent?.channelName}</ChannelName>
           </ChatHeaderTextbox>
           <IconBox>
             <BsXLg
               style={{ color: "gray", fontSize: "15px" }}
               onClick={() => {
-                history.push(`/channel/${nowContent.channelId}`);
+                history.push(`/channel/${channelId}`);
               }}
             />
           </IconBox>

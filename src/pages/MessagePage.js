@@ -30,7 +30,7 @@ const MessagePage = () => {
 
 const MessagePageWrap = styled.div`
   width: 100%;
-  height: calc(100vh - 44px);
+  height: calc(100vh - 63px);
   display: flex;
   flex-direction: column;
 `;

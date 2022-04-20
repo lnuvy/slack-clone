@@ -45,7 +45,17 @@ const getContentList = (contentId) => {
     const nowChannel = getState().channel.channelList.find(
       (l) => l.channelId === contentId
     );
-    dispatch(getContent(nowChannel));
+
+    // 코멘트도 그렇고 여기서 터지는거같아서 replace 했습니다
+    if (!nowChannel) {
+      history.replace("/");
+      return;
+    }
+    let newChannel = {
+      ...nowChannel,
+      nickname: nowChannel.userNickname,
+    };
+    dispatch(getContent(newChannel));
   };
 };
 
@@ -85,18 +95,6 @@ const addContentDB = (channelId, channelName, content) => {
         console.log(err);
         console.log(err.response);
       });
-    // let fakeResponseData = {
-    //   channelId,
-    //   channelName,
-    //   contentId: new Date().getTime() + "",
-    //   nickname: nickname,
-    //   userId: email,
-    //   profileImg,
-    //   content,
-    //   createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
-    //   isEdit: false,
-    //   commentList: [],
-    // };
   };
 };
 

@@ -3,7 +3,7 @@ import styled from "styled-components";
 import moment from "moment";
 import "moment/locale/ko";
 import { Image, Text } from "../../../elements";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { commentActions } from "../../../redux/modules/comment";
 import { BsXLg } from "react-icons/bs";
 import { ModalPortal } from "../../../shared/modal/portals";
@@ -21,6 +21,8 @@ const OneComment = (props) => {
     comment,
     commentId,
   } = props;
+
+  const userInfo = useSelector((state) => state.user.user);
 
   const [hoverUDIcon, sethoverUDIcon] = useState(false);
 
@@ -68,7 +70,7 @@ const OneComment = (props) => {
             paddingRight: "10px",
           }}
         >
-          {hoverUDIcon && (
+          {hoverUDIcon && userInfo.nickname === nickname && (
             <IconBox>
               <BsXLg onClick={handleModal} />
             </IconBox>

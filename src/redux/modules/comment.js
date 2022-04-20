@@ -33,29 +33,34 @@ const deleteComment = createAction(DELETE_COMMENT, (commentId) => ({
 
 const getCommentList = (channelId, contentId) => {
   return async function (dispatch, getState, { history }) {
-    // const nowChannel = getState().channel.channelList.find(
-    //   (l) => l.channelId === channelId
-    // );
-    // console.log(nowChannel);
-    // const nowContent = nowChannel.contentList.find(
-    //   (l) => l.contentId === contentId
-    // );
-    // dispatch(getComment(nowContent));
-    // const contentList = getState().channel.channelList.find(
-    //   (l) => l.channelName === channelName
-    // );
-    // console.log(contentList);
-    // dispatch(getComment(contentList));
+    const nowChannel = getState().channel.channelList.find(
+      (l) => l.channelId === channelId
+    );
+    // 코멘트도 그렇고 여기서 터지는거같아서 replace 했습니다
+    if (!nowChannel) {
+      history.replace("/");
+      return;
+    }
+
+    const nowContent = nowChannel.contentList.find(
+      (l) => l.contentId === contentId
+    );
+
+    // 닉네임이 userNickname 으로 돼있어서 바꿔줌
+    let newContent = {
+      ...nowContent,
+      nickname: nowContent.userNickname,
+    };
+    dispatch(getComment(newContent));
   };
 };
 
 const addCommentDB = (channelId, contentId, comment) => {
   return async function (dispatch, getState, { history }) {
     if (!comment) return;
-    const { email } = getState().user.user;
-    const config = { Authorization: `Bearer ${getToken()}` };
 
-    console.log(channelId, contentId, comment);
+    const config = { Authorization: `Bearer ${getToken()}` };
+    const { email } = getState().user.user;
 
     await axios
       .post(
@@ -70,11 +75,11 @@ const addCommentDB = (channelId, contentId, comment) => {
 
         let newDic = {
           ...resData,
-          // userId: email,
+          userId: email,
+          nickname: resData.userNickname,
         };
-        console.log(newDic);
 
-        // dispatch(addComment(newDic));
+        dispatch(addComment(newDic));
         dispatch(channelActions.addComment(channelId, contentId, newDic));
       })
       .catch((err) => {
@@ -100,17 +105,22 @@ const addCommentDB = (channelId, contentId, comment) => {
 
 const deleteCommentDB = (channelId, contentId, commentId) => {
   return async function (dispatch, getState, { history }) {
+    const config = { Authorization: `Bearer ${getToken()}` };
     // axios
-    // await axios.delete(`${BASE_URL}/${channelName}/${contentId}/${contentId}`).then((res) => {
-    //   console.log(res);
-    // }).catch((err) => {
-    //   console.log(err);
-    //   console.log(err.response);
-    // })
-
-    console.log(channelId, contentId, commentId);
-    dispatch(deleteComment(commentId));
-    dispatch(channelActions.deleteComment(channelId, contentId, commentId));
+    await axios
+      .delete(`${BASE_URL}/${channelId}/${contentId}/${commentId}`, {
+        headers: config,
+      })
+      .then((res) => {
+        console.log(res);
+        console.log(channelId, contentId, commentId);
+        dispatch(deleteComment(commentId));
+        dispatch(channelActions.deleteComment(channelId, contentId, commentId));
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log(err.response);
+      });
   };
 };
 
@@ -124,8 +134,7 @@ export default handleActions(
 
     [ADD_COMMENT]: (state, action) =>
       produce(state, (draft) => {
-        // draft.oneContent.commentList.push(action.payload.comment);
-        console.log(state.oneContent);
+        draft.oneContent.commentList.push(action.payload.comment);
       }),
 
     [DELETE_COMMENT]: (state, action) =>

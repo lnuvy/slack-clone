@@ -91,21 +91,53 @@ const getChannelDB = () => {
         console.log(res);
         const { channel, content, comment } = res.data;
 
+        console.log(channel, content, comment);
+        // content 하나하나 돌면서 comment 있는지 검사
+        console.log(content);
+        for (let i = 0; i < content.length; i++) {
+          let newCommentList = [];
+          if (content[i].commentList.length !== 0) {
+            newCommentList = content[i].commentList.map((id) => {
+              let now = "";
+              for (let j = 0; j < comment.length; j++) {
+                now = comment[j];
+                if (id === now.commentId) break;
+              }
+              console.log("코멘트 하나 찾음!", now);
+              let newDic = {
+                ...now,
+                nickname: now.userNickname,
+              };
+              return newDic;
+            });
+            console.log(newCommentList);
+          }
+          content[i].commentList = newCommentList;
+        }
+
+        // channel 하나하나 돌면서 content 있는지 검사
         for (let i = 0; i < channel.length; i++) {
           let newContentList = [];
           if (channel[i].contentList.length !== 0) {
-            newContentList = channel[i].contentList.map((id, i) => {
+            newContentList = channel[i].contentList.map((id) => {
               let now = "";
               for (let j = 0; j < content.length; j++) {
                 now = content[j];
                 if (id === now.contentId) break;
               }
-              return now;
+              let newDic = {
+                ...now,
+                nickname: now.userNickname,
+              };
+              return newDic;
             });
           }
           channel[i].contentList = newContentList;
         }
         console.log(channel);
+        console.log(Dummy);
+
+        // dispatch(getChannel(Dummy));
         dispatch(getChannel(channel));
       })
       .catch((error) => {
@@ -113,7 +145,6 @@ const getChannelDB = () => {
         console.log(error.response);
       });
     // 한울: 더미데이터를 받아와서 넣었습니당
-    // dispatch(getChannel(Dummy));
   };
 };
 

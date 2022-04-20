@@ -3,7 +3,7 @@ import styled from "styled-components";
 import moment from "moment";
 import "moment/locale/ko";
 import { Button, Image, Text } from "../../elements";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { contentActions } from "../../redux/modules/content";
 import { history } from "../../redux/configureStore";
 import { FaRegEdit } from "react-icons/fa";
@@ -27,6 +27,8 @@ const OneChat = (props) => {
     channelName,
     commentList,
   } = props;
+
+  const userInfo = useSelector((state) => state.user.user);
 
   // useEffect(() => {}, [commentList]);
 
@@ -143,7 +145,6 @@ const OneChat = (props) => {
               {commentList?.length !== 0 && (
                 <CommentBox
                   onClick={() => {
-                    // 여기에서 해당 채널에 대한 뷰를 변경해줍니다
                     history.push(`/channel/${channelId}/${contentId}`);
                   }}
                   onMouseEnter={() => setHoverComment(true)}
@@ -177,14 +178,20 @@ const OneChat = (props) => {
             >
               {hoverUDIcon && <FaRegCommentDots />}
             </IconBox>
-            <IconBox
-              onClick={() => {
-                setIsEditMode(true);
-              }}
-            >
-              {hoverUDIcon && <FaRegEdit />}
-            </IconBox>
-            <IconBox onClick={handleModal}>{hoverUDIcon && <BsXLg />}</IconBox>
+            {userInfo.nickname === nickname && (
+              <>
+                <IconBox
+                  onClick={() => {
+                    setIsEditMode(true);
+                  }}
+                >
+                  {hoverUDIcon && <FaRegEdit />}
+                </IconBox>
+                <IconBox onClick={handleModal}>
+                  {hoverUDIcon && <BsXLg />}
+                </IconBox>
+              </>
+            )}
           </div>
         </ChatListBoxInfo>
 

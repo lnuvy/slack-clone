@@ -4,7 +4,9 @@ import Massage from "../components/massage/Massage";
 import MassageBox from "../components/massage/MassageBox";
 import MassageHeader from "../components/massage/MassageHeader";
 
-const MessagePage = () => {
+const MessagePage = (props) => {
+  const { dmId } = props.match.params;
+
   return (
     <>
       <MessagePageWrap>
@@ -18,7 +20,7 @@ const MessagePage = () => {
 
 const MessagePageWrap = styled.div`
   width: 100%;
-  height: calc(100vh - 10px);
+  height: calc(100vh - 63px);
   display: flex;
   flex-direction: column;
 `;

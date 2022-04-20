@@ -57,7 +57,7 @@ const Main = () => {
           <Switch>
             <Route path="/" exact component={MainIndex} />
             <Route path="/channel/:channelId" exact component={ChannelPage} />
-            <Route path="/dm/:dmName" exact component={MessagePage} />
+            <Route path="/dm/:dmId" exact component={MessagePage} />
             <Route
               path="/channel/:channelId/:contentId"
               exact

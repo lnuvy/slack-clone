@@ -7,17 +7,13 @@ import Input2 from "../elements/input2";
 
 import { useSelector, useDispatch } from "react-redux";
 
-// import { actionCreators as userActions } from "../redux/modules/user";
-import { $CombinedState } from "redux";
-
 const socket = io.connect("ws://52.78.246.163:80");
-
 socket.emit("init", { name: "jaehoon" });
 
 const Chat = (props) => {
   const dispatch = useDispatch();
-  const user_id = useSelector((state) => state.user.user.nickname);
-  console.log(user_id);
+  const { nickname } = useSelector((state) => state.user.user);
+
   const [chatArr, setChatArr] = useState([]);
   const [chat, setChat] = useState({ name: "", message: "" });
 
@@ -41,7 +37,7 @@ const Chat = (props) => {
   }, []);
 
   const buttonHandler = useCallback(() => {
-    socket.emit("send message", { name: user_id, message: chat.message });
+    socket.emit("send message", { name: nickname, message: chat.message });
     //버튼을 클릭했을 때 send message이벤트 발생
   }, [chat]);
 

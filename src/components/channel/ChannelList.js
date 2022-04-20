@@ -36,7 +36,6 @@ const ChannelList = (props) => {
 
   // 모달창에 있는 버튼과 연결하기위해 props onSubmit 으로 넘겨줍니다!
   const handleSubmit = () => {
-    console.log("흠흠", inputs);
     dispatch(channelActions.addChannelDB(inputs.channelName));
     setModalOn(false);
   };
@@ -46,7 +45,6 @@ const ChannelList = (props) => {
       <ListWrap>
         <GridMenu>채널</GridMenu>
         <ChannelWarp>
-          {/* channel.channelName 이 너무 길어져서 c로 줄였습니다 */}
           {channel.map((c, i) => {
             return (
               <Channnal

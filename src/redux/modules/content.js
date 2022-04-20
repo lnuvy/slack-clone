@@ -76,7 +76,6 @@ const addContentDB = (channelId, channelName, content) => {
           channelName,
           userId: email,
         };
-
         console.log(newDic);
         dispatch(addContent(newDic));
         // // 여기서 채널 액션함수 호출
@@ -86,19 +85,6 @@ const addContentDB = (channelId, channelName, content) => {
         console.log(err);
         console.log(err.response);
       });
-
-    // let fakeResponseData = {
-    //   channelId,
-    //   channelName,
-    //   contentId: new Date().getTime() + "",
-    //   nickname: nickname,
-    //   userId: email,
-    //   profileImg,
-    //   content,
-    //   createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
-    //   isEdit: false,
-    //   commentList: [],
-    // };
   };
 };
 

@@ -14,12 +14,24 @@ const ChannelComment = (props) => {
 
   const { channelId, contentId } = props.match?.params;
 
+  console.log(contentId);
+  console.log(channelId);
+
   useEffect(() => {
     dispatch(commentActions.getCommentList(channelId, contentId));
   }, [contentId]);
 
   const nowContent = useSelector((state) => state.comment.oneContent);
-  console.log(nowContent);
+
+  // const contentList = useSelector(
+  //   (state) => state.content.oneChannel.contentList
+  // );
+
+  // console.log(contentList);
+
+  // const nowContent2 = contentList.filter((c) => c.contentId !== contentId);
+
+  // console.log(nowContent2);
 
   const commentList = nowContent.commentList;
 
@@ -27,6 +39,8 @@ const ChannelComment = (props) => {
 
   const isEdit = nowContent.isEdit;
 
+  // const nowContent = useSelector((state) => state.comment.oneContent);
+  // console.log(nowContent);
   return (
     <>
       <CommentWrap>
@@ -96,10 +110,7 @@ const ChannelComment = (props) => {
               </CommentListBoxInfo>
             )}
             {/* </div> */}
-            <CommentBox
-              channelId={nowContent?.channelId}
-              contentId={nowContent?.contentId}
-            />
+            <CommentBox channelId={channelId} contentId={contentId} />
           </CommentListBox>
         </CommentListWrap>
       </CommentWrap>

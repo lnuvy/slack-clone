@@ -12,6 +12,7 @@ import ChannelPage from "./ChannelPage";
 import MessagePage from "./MessagePage";
 import MainIndex from "./MainIndex";
 import ChannelComment from "../components/channel/comment/ChannelComment";
+import Chat from "./Chat";
 
 import { MdOutlineLayers } from "react-icons/md";
 import { history } from "../redux/configureStore";
@@ -62,6 +63,7 @@ const Main = () => {
               exact
               component={ChannelComment}
             />
+            <Route path="/chat" exact component={Chat} />
           </Switch>
         </ChatsWrap>
       </MainWrap>

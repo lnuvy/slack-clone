@@ -1,7 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { produce } from "immer";
 import axios from "axios";
-
 import { Dummy } from "../../shared/DummyData";
 import moment from "moment";
 import { contentActions } from "./content";
@@ -113,7 +112,6 @@ const getChannelDB = () => {
         console.log("채널 데이터 안옴", error);
         console.log(error.response);
       });
-
     // 한울: 더미데이터를 받아와서 넣었습니당
     // dispatch(getChannel(Dummy));
   };
@@ -129,15 +127,6 @@ const addChannelDB = (channelName) => {
 
     await axios
       .post(`${BASE_URL}/channel/channel`, inputs, { headers: config })
-      // axios({
-      //   method: "post",
-      //   url: `${BASE_URL}/channel/channel`,
-      //   data: channelData,
-      //   headers: {
-      //     "Content-Type": "multipart/form-data",
-      //     Authorization: `Bearer ${getToken()}`,
-      //   },
-      // })
       .then((res) => {
         console.log(res);
         console.log(res.data);
@@ -147,16 +136,6 @@ const addChannelDB = (channelName) => {
         console.log(err);
         console.log(err.response);
       });
-
-    // 연결되면 버리면됩니당~
-
-    // const fakeResponseData = {
-    //   channelId: new Date().getTime() + "",
-    //   channelName: channelData.channelName,
-    //   createdAt: moment().format("YYYY-MM-DD HH:mm"),
-    //   channelHost: nickname,
-    //   contentList: [],
-    // };
   };
 };
 
@@ -181,15 +160,12 @@ const editChannelNameDB = (channelId, channelName) => {
         console.log(err);
         console.log(err.response);
       });
-
-    // // 채널헤더가 바로 반영되지않아서 만든 content 디스패치
   };
 };
 
 const deleteChannelDB = (channelId) => {
   return async function (dispatch, getState, { history }) {
     const config = { Authorization: `Bearer ${getToken()}` };
-
     await axios
       .delete(`${BASE_URL}/channel/${channelId}`, {
         headers: config,
@@ -204,8 +180,7 @@ const deleteChannelDB = (channelId) => {
         console.log(err);
         console.log(err.response);
       });
-
-    history.replace("/");
+    // history.replace("/");
   };
 };
 

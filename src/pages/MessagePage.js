@@ -16,17 +16,17 @@ export const socket = io.connect("localhost:5001");
 const MessagePage = () => {
   const user = useSelector((state) => state.user.user);
   const { nickname } = user;
-  const profileImg = user;
+  const { profileImg } = user;
   console.log(nickname);
 
-  socket.emit("init", { name: "testName", user: user });
+  socket.emit("init", { user });
 
   return (
     <>
       <MessagePageWrap>
         <MassageHeader />
-        <Massage profileImg={profileImg} />
-        <MassageBox nickname={nickname} />
+        <Massage nickname={nickname} />
+        <MassageBox nickname={nickname} profileImg={profileImg} />
       </MessagePageWrap>
     </>
   );

@@ -15,11 +15,12 @@ const MassageBox = ({ nickname, profileImg }) => {
   const [chat, setChat] = useState({ name: "", message: "" });
 
   const buttonHandler = useCallback(() => {
-    const time = moment().format("YY-MM-DD HH:mm:ss");
+    const time = moment().format("YYYY-MM-DD HH:mm:ss");
     socket.emit("send message", {
       nickname: nickname,
       message: chat.message,
       createdAt: time,
+      profileImg: profileImg,
     });
     //버튼을 클릭했을 때 send message이벤트 발생
   }, [chat]);

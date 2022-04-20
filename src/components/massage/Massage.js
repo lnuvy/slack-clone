@@ -13,6 +13,7 @@ const Massage = (nickname, profileImg) => {
   // console.log(profileImg);
   // const userProfileImg = profileImg;
   // console.log(userProfileImg);
+  console.log(nickname);
   useEffect(() => {
     return () => {
       socket.close();
@@ -48,7 +49,7 @@ const Massage = (nickname, profileImg) => {
 
   useEffect(() => {
     socket.on("receive message", (message) => {
-      console.log(message.name);
+      console.log(message);
       setChatArr((chatArr) => chatArr.concat(message));
     }); //receive message이벤트에 대한 콜백을 등록해줌
   }, []);

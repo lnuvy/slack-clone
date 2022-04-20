@@ -8,9 +8,11 @@ import OneMassage from "./OneMassage";
 //소켓
 import { socket } from "../../pages/MessagePage";
 
-const Massage = (userNickname) => {
+const Massage = (nickname, profileImg) => {
   const [chatArr, setChatArr] = useState([]);
-
+  // console.log(profileImg);
+  // const userProfileImg = profileImg;
+  // console.log(userProfileImg);
   useEffect(() => {
     return () => {
       socket.close();
@@ -46,7 +48,7 @@ const Massage = (userNickname) => {
 
   useEffect(() => {
     socket.on("receive message", (message) => {
-      console.log(message);
+      console.log("Message 51번", message);
       setChatArr((chatArr) => chatArr.concat(message));
     }); //receive message이벤트에 대한 콜백을 등록해줌
   }, []);

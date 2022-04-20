@@ -9,19 +9,23 @@ import { useSelector } from "react-redux";
 
 //소켓
 import io from "socket.io-client";
-export const socket = io.connect("ws://localhost:5001");
+
+export const socket = io.connect("localhost:5001");
+// socket.emit("init", { name: "testName", user: user });
 
 const MessagePage = () => {
-  const userInfo = useSelector((state) => state.user.user);
+  const user = useSelector((state) => state.user.user);
+  const { nickname, profileImg } = user;
+  console.log(nickname);
 
-  socket.emit("init", { user: userInfo });
+  socket.emit("init", { name: "testName", user: user });
 
   return (
     <>
       <MessagePageWrap>
         <MassageHeader />
-        <Massage profileImg={userInfo.profileImg} />
-        <MassageBox userInfo={userInfo} />
+        <Massage profileImg={profileImg} />
+        <MassageBox nickname={nickname} profileImg={profileImg} />
       </MessagePageWrap>
     </>
   );

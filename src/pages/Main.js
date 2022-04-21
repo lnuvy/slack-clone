@@ -15,8 +15,10 @@ import ChannelComment from "../components/channel/comment/ChannelComment";
 
 import { MdOutlineLayers } from "react-icons/md";
 import { history } from "../redux/configureStore";
+import RoomPage from "./RoomPage";
 
-// 처음 로그인 했을때, 주된 컨텐츠가 되는 부분 (슬랙에서 Slack Connect 부분)
+// export const socket = io("localhost:5001");
+// export const socket = io.connect("ws://52.78.246.163:80");
 
 const Main = () => {
   return (
@@ -56,12 +58,13 @@ const Main = () => {
           <Switch>
             <Route path="/" exact component={MainIndex} />
             <Route path="/channel/:channelId" exact component={ChannelPage} />
-            <Route path="/dm/:dmId" exact component={MessagePage} />
             <Route
               path="/channel/:channelId/:contentId"
               exact
               component={ChannelComment}
             />
+            <Route path="/dm/room/:roomName" exact component={MessagePage} />
+            <Route path="/dm/room" exact component={RoomPage} />
           </Switch>
         </ChatsWrap>
       </MainWrap>

@@ -6,72 +6,42 @@ import { Button } from "../../elements";
 import moment from "moment";
 import "moment/locale/ko";
 
-//소켓 import
-import { socket } from "../../pages/MessagePage";
-
-const MassageBox = ({ nickname, profileImg }) => {
-  console.log(nickname, profileImg);
-
-  const [chat, setChat] = useState({
-    nickname,
-    message: "",
-    createdAt: "",
-    profileImg,
-  });
-
-  const buttonHandler = useCallback(() => {
-    const time = moment().format("YYYY-MM-DD HH:mm:ss");
-    socket.emit("send message", {
-      nickname,
-      message: chat.message,
-      createdAt: time,
-      profileImg,
-    });
-    //버튼을 클릭했을 때 send message이벤트 발생
-  }, [chat]);
-
-  const changeMessage = useCallback(
-    (e) => {
-      console.log(chat);
-      setChat({ ...chat, message: e.target.value });
-    },
-    [chat]
-  );
-
+const MassageBox = ({ setMessage, sendMessage, message }) => {
   return (
     <>
       <MassageBoxWrap>
         <InputBox>
           <InputText
-            onChange={changeMessage}
+            onChange={({ target: { value } }) => setMessage(value)}
             placeholder="메세지 보내기..."
+            value={message}
             onKeyPress={(e) => {
-              if (e.key === "Enter") buttonHandler();
+              if (e.key === "Enter") sendMessage();
             }}
           ></InputText>
           <IconBox>
-            <IconBoxItem style={{ background: `${chat ? "#007a5a" : ""}` }}>
+            <IconBoxItem style={{ background: `${message ? "#007a5a" : ""}` }}>
               <Button
                 margin="0 5px 0 0"
                 padding="0 1px 0 3px"
                 style={{
                   border: "none",
-                  background: `${chat ? "#007a5a" : ""}`,
+                  background: `${message ? "#007a5a" : ""}`,
                 }}
-                disabled={!chat.message === ""}
-                onClick={buttonHandler}
+                disabled={!message}
+                onClick={sendMessage}
               >
                 <IoSend
                   size={16}
-                  style={{ color: `${chat ? "white" : "#b7b7b7"}` }}
+                  style={{ color: `${message ? "white" : "#b7b7b7"}` }}
                 />
               </Button>
               <VerticalLine></VerticalLine>
               <Button
                 style={{
                   border: "none",
-                  background: `${chat ? "#007a5a" : ""}`,
-                  color: `${chat ? "white" : "#b7b7b7"}`,
+                  background: `${message ? "#007a5a" : ""}`,
+                  color: `${message ? "white" : "#b7b7b7"}`,
                 }}
               >
                 <RiArrowDropDownLine size={18} />

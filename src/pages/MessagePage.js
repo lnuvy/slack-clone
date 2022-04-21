@@ -1,31 +1,57 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import Massage from "../components/massage/Massage";
 import MassageBox from "../components/massage/MassageBox";
 import MassageHeader from "../components/massage/MassageHeader";
-
-//리덕스
 import { useSelector } from "react-redux";
-
-//소켓
 import io from "socket.io-client";
+import { useParams } from "react-router-dom";
 
-export const socket = io.connect("localhost:5001");
-// socket.emit("init", { name: "testName", user: user });
+let socket;
 
 const MessagePage = () => {
   const user = useSelector((state) => state.user.user);
-  const { nickname, profileImg } = user;
+  const { roomName } = useParams();
+
+  const [messages, setMessages] = useState([]);
+  const [message, setMessage] = useState("");
+  const [users, setUsers] = useState("");
+  const room = roomName;
+  const { nickname } = user;
   console.log(nickname);
 
-  socket.emit("init", { user });
+  useEffect(() => {
+    socket = io("localhost:5001");
+
+    socket.emit("join", { nickname, room }, (err) => {
+      if (err) alert(err);
+    });
+  }, [room]);
+
+  useEffect(() => {
+    socket.on("message", (message) => {
+      setMessages((messages) => [...messages, message]);
+    });
+
+    socket.on("roomData", ({ users }) => {
+      setUsers(users);
+    });
+  }, []);
+
+  const sendMessage = () => {
+    if (message) socket.emit("send_message", message, () => setMessage(""));
+  };
 
   return (
     <>
       <MessagePageWrap>
-        <MassageHeader />
-        <Massage nickname={nickname} />
-        <MassageBox nickname={nickname} profileImg={profileImg} />
+        <MassageHeader room={room} users={users} />
+        <Massage messages={messages} {...user} />
+        <MassageBox
+          message={message}
+          setMessage={setMessage}
+          sendMessage={sendMessage}
+        />
       </MessagePageWrap>
     </>
   );

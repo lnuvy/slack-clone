@@ -2,16 +2,17 @@ import React from "react";
 import styled from "styled-components";
 import { Image } from "../../elements/index";
 
-const MassageHeader = () => {
+const MassageHeader = ({ room, users }) => {
   return (
     <>
       <MsgHeaderWrap>
         <MsgHeaderTextbox>
           <ChatUser>
             <Image size="22" />
-            <ChannelName>홍홍</ChannelName>
+            <ChannelName>{room}</ChannelName>
           </ChatUser>
         </MsgHeaderTextbox>
+        <div>{users}</div>
       </MsgHeaderWrap>
     </>
   );
@@ -20,6 +21,7 @@ const MassageHeader = () => {
 const MsgHeaderWrap = styled.div`
   height: 49px;
   display: flex;
+  justify-content: space-between;
   padding: 10px 16px 10px 20px;
   border-bottom: 1px solid rgba(var(--sk_foreground_low, 29, 28, 29), 0.13);
   cursor: pointer;

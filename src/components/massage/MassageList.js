@@ -11,15 +11,23 @@ const MassageList = () => {
         <GridMenu>다이렉트 메시지</GridMenu>
         <UserWarp
           onClick={() => {
-            history.replace("/dm/홍길동");
+            history.replace("/dm/room");
           }}
         >
-          <Image shape="ProfileImg" size="20" />
-          <span style={{ margin: "4px" }}>홍길동</span>
+          <Image shape="ProfileImg" size="20" src="" />
+          <span style={{ margin: "4px" }}>Room</span>
         </UserWarp>
         <UserWarp
           onClick={() => {
-            history.replace("/dm/이름");
+            history.replace("/dm/room/홍길동");
+          }}
+        >
+          <Image shape="ProfileImg" size="20" />
+          <span style={{ margin: "4px" }}>전체 대화방</span>
+        </UserWarp>
+        <UserWarp
+          onClick={() => {
+            history.replace("/dm/room/이름");
           }}
         >
           <Image shape="ProfileImg" size="20" />

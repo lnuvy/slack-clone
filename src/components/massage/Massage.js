@@ -5,75 +5,27 @@ import { Image, Text } from "../../elements/index";
 
 import OneMassage from "./OneMassage";
 
-//소켓
-import { socket } from "../../pages/MessagePage";
-
-const Massage = (nickname, profileImg) => {
-  const [chatArr, setChatArr] = useState([]);
-  // console.log(profileImg);
-  // const userProfileImg = profileImg;
-  // console.log(userProfileImg);
-  console.log(nickname);
-  useEffect(() => {
-    return () => {
-      socket.close();
-    };
-  }, []);
-
-  // const messageRef = useRef < HTMLDivElement > null;
-  // const onHomeClick = () => {
-  //   messageRef.current?.scrollIntoView({ behavior: "smooth" });
-  // };
-
-  // const scrollRef = useRef();
-  // const { editDone } = useSelector((state) => state.board);
-
-  // const scrollToBottom = useCallback(() => {
-  //   if (editDone) {
-  //     // 스크롤 내리기
-  //     scrollRef.current.scrollIntoView({
-  //       behavior: "smooth",
-  //       block: "end",
-  //       inline: "nearest",
-  //     });
-  //   }
-  // }, [editDone]);
-
-  // const scrollToBottom = () => {
-  //   scrollRef.scrollIntoView({ behavior: "smooth" });
-  // };
-
-  // useEffect(() => {
-  //   scrollToBottom();
-  // }, [scrollToBottom]);
-
-  useEffect(() => {
-    socket.on("receive message", (message) => {
-      console.log(message);
-      setChatArr((chatArr) => chatArr.concat(message));
-    }); //receive message이벤트에 대한 콜백을 등록해줌
-  }, []);
-
+const Massage = ({ messages, nickname }) => {
+  console.log(messages, nickname);
   return (
     <>
       <ChatListWrap>
         <ChatListBox>
-          {chatArr ? (
-            chatArr.map((ele, idx) => <OneMassage key={idx} {...ele} />)
-          ) : (
-            <ChatListBoxInfo>
-              <ChatListUserImageWrap>
-                <Image shape="ProfileImg" />
-              </ChatListUserImageWrap>
-              <ChatListUserInfo>
-                <Text fontWeight="700" color="black">
-                  홍길동
-                </Text>
-                <span>12:00</span>
-                <div>내용</div>
-              </ChatListUserInfo>
-            </ChatListBoxInfo>
-          )}
+          {messages.map((m, i) => (
+            <OneMassage key={i} {...m} nickname={nickname} />
+          ))}
+          {/* <ChatListBoxInfo>
+               <ChatListUserImageWrap>
+                 <Image shape="ProfileImg" />
+               </ChatListUserImageWrap>
+               <ChatListUserInfo>
+                 <Text fontWeight="700" color="black">
+                   홍길동
+                 </Text>
+                 <span>12:00</span>
+                 <div>내용</div>
+               </ChatListUserInfo>
+             </ChatListBoxInfo> */}
         </ChatListBox>
       </ChatListWrap>
     </>

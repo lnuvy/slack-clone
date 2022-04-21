@@ -44,7 +44,7 @@ const ChannelMsg = (props) => {
 
 const ChatListWrap = styled.div`
   // 여기 높이를 좀 줄이니까 메인 스크롤바가 안생기네요
-  height: 73vh;
+  height: calc(100vh - 190px);
   padding: 8px 0px;
   flex-direction: rows;
   overflow-y: scroll;

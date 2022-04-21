@@ -36,7 +36,6 @@ const ChannelHeader = (props) => {
           </Modal>
         )}
       </ModalPortal>
-
       <ChannelHeaderWrap>
         <ChatHeaderTextbox>
           <Tooltip message="채널 세부정보 받기">

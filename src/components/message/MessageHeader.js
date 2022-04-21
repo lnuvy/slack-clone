@@ -1,15 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import { Image } from "../../elements/index";
+import { useSelector } from "react-redux";
 
-const MassageHeader = () => {
+const MessageHeader = (props) => {
+  const { profileImg, nickname } = props;
   return (
     <>
       <MsgHeaderWrap>
         <MsgHeaderTextbox>
           <ChatUser>
-            <Image size="22" />
-            <ChannelName>홍홍</ChannelName>
+            <Image shape="ProfileImg" size="22" src={profileImg} />
+            <ChannelName>{nickname}</ChannelName>
           </ChatUser>
         </MsgHeaderTextbox>
       </MsgHeaderWrap>
@@ -48,4 +50,4 @@ const ChannelName = styled.div`
   padding: 0px 0px 0px 10px;
 `;
 
-export default MassageHeader;
+export default MessageHeader;

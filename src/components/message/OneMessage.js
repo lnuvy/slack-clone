@@ -5,7 +5,7 @@ import moment from "moment";
 import "moment/locale/ko";
 import { useSelector } from "react-redux";
 
-const OneMassage = (props) => {
+const OneMessage = (props) => {
   const { message, nickname, createdAt, profileImg } = props;
   console.log(props);
 
@@ -117,4 +117,4 @@ const MyChatListUserInfo = styled.div`
   }
 `;
 
-export default OneMassage;
+export default OneMessage;

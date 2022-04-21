@@ -5,17 +5,13 @@ import { RiArrowDropDownLine } from "react-icons/ri";
 import { Button } from "../../elements";
 import { useDispatch } from "react-redux";
 import { contentActions } from "../../redux/modules/content";
-
 const ChannelMsgBox = ({ title, channelId }) => {
   const dispatch = useDispatch();
-
   const [chat, setChat] = useState("");
-
   const submitChat = () => {
     dispatch(contentActions.addContentDB(channelId, title, chat));
     setChat("");
   };
-
   return (
     <>
       <ChannelMsgBoxWrap>
@@ -32,28 +28,28 @@ const ChannelMsgBox = ({ title, channelId }) => {
             placeholder={`# ${title}에 메세지 보내기`}
           ></InputText>
           <IconBox>
-            <IconBoxItem style={{ background: `${chat ? "#007a5a" : ""}` }}>
+            <IconBoxItem style={{ background: `${chat ? "#007A5A" : ""}` }}>
               <Button
                 margin="0 5px 0 0"
                 padding="0 1px 0 3px"
                 style={{
                   border: "none",
-                  background: `${chat ? "#007a5a" : ""}`,
+                  background: `${chat ? "#007A5A" : ""}`,
                 }}
                 disabled={!chat}
                 onClick={submitChat}
               >
                 <IoSend
                   size={16}
-                  style={{ color: `${chat ? "white" : "#b7b7b7"}` }}
+                  style={{ color: `${chat ? "white" : "#B7B7B7"}` }}
                 />
               </Button>
               <VerticalLine></VerticalLine>
               <Button
                 style={{
                   border: "none",
-                  background: `${chat ? "#007a5a" : ""}`,
-                  color: `${chat ? "white" : "#b7b7b7"}`,
+                  background: `${chat ? "#007A5A" : ""}`,
+                  color: `${chat ? "white" : "#B7B7B7"}`,
                 }}
               >
                 <RiArrowDropDownLine size={18} />
@@ -82,7 +78,6 @@ const InputText = styled.input`
   border: none;
   outline: none;
 `;
-
 const IconBox = styled.div`
   position: relative;
   right: 13px;
@@ -98,7 +93,6 @@ const IconBoxItem = styled.div`
     background: rgba(221, 221, 221, 0.3);
   }
 `;
-
 const VerticalLine = styled.div`
   width: 1px;
   background: rgba(221, 221, 221, 0.3);

@@ -3,13 +3,13 @@ import styled from "styled-components";
 
 import { Image, Text } from "../../elements/index";
 
-import OneMassage from "./OneMassage";
+import OneMassage from "./OneMessage";
 
 import { useSelector } from "react-redux";
 //소켓
 import { socket } from "../../pages/MessagePage";
 
-const Massage = (nickname, profileImg) => {
+const Message = (nickname, profileImg) => {
   const [chatArr, setChatArr] = useState([]);
   // console.log(profileImg);
   // const userProfileImg = profileImg;
@@ -102,4 +102,4 @@ const ChatListUserInfo = styled.div`
   }
 `;
 
-export default Massage;
+export default Message;

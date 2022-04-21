@@ -9,10 +9,22 @@ import "moment/locale/ko";
 //소켓 import
 import { socket } from "../../pages/MessagePage";
 
-const MassageBox = ({ nickname, profileImg }) => {
-  console.log(nickname);
+const MessageBox = ({ nickname, profileImg, props }) => {
+  // console.log(nickname);
+  // console.log(profileImg);
+  // const { roomname } = props.match?.params;
+  // console.log(roomname);
 
   const [chat, setChat] = useState({ name: "", message: "" });
+
+  console.log(chat.message);
+  // const [nowMessage, setNowMessage] = useState(chat.message);
+  const nowMessage = chat.message;
+  console.log(nowMessage);
+  // console.log(Object.values(chat);
+
+  console.log(chat.message);
+  console.log(nickname);
 
   const buttonHandler = useCallback(() => {
     const time = moment().format("YYYY-MM-DD HH:mm:ss");
@@ -25,7 +37,9 @@ const MassageBox = ({ nickname, profileImg }) => {
     //버튼을 클릭했을 때 send message이벤트 발생
   }, [chat]);
 
-  console.log(chat);
+  // const nowMassage = Object.values(chat);
+
+  // console.log(nowMassage);
 
   const changeMessage = useCallback(
     (e) => {
@@ -35,46 +49,51 @@ const MassageBox = ({ nickname, profileImg }) => {
     [chat]
   );
 
-  // const changeButton = (e) => {
-  //   const { value } = e.target;
-  //   setChat(value);
-  // };
-  const time = moment().format("HH:mm");
+  const deleteChat = () => {
+    // setNowMessage("");
+  };
 
   return (
     <>
-      <MassageBoxWrap>
+      <MessageBoxWrap>
         <InputBox>
           <InputText
             onChange={changeMessage}
             placeholder={"# 에게 메시지 보내기"}
             onKeyPress={(e) => {
               if (e.key === "Enter") buttonHandler();
+              deleteChat();
             }}
+            value={nowMessage}
           ></InputText>
           <IconBox>
-            <IconBoxItem style={{ background: `${chat ? "#007a5a" : ""}` }}>
+            <IconBoxItem
+              style={{ background: `${nowMessage ? "#007a5a" : ""}` }}
+            >
               <Button
                 margin="0 5px 0 0"
                 padding="0 1px 0 3px"
                 style={{
                   border: "none",
-                  background: `${chat ? "#007a5a" : ""}`,
+                  background: `${nowMessage ? "#007a5a" : ""}`,
                 }}
-                disabled={!chat}
-                onClick={buttonHandler}
+                disabled={!nowMessage}
+                onClick={() => {
+                  deleteChat();
+                  buttonHandler();
+                }}
               >
                 <IoSend
                   size={16}
-                  style={{ color: `${chat ? "white" : "#b7b7b7"}` }}
+                  style={{ color: `${nowMessage ? "white" : "#b7b7b7"}` }}
                 />
               </Button>
               <VerticalLine></VerticalLine>
               <Button
                 style={{
                   border: "none",
-                  background: `${chat ? "#007a5a" : ""}`,
-                  color: `${chat ? "white" : "#b7b7b7"}`,
+                  background: `${nowMessage ? "#007a5a" : ""}`,
+                  color: `${nowMessage ? "white" : "#b7b7b7"}`,
                 }}
               >
                 <RiArrowDropDownLine size={18} />
@@ -82,11 +101,11 @@ const MassageBox = ({ nickname, profileImg }) => {
             </IconBoxItem>
           </IconBox>
         </InputBox>
-      </MassageBoxWrap>
+      </MessageBoxWrap>
     </>
   );
 };
-const MassageBoxWrap = styled.div`
+const MessageBoxWrap = styled.div`
   width: 100%;
 `;
 const InputBox = styled.div`
@@ -129,4 +148,4 @@ const VerticalLine = styled.div`
   right: 24px;
 `;
 
-export default MassageBox;
+export default MessageBox;

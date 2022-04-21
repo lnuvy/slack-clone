@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import NavigationBar from "../components/NavigationBar";
 import ChannelList from "../components/channel/ChannelList";
 // import ChannelList from "../components/channel/ChannelList";
-import MassageList from "../components/massage/MassageList";
+import MessageList from "../components/message/MessageList";
 import ChannelPage from "./ChannelPage";
 import MessagePage from "./MessagePage";
 import MainIndex from "./MainIndex";
@@ -48,7 +48,7 @@ const Main = () => {
                 </span>
               </SlackConnect>
               <ChannelList />
-              <MassageList />
+              <MessageList />
             </div>
           </MenuScroll>
         </ChannelsWrap>

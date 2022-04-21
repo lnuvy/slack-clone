@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Massage from "../components/massage/Massage";
-import MassageBox from "../components/massage/MassageBox";
-import MassageHeader from "../components/massage/MassageHeader";
+import Message from "../components/message/Message";
+import MessageBox from "../components/message/MessageBox";
+import MessageHeader from "../components/message/MessageHeader";
 
 //리덕스
 import { useSelector } from "react-redux";
@@ -10,7 +10,8 @@ import { useSelector } from "react-redux";
 //소켓
 import io from "socket.io-client";
 
-// export const socket = io.connect("ws://52.78.246.163:80");
+// export const socket = io.connect("ws://52.78.246.163:80/chat");
+// export const [socket, setCurrentSocket] = useState();
 export const socket = io.connect("localhost:5001");
 // socket.emit("init", { name: "testName", user: user });
 
@@ -19,8 +20,21 @@ const MessagePage = () => {
   const { nickname } = user;
   const { profileImg } = user;
   console.log(nickname);
+  socket.emit("init", { user: user });
+  // const room = "testroom";
 
   // socket.emit("init", { user: user });
+
+  // useEffect(() => {});
+
+  // socket.emit("join", { roomName: nickname, nickname: nickname }, (error) => {
+  //   console.log("error");
+  //   // 에러 처리
+  //   if (error) {
+  //     alert(error);
+  //   }
+  // });
+
   // socket.on("connection", (socket) => {
   //   socket.join("some room");
   // });
@@ -30,9 +44,9 @@ const MessagePage = () => {
   return (
     <>
       <MessagePageWrap>
-        <MassageHeader />
-        <Massage nickname={nickname} />
-        <MassageBox nickname={nickname} profileImg={profileImg} />
+        <MessageHeader nickname={nickname} profileImg={profileImg} />
+        <Message nickname={nickname} />
+        <MessageBox nickname={nickname} profileImg={profileImg} />
       </MessagePageWrap>
     </>
   );

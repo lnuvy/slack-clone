@@ -1,56 +1,37 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Massage from "../components/massage/Massage";
-import MassageBox from "../components/massage/MassageBox";
-import MassageHeader from "../components/massage/MassageHeader";
+import Message from "../components/message/Message";
+import MessageBox from "../components/message/MessageBox";
+import MessageHeader from "../components/message/MessageHeader";
+
+//리덕스
 import { useSelector } from "react-redux";
-import io from "socket.io-client";
 import { useParams } from "react-router-dom";
 
-let socket;
+// export const socket = io.connect("ws://52.78.246.163:80/chat");
 
-const MessagePage = () => {
+const MessagePage = (props) => {
+  const { socket } = props;
+
   const user = useSelector((state) => state.user.user);
-  const { roomName } = useParams();
-
-  const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState("");
-  const [users, setUsers] = useState("");
-  const room = roomName;
-  const { nickname } = user;
+  const { nickname, profileImg } = user;
   console.log(nickname);
-
-  useEffect(() => {
-    socket = io("localhost:5001");
-
-    socket.emit("join", { nickname, room }, (err) => {
-      if (err) alert(err);
-    });
-  }, [room]);
-
-  useEffect(() => {
-    socket.on("message", (message) => {
-      setMessages((messages) => [...messages, message]);
-    });
-
-    socket.on("roomData", ({ users }) => {
-      setUsers(users);
-    });
-  }, []);
-
-  const sendMessage = () => {
-    if (message) socket.emit("send_message", message, () => setMessage(""));
-  };
+  const room = useParams().dmId;
 
   return (
     <>
       <MessagePageWrap>
-        <MassageHeader room={room} users={users} />
-        <Massage messages={messages} {...user} />
-        <MassageBox
-          message={message}
-          setMessage={setMessage}
-          sendMessage={sendMessage}
+        <MessageHeader
+          socket={socket}
+          nickname={nickname}
+          profileImg={profileImg}
+        />
+        <Message profileImg={profileImg} socket={socket} nickname={nickname} />
+        <MessageBox
+          socket={socket}
+          nickname={nickname}
+          profileImg={profileImg}
+          room={room}
         />
       </MessagePageWrap>
     </>

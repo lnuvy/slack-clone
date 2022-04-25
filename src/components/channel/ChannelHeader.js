@@ -7,7 +7,6 @@ import { useSelector } from "react-redux";
 
 const ChannelHeader = (props) => {
   const { channelName, channelId } = props?.nowChannel;
-
   const [modalOn, setModalOn] = useState(false);
 
   // 토글
@@ -36,7 +35,6 @@ const ChannelHeader = (props) => {
           </Modal>
         )}
       </ModalPortal>
-
       <ChannelHeaderWrap>
         <ChatHeaderTextbox>
           <Tooltip message="채널 세부정보 받기">

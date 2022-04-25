@@ -1,18 +1,23 @@
 import React from "react";
 import styled from "styled-components";
 import { Image } from "../../elements/index";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
-const MassageHeader = ({ room, users }) => {
+const MessageHeader = (props) => {
+  const { profileImg, nickname, socket } = props;
+  const roomName = useParams().dmId;
+  console.log(roomName);
+
   return (
     <>
       <MsgHeaderWrap>
         <MsgHeaderTextbox>
           <ChatUser>
-            <Image size="22" />
-            <ChannelName>{room}</ChannelName>
+            <Image shape="ProfileImg" size="22" src={profileImg} />
+            <ChannelName>{roomName}</ChannelName>
           </ChatUser>
         </MsgHeaderTextbox>
-        <div>{users}</div>
       </MsgHeaderWrap>
     </>
   );
@@ -21,7 +26,6 @@ const MassageHeader = ({ room, users }) => {
 const MsgHeaderWrap = styled.div`
   height: 49px;
   display: flex;
-  justify-content: space-between;
   padding: 10px 16px 10px 20px;
   border-bottom: 1px solid rgba(var(--sk_foreground_low, 29, 28, 29), 0.13);
   cursor: pointer;
@@ -50,4 +54,4 @@ const ChannelName = styled.div`
   padding: 0px 0px 0px 10px;
 `;
 
-export default MassageHeader;
+export default MessageHeader;

@@ -88,12 +88,9 @@ const getChannelDB = () => {
     await axios
       .get(`${BASE_URL}/channel/${email}`, { headers: config })
       .then((res) => {
-        console.log(res);
         const { channel, content, comment } = res.data;
 
-        console.log(channel, content, comment);
         // content 하나하나 돌면서 comment 있는지 검사
-        console.log(content);
         for (let i = 0; i < content.length; i++) {
           let newCommentList = [];
           if (content[i].commentList.length !== 0) {
@@ -103,14 +100,12 @@ const getChannelDB = () => {
                 now = comment[j];
                 if (id === now.commentId) break;
               }
-              console.log("코멘트 하나 찾음!", now);
               let newDic = {
                 ...now,
                 nickname: now.userNickname,
               };
               return newDic;
             });
-            console.log(newCommentList);
           }
           content[i].commentList = newCommentList;
         }
@@ -134,8 +129,6 @@ const getChannelDB = () => {
           }
           channel[i].contentList = newContentList;
         }
-        console.log(channel);
-        console.log(Dummy);
 
         // dispatch(getChannel(Dummy));
         dispatch(getChannel(channel));

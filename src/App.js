@@ -29,6 +29,8 @@ function App() {
         <ConnectedRouter history={history}>
           <Switch>
             <Route path="/" axact component={Main} />
+            <Route path="/user/signup" exact component={SignUp} />
+            <Route path="/user/login" exact component={Login} />
           </Switch>
         </ConnectedRouter>
       </div>
@@ -38,7 +40,7 @@ function App() {
       <div className="App">
         <ConnectedRouter history={history}>
           <Switch>
-            <Route path={["/"]} exact component={Login} />
+            <Route path={["/", "/user/login"]} exact component={Login} />
             <Route path="/user/signup" exact component={SignUp} />
           </Switch>
         </ConnectedRouter>

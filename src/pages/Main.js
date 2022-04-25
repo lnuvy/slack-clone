@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import NavigationBar from "../components/NavigationBar";
 import ChannelList from "../components/channel/ChannelList";
 // import ChannelList from "../components/channel/ChannelList";
-import MassageList from "../components/massage/MassageList";
+import MessageList from "../components/message/MessageList";
 import ChannelPage from "./ChannelPage";
 import MessagePage from "./MessagePage";
 import MainIndex from "./MainIndex";
@@ -15,12 +15,13 @@ import ChannelComment from "../components/channel/comment/ChannelComment";
 
 import { MdOutlineLayers } from "react-icons/md";
 import { history } from "../redux/configureStore";
-import RoomPage from "./RoomPage";
 
-// export const socket = io("localhost:5001");
-// export const socket = io.connect("ws://52.78.246.163:80");
+// 처음 로그인 했을때, 주된 컨텐츠가 되는 부분 (슬랙에서 Slack Connect 부분)
+import io from "socket.io-client";
 
 const Main = () => {
+  const socket = io.connect("localhost:5001");
+
   return (
     <>
       <NavigationBar />
@@ -50,7 +51,7 @@ const Main = () => {
                 </span>
               </SlackConnect>
               <ChannelList />
-              <MassageList />
+              <MessageList socket={socket} />
             </div>
           </MenuScroll>
         </ChannelsWrap>
@@ -59,12 +60,15 @@ const Main = () => {
             <Route path="/" exact component={MainIndex} />
             <Route path="/channel/:channelId" exact component={ChannelPage} />
             <Route
+              path="/dm/:dmId"
+              exact
+              render={(props) => <MessagePage socket={socket} {...props} />}
+            />
+            <Route
               path="/channel/:channelId/:contentId"
               exact
               component={ChannelComment}
             />
-            <Route path="/dm/room/:roomName" exact component={MessagePage} />
-            <Route path="/dm/room" exact component={RoomPage} />
           </Switch>
         </ChatsWrap>
       </MainWrap>
